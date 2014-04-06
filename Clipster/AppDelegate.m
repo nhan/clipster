@@ -24,12 +24,13 @@
     self.menuViewController = [[MenuViewController alloc] init];
     self.loginViewController = [[LoginViewController alloc] init];
     
-    [self setRootViewController];
-    
     [Parse setApplicationId:@"ijASx0FwG5H1x75wkkAt3dVSd3f3COyX12ZvoXuv"
                   clientKey:@"LsmTAORgFrbm8r0hJqE8nI5Xcuv6dYy3YjXWP9Po"];
     [PFFacebookUtils initializeFacebook];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+
+    [self setRootViewController];
+    [self subscribeToUserNotifications];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -37,7 +38,18 @@
 }
 
 - (void)setRootViewController{
-    self.window.rootViewController = self.loginViewController;
+    PFUser *currentUser = [PFUser currentUser];
+    if (currentUser) {
+        self.window.rootViewController = self.menuViewController;
+        NSLog(@"%@", currentUser.username);
+    } else {
+        self.window.rootViewController = self.loginViewController;
+    }
+}
+
+- (void)subscribeToUserNotifications{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:@"UserDidLogin" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:@"UserDidLogout" object:nil];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
