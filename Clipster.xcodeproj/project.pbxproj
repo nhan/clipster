@@ -28,6 +28,8 @@
 		7E970D5D18F1F2DC00517A1F /* VideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E970D5B18F1F2DC00517A1F /* VideoCell.m */; };
 		7E970D5E18F1F2DC00517A1F /* VideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D5C18F1F2DC00517A1F /* VideoCell.xib */; };
 		7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D5F18F1F9C300517A1F /* menu@2x.png */; };
+		7E970D6518F2165800517A1F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E970D6318F2165800517A1F /* LoginViewController.m */; };
+		7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D6418F2165800517A1F /* LoginViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,9 @@
 		7E970D5B18F1F2DC00517A1F /* VideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCell.m; sourceTree = "<group>"; };
 		7E970D5C18F1F2DC00517A1F /* VideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCell.xib; sourceTree = "<group>"; };
 		7E970D5F18F1F9C300517A1F /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu@2x.png"; sourceTree = "<group>"; };
+		7E970D6218F2165800517A1F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		7E970D6318F2165800517A1F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		7E970D6418F2165800517A1F /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		AA37572C4C7B45828AC9FDF5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2ACFA0394E640529A314B3C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -147,6 +152,9 @@
 				7E970D5A18F1F2DC00517A1F /* VideoCell.h */,
 				7E970D5B18F1F2DC00517A1F /* VideoCell.m */,
 				7E970D5C18F1F2DC00517A1F /* VideoCell.xib */,
+				7E970D6218F2165800517A1F /* LoginViewController.h */,
+				7E970D6318F2165800517A1F /* LoginViewController.m */,
+				7E970D6418F2165800517A1F /* LoginViewController.xib */,
 			);
 			path = Clipster;
 			sourceTree = "<group>";
@@ -266,6 +274,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */,
 				7E970D4F18F1E69D00517A1F /* Podfile in Resources */,
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,
@@ -326,6 +335,7 @@
 			files = (
 				7E970D5818F1F06400517A1F /* StreamViewController.m in Sources */,
 				7E970D5D18F1F2DC00517A1F /* VideoCell.m in Sources */,
+				7E970D6518F2165800517A1F /* LoginViewController.m in Sources */,
 				7E970D3018F1E5DF00517A1F /* AppDelegate.m in Sources */,
 				7E970D5318F1EE5200517A1F /* MenuViewController.m in Sources */,
 				7E970D2C18F1E5DF00517A1F /* main.m in Sources */,

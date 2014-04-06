@@ -8,9 +8,12 @@
 
 #import "AppDelegate.h"
 #import "MenuViewController.h"
+#import "LoginViewController.h"
+#import <Parse/Parse.h>
 
 @interface AppDelegate ()
 @property (nonatomic, strong) MenuViewController *menuViewController;
+@property (nonatomic, strong) LoginViewController *loginViewController;
 @end
 
 @implementation AppDelegate
@@ -19,12 +22,22 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.menuViewController = [[MenuViewController alloc] init];
+    self.loginViewController = [[LoginViewController alloc] init];
     
-    self.window.rootViewController = self.menuViewController;
+    [self setRootViewController];
+    
+    [Parse setApplicationId:@"ijASx0FwG5H1x75wkkAt3dVSd3f3COyX12ZvoXuv"
+                  clientKey:@"LsmTAORgFrbm8r0hJqE8nI5Xcuv6dYy3YjXWP9Po"];
+    [PFFacebookUtils initializeFacebook];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)setRootViewController{
+    self.window.rootViewController = self.loginViewController;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -44,14 +57,22 @@
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [FBAppCall handleOpenURL:url
+                  sourceApplication:sourceApplication
+                        withSession:[PFFacebookUtils session]];
 }
 
 @end
