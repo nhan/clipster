@@ -7,6 +7,7 @@
 //
 
 #import "StreamViewController.h"
+#import "VideoCell.h"
 
 @interface StreamViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -31,6 +32,9 @@
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    UINib *videoCellNib = [UINib nibWithNibName:@"VideoCell" bundle:nil];
+    [self.tableView registerNib:videoCellNib forCellReuseIdentifier:@"VideoCell"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,7 +47,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [[UITableViewCell alloc] init];
+    VideoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"VideoCell"];
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -53,7 +58,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 5;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 240;
 }
 
 @end
