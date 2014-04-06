@@ -13,9 +13,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (nonatomic, strong) UINavigationController *navigationController;
+
+@property (nonatomic, strong) UITapGestureRecognizer *tapToCloseMenuGestureRecognizer;
 @end
 
 @implementation MenuViewController
+
+static float openMenuPosition = 265; //open menu x position
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -24,6 +28,8 @@
         StreamViewController *streamViewController = [[StreamViewController alloc] init];
         
         self.navigationController = [[UINavigationController alloc] initWithRootViewController:streamViewController];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleMenu) name:@"toggleMenu" object:nil];
     }
     return self;
 }
@@ -36,13 +42,26 @@
     self.tableView.dataSource = self;
     
     [self.contentView addSubview:self.navigationController.view];
-
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)toggleMenu{
+    // move the contentView to reveal/hide the menu
+    float xPos = (self.contentView.frame.origin.x == 0) ? openMenuPosition : 0;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.contentView.frame = CGRectMake( xPos, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+    }];
+    
+    // initialize the tap gesture on the contentView to close an open menu
+    if (self.tapToCloseMenuGestureRecognizer == nil) {
+        self.tapToCloseMenuGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMenu)];
+        self.tapToCloseMenuGestureRecognizer.numberOfTapsRequired = 1;
+        [self.contentView addGestureRecognizer:self.tapToCloseMenuGestureRecognizer];
+    }
+    
+    // disable interaction with the contentView if the menu is open
+    BOOL isMenuOpen = self.contentView.frame.origin.x == 0;
+    [self.contentView.subviews[0] setUserInteractionEnabled:isMenuOpen];
+    self.tapToCloseMenuGestureRecognizer.enabled = !isMenuOpen;
 }
 
 

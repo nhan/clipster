@@ -35,12 +35,13 @@
     
     UINib *videoCellNib = [UINib nibWithNibName:@"VideoCell" bundle:nil];
     [self.tableView registerNib:videoCellNib forCellReuseIdentifier:@"VideoCell"];
+    
+    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
+    self.navigationItem.leftBarButtonItem = menuButton;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)onMenuButton:(id)sender{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"toggleMenu" object:nil];
 }
 
 #pragma mark - UITableViewDelegate and UITableViewDataSource
