@@ -8,13 +8,13 @@
 
 #import "MenuViewController.h"
 #import "StreamViewController.h"
+#import <Parse/Parse.h>
 
 @interface MenuViewController ()
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (nonatomic, strong) UINavigationController *navigationController;
-
 @property (nonatomic, strong) UITapGestureRecognizer *tapToCloseMenuGestureRecognizer;
+- (IBAction)onLogout:(id)sender;
 @end
 
 @implementation MenuViewController
@@ -37,9 +37,6 @@ static float openMenuPosition = 265; //open menu x position
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
     
     [self.contentView addSubview:self.navigationController.view];
 }
@@ -64,22 +61,9 @@ static float openMenuPosition = 265; //open menu x position
     self.tapToCloseMenuGestureRecognizer.enabled = !isMenuOpen;
 }
 
-
-#pragma mark - UITableViewDelegate and UITableViewDataSource
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [[UITableViewCell alloc] init];
+- (IBAction)onLogout:(id)sender {
+    [PFUser logOut];
+    [self toggleMenu];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidLogout" object:nil];
 }
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 1;
-}
-
 @end

@@ -7,7 +7,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuViewController">
             <connections>
                 <outlet property="contentView" destination="60x-S0-RLX" id="oW8-6D-13R"/>
-                <outlet property="tableView" destination="2gm-GP-u1K" id="tJU-DC-c3a"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -16,23 +15,28 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="2gm-GP-u1K">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </tableView>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="60x-S0-RLX">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dx4-Fy-A3m">
+                    <rect key="frame" x="32" y="35" width="49" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Logout">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onLogout:" destination="-1" eventType="touchUpInside" id="2cC-zu-dfQ"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="60x-S0-RLX">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
             <constraints>
-                <constraint firstItem="2gm-GP-u1K" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="KCe-WF-62R"/>
-                <constraint firstAttribute="trailing" secondItem="2gm-GP-u1K" secondAttribute="trailing" id="LfM-27-t1w"/>
-                <constraint firstAttribute="bottom" secondItem="2gm-GP-u1K" secondAttribute="bottom" id="OCv-Xw-G35"/>
-                <constraint firstItem="2gm-GP-u1K" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="d4k-9C-S0n"/>
+                <constraint firstAttribute="bottom" secondItem="60x-S0-RLX" secondAttribute="bottom" id="FPA-ke-6TA"/>
+                <constraint firstItem="60x-S0-RLX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="KUH-GR-YcV"/>
+                <constraint firstItem="60x-S0-RLX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="etI-es-eS5"/>
+                <constraint firstAttribute="trailing" secondItem="60x-S0-RLX" secondAttribute="trailing" id="uDR-YC-bUN"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
