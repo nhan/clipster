@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "User.h"
 #import <Parse/Parse.h>
 
 @interface LoginViewController ()
@@ -42,10 +43,15 @@
         if (!user) {
             NSLog(@"Uh oh. The user cancelled the Facebook login.");
             [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidLogout" object:nil];
-//        } else if (user.isNew) {
-//            NSLog(@"User signed up and logged in through Facebook!");
+        } else if (user.isNew) {
+            User *myUser = (User *)user;
+            myUser.thumbnailURL = @"fuckit";
+            [myUser saveInBackground];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidLogin" object:nil];
         } else {
             NSLog(@"User logged in through Facebook!");
+            User *myUser = (User *)user;
+            NSLog(@"thumbnail: %@", myUser.thumbnailURL);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidLogin" object:nil];
         }
     }];

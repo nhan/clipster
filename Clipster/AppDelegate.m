@@ -10,6 +10,8 @@
 #import "MenuViewController.h"
 #import "LoginViewController.h"
 #import <Parse/Parse.h>
+#import "Clip.h"
+#import "User.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) MenuViewController *menuViewController;
@@ -24,10 +26,45 @@
     self.menuViewController = [[MenuViewController alloc] init];
     self.loginViewController = [[LoginViewController alloc] init];
     
+    // Register my model sublcasses
+    [Clip registerSubclass];
+    [User registerSubclass];
+    
     [Parse setApplicationId:@"ijASx0FwG5H1x75wkkAt3dVSd3f3COyX12ZvoXuv"
                   clientKey:@"LsmTAORgFrbm8r0hJqE8nI5Xcuv6dYy3YjXWP9Po"];
     [PFFacebookUtils initializeFacebook];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    
+    // Make some models
+    Clip *clip = [Clip object];
+    clip.text = @"Deadlift standards.";
+    clip.isFavorite = YES;
+    clip.videoId = @"videoid";
+    clip.timeStart = 0;
+    clip.timeEnd = 100;
+    // Save to Parse
+    [clip saveInBackground];
+    
+    
+    // Test some retrieval
+    PFQuery *query = [PFQuery queryWithClassName:@"Clip"];
+    [query whereKey:@"isFavorite" equalTo:@(YES)];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %d clips.", objects.count);
+            // Do something with the found objects
+            for (Clip *c in objects) {
+                NSLog(@"%@", c.text);
+            }
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+    
+    
 
     [self setRootViewController];
     [self subscribeToUserNotifications];
