@@ -35,6 +35,8 @@
 		7EF9A4BF18F884580058FE1C /* ClipDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9A4BD18F884580058FE1C /* ClipDetailsViewController.m */; };
 		7EF9A4C018F884580058FE1C /* ClipDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4BE18F884580058FE1C /* ClipDetailsViewController.xib */; };
 		7EF9A4C218F899E40058FE1C /* spool.png in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C118F899E40058FE1C /* spool.png */; };
+		7EF9A4C618F8B2A80058FE1C /* SmallClipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C418F8B2A80058FE1C /* SmallClipCell.m */; };
+		7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */; };
 		BBAAD84918F3642B0079995E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84818F3642B0079995E /* User.m */; };
 		BBAAD84C18F364490079995E /* Clip.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84B18F364490079995E /* Clip.m */; };
 /* End PBXBuildFile section */
@@ -87,6 +89,9 @@
 		7EF9A4BD18F884580058FE1C /* ClipDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipDetailsViewController.m; sourceTree = "<group>"; };
 		7EF9A4BE18F884580058FE1C /* ClipDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClipDetailsViewController.xib; sourceTree = "<group>"; };
 		7EF9A4C118F899E40058FE1C /* spool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spool.png; sourceTree = "<group>"; };
+		7EF9A4C318F8B2A80058FE1C /* SmallClipCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmallClipCell.h; sourceTree = "<group>"; };
+		7EF9A4C418F8B2A80058FE1C /* SmallClipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmallClipCell.m; sourceTree = "<group>"; };
+		7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SmallClipCell.xib; sourceTree = "<group>"; };
 		AA37572C4C7B45828AC9FDF5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBAAD84718F3642B0079995E /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		BBAAD84818F3642B0079995E /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
@@ -184,6 +189,9 @@
 				6BFDCB3B18F8AA98001DC09D /* ClipCreationViewController.h */,
 				6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */,
 				6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */,
+				7EF9A4C318F8B2A80058FE1C /* SmallClipCell.h */,
+				7EF9A4C418F8B2A80058FE1C /* SmallClipCell.m */,
+				7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */,
 			);
 			path = Clipster;
 			sourceTree = "<group>";
@@ -310,6 +318,7 @@
 				7EF9A4C218F899E40058FE1C /* spool.png in Resources */,
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
 				7E970D6E18F221AD00517A1F /* MenuViewController.xib in Resources */,
+				7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */,
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,
 				7E970D3218F1E5DF00517A1F /* Images.xcassets in Resources */,
 				7E970D5E18F1F2DC00517A1F /* ClipCell.xib in Resources */,
@@ -372,6 +381,7 @@
 				7E970D6D18F221AD00517A1F /* MenuViewController.m in Sources */,
 				6BFDCB3E18F8AA98001DC09D /* ClipCreationViewController.m in Sources */,
 				7E970D5D18F1F2DC00517A1F /* ClipCell.m in Sources */,
+				7EF9A4C618F8B2A80058FE1C /* SmallClipCell.m in Sources */,
 				7E970D6518F2165800517A1F /* LoginViewController.m in Sources */,
 				7E970D3018F1E5DF00517A1F /* AppDelegate.m in Sources */,
 				7E970D2C18F1E5DF00517A1F /* main.m in Sources */,

@@ -9,6 +9,7 @@
 #import "ClipDetailsViewController.h"
 #import "Clip.h"
 #import "ClipCreationViewController.h"
+#import "SmallClipCell.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 
@@ -20,6 +21,7 @@
 @property (nonatomic, assign) CGPoint panStartPosition;
 @property (nonatomic, strong) NSMutableArray *clips;
 @property (nonatomic, strong) Clip *activeClip;
+@property (nonatomic, strong) SmallClipCell *prototype;
 @end
 
 @implementation ClipDetailsViewController
@@ -87,9 +89,12 @@
     
     [self addGesturesToVideoPlayer];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"PlainCell"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    UINib *clipCellNib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
+    self.prototype = [clipCellNib instantiateWithOwner:self options:nil][0];
+    [self.tableView registerNib:clipCellNib forCellReuseIdentifier:@"ClipCell"];
 }
 
 - (void)addGesturesToVideoPlayer{
@@ -124,9 +129,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"PlainCell" forIndexPath:indexPath];
+    SmallClipCell *cell = (SmallClipCell *)[self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
     Clip *clip = (Clip *)self.clips[indexPath.row];
-    cell.textLabel.text = clip.text;
+    [cell setClip:clip];
     return cell;
 }
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ClipCell" rowHeight="70" id="KGk-i7-Jjw" customClass="SmallClipCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Annotation" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="YcP-3x-Jvf">
+                        <rect key="frame" x="10" y="10" width="300" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="AFy-xE-CtB">
+                        <rect key="frame" x="10" y="36" width="300" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="YcP-3x-Jvf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="92E-zr-LFV"/>
+                    <constraint firstItem="AFy-xE-CtB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Bzl-OA-3IP"/>
+                    <constraint firstAttribute="trailing" secondItem="YcP-3x-Jvf" secondAttribute="trailing" constant="10" id="Va8-rH-SSh"/>
+                    <constraint firstItem="AFy-xE-CtB" firstAttribute="top" secondItem="YcP-3x-Jvf" secondAttribute="bottom" constant="5" id="bc4-63-wnV"/>
+                    <constraint firstItem="YcP-3x-Jvf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="gsd-qo-f4L"/>
+                    <constraint firstAttribute="trailing" secondItem="AFy-xE-CtB" secondAttribute="trailing" constant="10" id="pwg-ou-Lmq"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="clipTextLabel" destination="YcP-3x-Jvf" id="uwR-vI-d2G"/>
+                <outlet property="clipTimesLabel" destination="AFy-xE-CtB" id="pJS-kO-Bk8"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
