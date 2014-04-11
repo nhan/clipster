@@ -9,7 +9,8 @@
 #import "ClipDetailsViewController.h"
 
 @interface ClipDetailsViewController ()
-
+@property (weak, nonatomic) IBOutlet UIView *videoPlayer;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @end
 
 @implementation ClipDetailsViewController
@@ -27,12 +28,38 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    [self addGesturesToVideoPlayer];
+}
+
+- (void)addGesturesToVideoPlayer{
+    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITableViewDelegate and UITableViewDataSource
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 5;
 }
 
 @end

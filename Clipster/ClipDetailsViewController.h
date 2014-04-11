@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ClipDetailsViewController : UIViewController
+@interface ClipDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end
