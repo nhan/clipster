@@ -7,7 +7,7 @@
 //
 
 #import "StreamViewController.h"
-#import "VideoCell.h"
+#import "ClipCell.h"
 
 @interface StreamViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -33,8 +33,8 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    UINib *videoCellNib = [UINib nibWithNibName:@"VideoCell" bundle:nil];
-    [self.tableView registerNib:videoCellNib forCellReuseIdentifier:@"VideoCell"];
+    UINib *clipCellNib = [UINib nibWithNibName:@"ClipCell" bundle:nil];
+    [self.tableView registerNib:clipCellNib forCellReuseIdentifier:@"ClipCell"];
     
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
     self.navigationItem.leftBarButtonItem = menuButton;
@@ -48,7 +48,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VideoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"VideoCell"];
+    ClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClipCell"];
     return cell;
 }
 

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VideoCell : UITableViewCell
+@interface ClipCell : UITableViewCell
 
 @end

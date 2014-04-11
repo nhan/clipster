@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Nathan Speller. All rights reserved.
 //
 
-#import "VideoCell.h"
+#import "ClipCell.h"
 
-@implementation VideoCell
+@implementation ClipCell
 
 - (void)awakeFromNib
 {
