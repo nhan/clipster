@@ -126,13 +126,15 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"PlainCell" forIndexPath:indexPath];
     Clip *clip = (Clip *)self.clips[indexPath.row];
-    cell.textLabel.text = clip.text;
+    NSString *text = [NSString stringWithFormat:@"%d %d: %@", clip.timeStart, clip.timeEnd, clip.text];
+    cell.textLabel.text = text;
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    Clip *clip = self.clips[indexPath.row];
+    self.player.currentPlaybackTime = clip.timeStart / 1000.0f;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
