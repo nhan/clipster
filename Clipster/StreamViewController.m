@@ -8,6 +8,7 @@
 
 #import "StreamViewController.h"
 #import "ClipCell.h"
+#import "ClipDetailsViewController.h"
 
 @interface StreamViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -54,7 +55,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    ClipDetailsViewController *clipDetailsVC = [[ClipDetailsViewController alloc] init];
+    [self.navigationController pushViewController:clipDetailsVC animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
