@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UIView *videoPlayer;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *slider;
+@property (nonatomic, assign) CGPoint panStartPosition;
 @end
 
 @implementation ClipDetailsViewController
@@ -45,11 +46,15 @@
     CGPoint velocity = [panGestureRecognizer velocityInView:self.view];
     
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        NSLog(@"slide BEGAN");
+        self.panStartPosition = CGPointMake(point.x - self.slider.frame.origin.x, point.y - self.slider.frame.origin.y);
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        NSLog(@"x:%f y:%f | vx:%f vy:%f", point.x, point.y, velocity.x, velocity.y);
+        float xPos = (point.x - self.panStartPosition.x);
+        if (xPos < 0) {
+            xPos = 0;
+        }
+        self.slider.frame = CGRectMake( xPos, self.slider.frame.origin.y, self.slider.frame.size.width, self.slider.frame.size.height);
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        NSLog(@"slide ENDED");
+
     }
 }
 
