@@ -8,7 +8,7 @@
             <connections>
                 <outlet property="slider" destination="wS8-b0-iad" id="Z9k-kt-mDy"/>
                 <outlet property="tableView" destination="DhY-HW-wjC" id="XxN-ou-Xjq"/>
-                <outlet property="videoPlayer" destination="gte-Wa-9Uv" id="aaO-DN-VOo"/>
+                <outlet property="videoPlayerContainer" destination="gte-Wa-9Uv" id="7Cv-PT-4WM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

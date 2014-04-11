@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "MenuViewController.h"
 #import "LoginViewController.h"
+#import "ClipDetailsViewController.h"
 #import <Parse/Parse.h>
 #import "Clip.h"
 #import "User.h"
@@ -35,7 +36,16 @@
     [PFFacebookUtils initializeFacebook];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
+    [self setRootViewController];
+    [self subscribeToUserNotifications];
     
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (void)databaseTestStuffThatWeMightNeedLater
+{
     // Make some models
     Clip *clip = [Clip object];
     clip.text = @"Deadlift standards.";
@@ -63,25 +73,19 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
-    
-    
-
-    [self setRootViewController];
-    [self subscribeToUserNotifications];
-    
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    return YES;
 }
 
-- (void)setRootViewController{
-    PFUser *currentUser = [PFUser currentUser];
-    if (currentUser) {
-        self.window.rootViewController = self.menuViewController;
-        NSLog(@"%@", currentUser.username);
-    } else {
-        self.window.rootViewController = self.loginViewController;
-    }
+- (void)setRootViewController
+{
+//    PFUser *currentUser = [PFUser currentUser];
+    self.window.rootViewController = [[ClipDetailsViewController alloc] init];
+    
+//    if (currentUser) {
+//        self.window.rootViewController = self.menuViewController;
+//        NSLog(@"%@", currentUser.username);
+//    } else {
+//        self.window.rootViewController = self.loginViewController;
+//    }
 }
 
 - (void)subscribeToUserNotifications{
