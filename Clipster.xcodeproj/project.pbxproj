@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		09774FE1C4BF404587B04912 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA37572C4C7B45828AC9FDF5 /* libPods.a */; };
+		6BFDCB3E18F8AA98001DC09D /* ClipCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */; };
+		6BFDCB3F18F8AA98001DC09D /* ClipCreationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */; };
 		7E970D2018F1E5DF00517A1F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E970D1F18F1E5DF00517A1F /* Foundation.framework */; };
 		7E970D2218F1E5DF00517A1F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E970D2118F1E5DF00517A1F /* CoreGraphics.framework */; };
 		7E970D2418F1E5DF00517A1F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E970D2318F1E5DF00517A1F /* UIKit.framework */; };
@@ -48,6 +50,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6BFDCB3B18F8AA98001DC09D /* ClipCreationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipCreationViewController.h; sourceTree = "<group>"; };
+		6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipCreationViewController.m; sourceTree = "<group>"; };
+		6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClipCreationViewController.xib; sourceTree = "<group>"; };
 		7E970D1C18F1E5DF00517A1F /* Clipster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clipster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E970D1F18F1E5DF00517A1F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7E970D2118F1E5DF00517A1F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -176,6 +181,9 @@
 				7EF9A4BC18F884580058FE1C /* ClipDetailsViewController.h */,
 				7EF9A4BD18F884580058FE1C /* ClipDetailsViewController.m */,
 				7EF9A4BE18F884580058FE1C /* ClipDetailsViewController.xib */,
+				6BFDCB3B18F8AA98001DC09D /* ClipCreationViewController.h */,
+				6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */,
+				6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */,
 			);
 			path = Clipster;
 			sourceTree = "<group>";
@@ -295,6 +303,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BFDCB3F18F8AA98001DC09D /* ClipCreationViewController.xib in Resources */,
 				7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */,
 				7EF9A4C018F884580058FE1C /* ClipDetailsViewController.xib in Resources */,
 				7E970D4F18F1E69D00517A1F /* Podfile in Resources */,
@@ -361,6 +370,7 @@
 				7EF9A4BF18F884580058FE1C /* ClipDetailsViewController.m in Sources */,
 				BBAAD84918F3642B0079995E /* User.m in Sources */,
 				7E970D6D18F221AD00517A1F /* MenuViewController.m in Sources */,
+				6BFDCB3E18F8AA98001DC09D /* ClipCreationViewController.m in Sources */,
 				7E970D5D18F1F2DC00517A1F /* ClipCell.m in Sources */,
 				7E970D6518F2165800517A1F /* LoginViewController.m in Sources */,
 				7E970D3018F1E5DF00517A1F /* AppDelegate.m in Sources */,

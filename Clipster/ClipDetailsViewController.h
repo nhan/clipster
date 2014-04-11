@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ClipCreationViewController.h"
 
-@interface ClipDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface ClipDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ClipCreationDelegate>
 
 @end

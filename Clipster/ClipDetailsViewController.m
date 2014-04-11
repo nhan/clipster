@@ -7,7 +7,10 @@
 //
 
 #import "ClipDetailsViewController.h"
+#import "Clip.h"
+#import "ClipCreationViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
+
 
 @interface ClipDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
@@ -15,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *slider;
 @property (strong, nonatomic) MPMoviePlayerController *player;
 @property (nonatomic, assign) CGPoint panStartPosition;
+@property (nonatomic, strong) NSMutableArray *clips;
+@property (nonatomic, strong) Clip *activeClip;
 @end
 
 @implementation ClipDetailsViewController
@@ -23,9 +28,44 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _clips = [[NSMutableArray alloc] init];
         // Custom initialization
     }
     return self;
+}
+
+- (IBAction)clipAction:(id)sender
+{
+    Clip* clip = [[Clip alloc] init];
+
+    // convert to miliseconds
+    clip.timeStart = self.player.currentPlaybackTime * 1000;
+    self.activeClip = clip;
+}
+
+- (IBAction)doneAction:(id)sender
+{
+    if (self.activeClip) {
+        self.activeClip.timeEnd = self.player.currentPlaybackTime * 1000;
+        ClipCreationViewController *vc = [[ClipCreationViewController alloc] initWithClip:self.activeClip];
+        vc.delegate = self;
+        [self presentViewController:vc animated:YES completion:nil];
+    }
+}
+
+#pragma mark - ClipCreationDelegate
+
+- (void)creationDone:(Clip *)clip
+{
+    [self.clips addObject:clip];
+    [self.tableView reloadData];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
+- (void)creationCanceled
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewDidLoad
@@ -46,6 +86,10 @@
     [self.player play];
     
     [self addGesturesToVideoPlayer];
+    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"PlainCell"];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
 }
 
 - (void)addGesturesToVideoPlayer{
@@ -80,18 +124,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"PlainCell" forIndexPath:indexPath];
+    Clip *clip = (Clip *)self.clips[indexPath.row];
+    cell.textLabel.text = clip.text;
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return self.clips.count;
 }
 
 @end
