@@ -32,6 +32,7 @@
 		7E970D6E18F221AD00517A1F /* MenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D6C18F221AD00517A1F /* MenuViewController.xib */; };
 		7EF9A4BF18F884580058FE1C /* ClipDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9A4BD18F884580058FE1C /* ClipDetailsViewController.m */; };
 		7EF9A4C018F884580058FE1C /* ClipDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4BE18F884580058FE1C /* ClipDetailsViewController.xib */; };
+		7EF9A4C218F899E40058FE1C /* spool.png in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C118F899E40058FE1C /* spool.png */; };
 		BBAAD84918F3642B0079995E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84818F3642B0079995E /* User.m */; };
 		BBAAD84C18F364490079995E /* Clip.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84B18F364490079995E /* Clip.m */; };
 /* End PBXBuildFile section */
@@ -80,6 +81,7 @@
 		7EF9A4BC18F884580058FE1C /* ClipDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipDetailsViewController.h; sourceTree = "<group>"; };
 		7EF9A4BD18F884580058FE1C /* ClipDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipDetailsViewController.m; sourceTree = "<group>"; };
 		7EF9A4BE18F884580058FE1C /* ClipDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClipDetailsViewController.xib; sourceTree = "<group>"; };
+		7EF9A4C118F899E40058FE1C /* spool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spool.png; sourceTree = "<group>"; };
 		AA37572C4C7B45828AC9FDF5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBAAD84718F3642B0079995E /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		BBAAD84818F3642B0079995E /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 		7E970D2518F1E5DF00517A1F /* Clipster */ = {
 			isa = PBXGroup;
 			children = (
+				7EF9A4C118F899E40058FE1C /* spool.png */,
 				7E970D2E18F1E5DF00517A1F /* AppDelegate.h */,
 				7E970D2F18F1E5DF00517A1F /* AppDelegate.m */,
 				7E970D6A18F221AD00517A1F /* MenuViewController.h */,
@@ -295,6 +298,7 @@
 				7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */,
 				7EF9A4C018F884580058FE1C /* ClipDetailsViewController.xib in Resources */,
 				7E970D4F18F1E69D00517A1F /* Podfile in Resources */,
+				7EF9A4C218F899E40058FE1C /* spool.png in Resources */,
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
 				7E970D6E18F221AD00517A1F /* MenuViewController.xib in Resources */,
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,

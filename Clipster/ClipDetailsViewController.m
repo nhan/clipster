@@ -11,6 +11,7 @@
 @interface ClipDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UIView *videoPlayer;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIImageView *slider;
 @end
 
 @implementation ClipDetailsViewController
@@ -35,7 +36,21 @@
 }
 
 - (void)addGesturesToVideoPlayer{
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onSliderPan:)];
+    [self.slider addGestureRecognizer:panGestureRecognizer];
+}
+
+- (void)onSliderPan:(UIPanGestureRecognizer *)panGestureRecognizer{
+    CGPoint point    = [panGestureRecognizer locationInView:self.view];
+    CGPoint velocity = [panGestureRecognizer velocityInView:self.view];
     
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"slide BEGAN");
+    } else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        NSLog(@"x:%f y:%f | vx:%f vy:%f", point.x, point.y, velocity.x, velocity.y);
+    } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        NSLog(@"slide ENDED");
+    }
 }
 
 - (void)didReceiveMemoryWarning

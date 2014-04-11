@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ClipDetailsViewController">
             <connections>
+                <outlet property="slider" destination="wS8-b0-iad" id="Z9k-kt-mDy"/>
                 <outlet property="tableView" destination="DhY-HW-wjC" id="XxN-ou-Xjq"/>
                 <outlet property="videoPlayer" destination="gte-Wa-9Uv" id="aaO-DN-VOo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -19,6 +20,13 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gte-Wa-9Uv">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="spool.png" translatesAutoresizingMaskIntoConstraints="NO" id="wS8-b0-iad">
+                            <rect key="frame" x="5" y="165" width="30" height="30"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </imageView>
+                    </subviews>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="200" id="S4H-Jr-29t"/>
@@ -44,4 +52,7 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="spool.png" width="64" height="64"/>
+    </resources>
 </document>
