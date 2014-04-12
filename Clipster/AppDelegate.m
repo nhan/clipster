@@ -9,10 +9,12 @@
 #import "AppDelegate.h"
 #import "MenuViewController.h"
 #import "LoginViewController.h"
-#import "ClipDetailsViewController.h"
 #import <Parse/Parse.h>
 #import "Clip.h"
 #import "User.h"
+
+#import "ClipDetailsViewController.h"
+#import "StreamViewController.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) MenuViewController *menuViewController;
@@ -77,15 +79,13 @@
 
 - (void)setRootViewController
 {
-//    PFUser *currentUser = [PFUser currentUser];
-    self.window.rootViewController = [[ClipDetailsViewController alloc] init];
-    
-//    if (currentUser) {
-//        self.window.rootViewController = self.menuViewController;
-//        NSLog(@"%@", currentUser.username);
-//    } else {
-//        self.window.rootViewController = self.loginViewController;
-//    }
+    PFUser *currentUser = [PFUser currentUser];    
+    if (currentUser) {
+        self.window.rootViewController = self.menuViewController;
+        NSLog(@"%@", currentUser.username);
+    } else {
+        self.window.rootViewController = self.loginViewController;
+    }
 }
 
 - (void)subscribeToUserNotifications{

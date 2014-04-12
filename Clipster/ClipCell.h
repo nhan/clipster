@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Clip.h"
 
 @interface ClipCell : UITableViewCell
-
+@property (nonatomic, strong) Clip *clip;
 @end

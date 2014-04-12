@@ -25,6 +25,7 @@
 @property (nonatomic, strong) Clip *activeClip;
 @property (weak, nonatomic) IBOutlet UIImageView *slider;
 @property (nonatomic, strong) SmallClipCell *prototype;
+@property (nonatomic, strong) Clip *aNewClip;
 @end
 
 @implementation ClipDetailsViewController
@@ -34,6 +35,14 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _clips = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (id)initWithClip:(Clip *)clip {
+    self = [super self];
+    if (self) {
+        _activeClip = clip;
     }
     return self;
 }
@@ -54,7 +63,15 @@
             // The find succeeded.
             NSLog(@"Successfully retrieved %d clips.", objects.count);
             self.clips = [objects mutableCopy];
+            
+            NSInteger row = [self.clips indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                return [self.activeClip.objectId isEqualToString:((Clip *)obj).objectId];
+            }];
+            
             [self.tableView reloadData];
+            
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+            
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
@@ -62,7 +79,6 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
                           
     }];
-
 }
 
 - (IBAction)clipAction:(id)sender
@@ -71,14 +87,14 @@
 
     // convert to miliseconds
     clip.timeStart = self.player.currentPlaybackTime * 1000;
-    self.activeClip = clip;
+    self.aNewClip = clip;
 }
 
 - (IBAction)doneAction:(id)sender
 {
-    if (self.activeClip) {
-        self.activeClip.timeEnd = self.player.currentPlaybackTime * 1000;
-        ClipCreationViewController *vc = [[ClipCreationViewController alloc] initWithClip:self.activeClip];
+    if (self.aNewClip) {
+        self.aNewClip.timeEnd = self.player.currentPlaybackTime * 1000;
+        ClipCreationViewController *vc = [[ClipCreationViewController alloc] initWithClip:self.aNewClip];
         vc.delegate = self;
         [self presentViewController:vc animated:YES completion:nil];
     }
@@ -93,7 +109,12 @@
     [clip saveInBackground];
     [self.tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
-    
+}
+
+- (void)setActiveClip:(Clip *)activeClip
+{
+    _activeClip = activeClip;
+    self.player.currentPlaybackTime = self.activeClip.timeStart / 1000.0f;
 }
 
 - (void)creationCanceled
@@ -118,6 +139,7 @@
     [self.videoPlayerContainer addSubview: self.player.view];
     
     self.player.fullscreen = NO;
+    self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
     [self.player play];
     
     [self addGesturesToVideoPlayer];
@@ -171,7 +193,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Clip *clip = self.clips[indexPath.row];
-    self.player.currentPlaybackTime = clip.timeStart / 1000.0f;
+    self.activeClip = clip;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

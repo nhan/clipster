@@ -11,4 +11,5 @@
 
 @interface ClipDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ClipCreationDelegate>
 @property (strong, nonatomic) NSString *videoURL;
+- (id)initWithClip:(Clip *)clip;
 @end

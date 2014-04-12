@@ -8,18 +8,24 @@
 
 #import "ClipCell.h"
 
+@interface ClipCell ()
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+
+@end
+
 @implementation ClipCell
 
-- (void)awakeFromNib
+- (void)setClip:(Clip *)clip
 {
-    // Initialization code
+    _clip = clip;
+    [self refreshUI];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+- (void)refreshUI
 {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    self.titleLabel.text = self.clip.text;
+    self.descriptionLabel.text = [NSString stringWithFormat:@"%d, %d", self.clip.timeStart, self.clip.timeEnd];
 }
 
 @end

@@ -9,10 +9,11 @@
 #import "StreamViewController.h"
 #import "ClipCell.h"
 #import "ClipDetailsViewController.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @interface StreamViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
+@property (nonatomic, strong) NSArray *clips;
 @end
 
 @implementation StreamViewController
@@ -39,6 +40,26 @@
     
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
     self.navigationItem.leftBarButtonItem = menuButton;
+    
+    [self fetchClips];
+}
+
+- (void)fetchClips
+{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    PFQuery *query = [PFQuery queryWithClassName:@"Clip"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %d clips.", objects.count);
+            self.clips = objects;
+            [self.tableView reloadData];
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
 }
 
 - (void)onMenuButton:(id)sender{
@@ -50,18 +71,19 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClipCell"];
+    cell.clip = self.clips[indexPath.row];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ClipDetailsViewController *clipDetailsVC = [[ClipDetailsViewController alloc] init];
+    ClipDetailsViewController *clipDetailsVC = [[ClipDetailsViewController alloc] initWithClip:self.clips[indexPath.row]];
     [self.navigationController pushViewController:clipDetailsVC animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return self.clips.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
