@@ -10,9 +10,22 @@
 
 @implementation SmallClipCell
 
++ (CGFloat)heightForClip:(Clip *)clip cell:(SmallClipCell *)prototype{
+    CGFloat textWidth = prototype.clipTextLabel.frame.size.width;
+    UIFont *font = prototype.clipTextLabel.font;
+    CGSize constrainedSize = CGSizeMake(textWidth, 9999);
+    NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          font, NSFontAttributeName, nil];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:clip.text attributes:attributesDictionary];
+    
+    CGRect requiredHeight = [string boundingRectWithSize:constrainedSize options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    
+    CGFloat height = 50+requiredHeight.size.height;
+    return height;
+}
 
 -(void)setClip:(Clip *)clip{
-    NSLog(@"CLIP");
     _clip = clip;
     self.clipTextLabel.text = clip.text;
     self.clipTimesLabel.text = [NSString stringWithFormat:@"%ld - %ld", (long)clip.timeStart, (long)clip.timeEnd];

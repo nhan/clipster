@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *clipTimesLabel;
 @property (nonatomic, strong) Clip *clip;
 
--(void)setClip:(Clip *)clip;
++ (CGFloat)heightForClip:(Clip *)clip cell:(SmallClipCell *)prototype;
+- (void)setClip:(Clip *)clip;
 @end
