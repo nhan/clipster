@@ -10,5 +10,5 @@
 #import "ClipCreationViewController.h"
 
 @interface ClipDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ClipCreationDelegate>
-
+@property (strong, nonatomic) NSString *videoURL;
 @end
