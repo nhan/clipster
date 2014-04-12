@@ -6,7 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ClipDetailsViewController">
             <connections>
-                <outlet property="slider" destination="wS8-b0-iad" id="Z9k-kt-mDy"/>
+                <outlet property="slider" destination="jSB-Vd-lAH" id="fWs-KJ-7aL"/>
                 <outlet property="tableView" destination="DhY-HW-wjC" id="XxN-ou-Xjq"/>
                 <outlet property="videoPlayerContainer" destination="gte-Wa-9Uv" id="7Cv-PT-4WM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -18,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmA-Y0-cfA">
-                    <rect key="frame" x="0.0" y="180" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="224" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WDP-bg-9gh">
@@ -45,41 +45,57 @@
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="5ny-S7-d6K"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="WDK-n0-ErW"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gte-Wa-9Uv">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="spool.png" translatesAutoresizingMaskIntoConstraints="NO" id="wS8-b0-iad">
-                            <rect key="frame" x="5" y="165" width="30" height="10"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        </imageView>
-                    </subviews>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="180" id="ide-Vt-rGz"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-HW-wjC">
-                    <rect key="frame" x="0.0" y="224" width="320" height="344"/>
+                    <rect key="frame" x="0.0" y="268" width="320" height="300"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xVn-AW-WKb">
+                    <rect key="frame" x="0.0" y="180" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="spool.png" translatesAutoresizingMaskIntoConstraints="NO" id="jSB-Vd-lAH">
+                            <rect key="frame" x="6" y="4" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="SQs-re-cZf"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="ba8-9f-2Gb"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="xVn-AW-WKb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0Mf-uY-URY"/>
+                <constraint firstItem="xVn-AW-WKb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="6Hi-gt-0yu"/>
+                <constraint firstItem="BmA-Y0-cfA" firstAttribute="top" secondItem="xVn-AW-WKb" secondAttribute="bottom" id="9XZ-KQ-hQ1"/>
                 <constraint firstItem="gte-Wa-9Uv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="En7-Zb-pIs"/>
                 <constraint firstItem="BmA-Y0-cfA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GWl-I3-5jg"/>
-                <constraint firstItem="BmA-Y0-cfA" firstAttribute="top" secondItem="gte-Wa-9Uv" secondAttribute="bottom" id="K8a-JJ-Om6"/>
-                <constraint firstItem="DhY-HW-wjC" firstAttribute="top" secondItem="BmA-Y0-cfA" secondAttribute="bottom" id="Lve-bq-9Mm"/>
+                <constraint firstItem="xVn-AW-WKb" firstAttribute="top" secondItem="gte-Wa-9Uv" secondAttribute="bottom" id="Gle-f7-AMq"/>
+                <constraint firstAttribute="trailing" secondItem="BmA-Y0-cfA" secondAttribute="trailing" id="OO6-jw-xEw"/>
+                <constraint firstItem="BmA-Y0-cfA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="TUa-SJ-5d3"/>
                 <constraint firstAttribute="bottom" secondItem="DhY-HW-wjC" secondAttribute="bottom" id="Vad-17-ChK"/>
                 <constraint firstItem="gte-Wa-9Uv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Xnh-sf-gnk"/>
                 <constraint firstItem="DhY-HW-wjC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ZmE-Nu-ES3"/>
+                <constraint firstAttribute="trailing" secondItem="xVn-AW-WKb" secondAttribute="trailing" id="boS-TJ-Wls"/>
+                <constraint firstAttribute="trailing" secondItem="xVn-AW-WKb" secondAttribute="trailing" id="ciN-4Q-iHM"/>
                 <constraint firstAttribute="trailing" secondItem="BmA-Y0-cfA" secondAttribute="trailing" id="g9F-UT-bvL"/>
                 <constraint firstAttribute="trailing" secondItem="DhY-HW-wjC" secondAttribute="trailing" id="jnf-0X-Lbt"/>
+                <constraint firstItem="DhY-HW-wjC" firstAttribute="top" secondItem="BmA-Y0-cfA" secondAttribute="bottom" id="p9g-eJ-lFk"/>
                 <constraint firstAttribute="trailing" secondItem="gte-Wa-9Uv" secondAttribute="trailing" id="szd-Av-rtg"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

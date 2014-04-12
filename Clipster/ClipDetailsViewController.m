@@ -16,11 +16,11 @@
 @interface ClipDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIImageView *slider;
 @property (strong, nonatomic) MPMoviePlayerController *player;
 @property (nonatomic, assign) CGPoint panStartPosition;
 @property (nonatomic, strong) NSMutableArray *clips;
 @property (nonatomic, strong) Clip *activeClip;
+@property (weak, nonatomic) IBOutlet UIImageView *slider;
 @property (nonatomic, strong) SmallClipCell *prototype;
 @end
 
