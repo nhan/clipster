@@ -169,6 +169,7 @@ PODS:
   - gtm-oauth2 (0.1.0):
     - GTMHTTPFetcher
   - GTMHTTPFetcher (0.1.0)
+  - HCYoutubeParser (0.0.1)
   - MBProgressHUD (0.8)
   - Parse (1.2.18):
     - Facebook-iOS-SDK (~> 3.11)
@@ -176,6 +177,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - Google-API-Client
+  - HCYoutubeParser
   - MBProgressHUD
   - Parse
 
@@ -185,6 +187,7 @@ SPEC CHECKSUMS:
   Google-API-Client: 1e30a893f3a6303afc04d9785ad3d693653b8588
   gtm-oauth2: ec43e283197a3c2eb14e1f3724a83fe2aeb45791
   GTMHTTPFetcher: 1ec07b08bc1df7bf37ad32b3c2adefa020a4b644
+  HCYoutubeParser: b5e88f679f613c1bbe58df3e173f46be38dcfbc0
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
   Parse: 6dd57f2af9f89dc6facc755cec4e96f8b739b1fb
 

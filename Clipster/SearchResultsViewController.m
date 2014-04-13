@@ -13,6 +13,17 @@
 #import <GTLQueryYouTube.h>
 #import <GTLYouTubeSearchListResponse.h>
 #import <MBProgressHUD/MBProgressHUD.h>
+#import <GTLYouTubeSearchResult.h>
+#import <GTLYouTubeSearchResultSnippet.h>
+#import <GTLYouTubeVideoPlayer.h>
+#import <GTLYouTubeThumbnailDetails.h>
+#import <GTLYouTubeThumbnail.h>
+#import <GTLYouTubeResourceId.h>
+#import <GTLYouTubeVideo.h>
+#import <AFNetworking/UIImageView+AFNetworking.h>
+
+#import "SmallClipCell.h"
+#import "ClipDetailsViewController.h"
 
 //static NSString *const DEFAULT_KEYWORD = @"ytdl";
 //static NSString *const UPLOAD_PLAYLIST = @"Replace me with the playlist ID you want to upload into";
@@ -54,10 +65,13 @@ static NSString *const kKeychainItemName = @"Clipster";
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    
+    UINib *nib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:@"ClipCell"];
     
     
     self.searchBar.delegate = self;
+    
 }
 
 - (BOOL)isAuthorized {
@@ -89,16 +103,16 @@ static NSString *const kKeychainItemName = @"Clipster";
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-//    [self fetchMyChannelList];
     [self searchYouTube:searchBar.text];
 }
 
-- (void)searchYouTube:(NSString *) queryString{
+- (void)searchYouTube:(NSString *) queryString
+{
     
     GTLServiceYouTube *service = self.youtubeService;
     
-    GTLQueryYouTube *query = [GTLQueryYouTube queryForSearchListWithPart:@"snippet"];
-    query.q = @"Victoria";
+    GTLQueryYouTube *query = [GTLQueryYouTube queryForSearchListWithPart:@"snippet,id"];
+    query.q = queryString;
     query.type = @"video";
     
     // maxResults specifies the number of results per page.  Since we earlier
@@ -137,17 +151,28 @@ static NSString *const kKeychainItemName = @"Clipster";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    SmallClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
     GTLYouTubeSearchResult *result = self.searchResults[indexPath.row];
+    GTLYouTubeSearchResultSnippet *snippet = result.snippet;
 
-
+    cell.clipTextLabel.text = snippet.title;
+    GTLYouTubeThumbnailDetails *thumbnails = snippet.thumbnails;
+    [cell.thumbnail setImageWithURL:[NSURL URLWithString:thumbnails.medium.url]];
+    
     return cell;
 }
 
-- (void)didReceiveMemoryWarning
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    return 100;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GTLYouTubeSearchResult *result = self.searchResults[indexPath.row];
+    GTLYouTubeResourceId *identifier = result.identifier;
+    NSString *videoId = [identifier.JSON objectForKey:@"videoId"];
+    [self.navigationController pushViewController:[[ClipDetailsViewController alloc] initWithVideoId:videoId] animated:YES];
 }
 
 @end
