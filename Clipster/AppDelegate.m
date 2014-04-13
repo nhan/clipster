@@ -15,6 +15,7 @@
 
 #import "ClipDetailsViewController.h"
 #import "StreamViewController.h"
+#import "SearchResultsViewController.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) MenuViewController *menuViewController;
@@ -79,13 +80,16 @@
 
 - (void)setRootViewController
 {
-    PFUser *currentUser = [PFUser currentUser];    
-    if (currentUser) {
-        self.window.rootViewController = self.menuViewController;
-        NSLog(@"%@", currentUser.username);
-    } else {
-        self.window.rootViewController = self.loginViewController;
-    }
+//    PFUser *currentUser = [PFUser currentUser];    
+//    if (currentUser) {
+//        self.window.rootViewController = self.menuViewController;
+//        NSLog(@"%@", currentUser.username);
+//    } else {
+//        self.window.rootViewController = self.loginViewController;
+//    }
+    UIViewController *controller = [[SearchResultsViewController alloc] init];
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:controller];
+    
 }
 
 - (void)subscribeToUserNotifications{
