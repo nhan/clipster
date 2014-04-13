@@ -49,10 +49,11 @@
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     PFQuery *query = [PFQuery queryWithClassName:@"Clip"];
+    [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
-            NSLog(@"Successfully retrieved %d clips.", objects.count);
+            NSLog(@"Successfully retrieved %lu clips.", objects.count);
             self.clips = objects;
             [self.tableView reloadData];
         } else {
