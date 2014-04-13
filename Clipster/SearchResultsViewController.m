@@ -44,6 +44,7 @@ static NSString *const kKeychainItemName = @"Clipster";
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.title = @"Search";
         _searchResults = @[];
     }
     return self;

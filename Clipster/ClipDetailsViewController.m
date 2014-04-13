@@ -169,21 +169,33 @@
         
         // We need to consider what our video quality strategy should be
         // not all qualities will be available at all time and what our connectivity is
-        NSString *videoURL = videoDictionary[@"medium"];
-        if (!videoURL) {
-            videoURL = [videoDictionary allValues][0];
+        
+        
+        
+        NSString *videoURL = nil;
+        
+        if (videoDictionary && videoDictionary.count > 0) {
+            videoURL = videoDictionary[@"medium"];
+            if (!videoURL) {
+                videoURL = [videoDictionary allValues][0];
+            }
         }
         
-        self.player = [[MPMoviePlayerController alloc] initWithContentURL: [NSURL URLWithString:videoURL]];
-        [self.player prepareToPlay];
-        [self.player.view setFrame: self.videoPlayerContainer.frame];
-        [self.videoPlayerContainer addSubview: self.player.view];
-        
-        self.player.fullscreen = NO;
-        self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
-        [self.player play];
-        
-        [self addGesturesToVideoPlayer];
+        if (!videoURL) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cannot view this video on mobile" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [alert show];
+        } else {
+            self.player = [[MPMoviePlayerController alloc] initWithContentURL: [NSURL URLWithString:videoURL]];
+            [self.player prepareToPlay];
+            [self.player.view setFrame: self.videoPlayerContainer.frame];
+            [self.videoPlayerContainer addSubview: self.player.view];
+            
+            self.player.fullscreen = NO;
+            self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
+            [self.player play];
+            
+            [self addGesturesToVideoPlayer];
+        }
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];

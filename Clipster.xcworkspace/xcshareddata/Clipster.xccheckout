@@ -10,6 +10,8 @@
 	<string>Clipster</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>763BBC08-04F7-4DB5-9EA0-65636C15FEC8</key>
+		<string>ssh://github.com/nhan/codepath-twitter.git</string>
 		<key>D1579E1B-3942-4518-BCF0-E3BC7C6453D2</key>
 		<string>https://github.com/nhan/clipster.git</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>Clipster/Clipster.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>763BBC08-04F7-4DB5-9EA0-65636C15FEC8</key>
+		<string>../../codepath-twitter</string>
 		<key>D1579E1B-3942-4518-BCF0-E3BC7C6453D2</key>
 		<string>../..</string>
 	</dict>
@@ -35,6 +39,14 @@
 			<string>D1579E1B-3942-4518-BCF0-E3BC7C6453D2</string>
 			<key>IDESourceControlWCCName</key>
 			<string>clipster</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>763BBC08-04F7-4DB5-9EA0-65636C15FEC8</string>
+			<key>IDESourceControlWCCName</key>
+			<string>codepath-twitter</string>
 		</dict>
 	</array>
 </dict>

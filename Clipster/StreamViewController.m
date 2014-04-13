@@ -9,6 +9,7 @@
 #import "StreamViewController.h"
 #import "ClipCell.h"
 #import "ClipDetailsViewController.h"
+#import "HamburgerMenuController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @interface StreamViewController ()
@@ -62,8 +63,15 @@
     }];
 }
 
-- (void)onMenuButton:(id)sender{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"toggleMenu" object:nil];
+- (void)onMenuButton:(id)sender
+{
+    HamburgerMenuController* menuController = self.navigationController.hamburgerMenuController;
+    NSLog(@"Hamburger Menu %@", menuController);
+    if (menuController.isMenuRevealed) {
+        [menuController hideMenuWithDuration:menuController.maxAnimationDuration];
+    } else {
+        [menuController revealMenuWithDuration:menuController.maxAnimationDuration];
+    }
 }
 
 #pragma mark - UITableViewDelegate and UITableViewDataSource

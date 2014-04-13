@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "MenuViewController.h"
+#import "HamburgerMenuController.h"
 #import "LoginViewController.h"
 #import <Parse/Parse.h>
 #import "Clip.h"
@@ -18,7 +18,8 @@
 #import "SearchResultsViewController.h"
 
 @interface AppDelegate ()
-@property (nonatomic, strong) MenuViewController *menuViewController;
+@property (nonatomic, strong) HamburgerMenuController *menuViewController;
+@property (nonatomic, strong) NSArray* viewControllers;
 @property (nonatomic, strong) LoginViewController *loginViewController;
 @end
 
@@ -27,8 +28,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.menuViewController = [[MenuViewController alloc] init];
-    self.loginViewController = [[LoginViewController alloc] init];
+
     
     // Register my model sublcasses
     [Clip registerSubclass];
@@ -39,12 +39,24 @@
     [PFFacebookUtils initializeFacebook];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
+
+    self.loginViewController = [[LoginViewController alloc] init];
     [self setRootViewController];
     [self subscribeToUserNotifications];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (NSInteger)numberOfItemsInMenu:(HamburgerMenuController *)hamburgerMenuController
+{
+    return self.viewControllers.count;
+}
+
+- (UIViewController *)viewControllerAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
+{
+    return self.viewControllers[index];
 }
 
 - (void)databaseTestStuffThatWeMightNeedLater
@@ -78,19 +90,44 @@
     }];
 }
 
+- (UINavigationController *) wrapInNavigationController:(UIViewController *)uiVC
+{
+    UINavigationController *ret = [[UINavigationController alloc] initWithRootViewController:uiVC];
+    return ret;
+}
+
 - (void)setRootViewController
 {
-//    PFUser *currentUser = [PFUser currentUser];    
-//    if (currentUser) {
-//        self.window.rootViewController = self.menuViewController;
-//        NSLog(@"%@", currentUser.username);
-//    } else {
-//        self.window.rootViewController = self.loginViewController;
-//    }
-    UIViewController *controller = [[SearchResultsViewController alloc] init];
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:controller];
+    PFUser *currentUser = [PFUser currentUser];    
+    if (currentUser) {
+        self.viewControllers = @[[self wrapInNavigationController:[[StreamViewController alloc] init]],
+                                 [self wrapInNavigationController:[[SearchResultsViewController alloc] init]]];
+        
+        self.menuViewController = [[HamburgerMenuController alloc] init];
+        
+        self.menuViewController.delegate = self;
+        [self.menuViewController reloadMenuItems];
+        self.window.rootViewController = self.menuViewController;
+        NSLog(@"%@", currentUser.username);
+    } else {
+        self.window.rootViewController = self.loginViewController;
+    }
+//    UIViewController *controller = [[SearchResultsViewController alloc] init];
+//    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:controller];
     
 }
+
+
+
+- (void)didSelectItemAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
+{
+    UIViewController *selectedController = [self viewControllerAtIndex:index hamburgerMenuController:hamburgerMenuController];
+    if ([selectedController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navController = (UINavigationController *) selectedController;
+        [navController popToRootViewControllerAnimated:YES];
+    }
+}
+
 
 - (void)subscribeToUserNotifications{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:@"UserDidLogin" object:nil];
