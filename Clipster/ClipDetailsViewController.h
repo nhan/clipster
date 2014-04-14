@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ClipCreationViewController.h"
 
-@interface ClipDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ClipCreationDelegate>
+@interface ClipDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ClipCreationDelegate, UIGestureRecognizerDelegate>
 - (id)initWithClip:(Clip *)clip;
 - (id)initWithVideoId:(NSString *)videoId;
 @end

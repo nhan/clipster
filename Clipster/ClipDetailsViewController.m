@@ -50,11 +50,13 @@
 @property (nonatomic, assign) CGPoint panStartPosition;
 @property (nonatomic, strong) NSMutableArray *clips;
 @property (nonatomic, strong) Clip *activeClip;
-@property (weak, nonatomic) IBOutlet UIImageView *slider;
 @property (nonatomic, strong) SmallClipCell *prototype;
 @property (nonatomic, strong) Clip *aNewClip;
 
 @property (nonatomic, strong) NSString *videoId;
+@property (weak, nonatomic) IBOutlet UIView *clippingPanel;
+@property (nonatomic, assign) CGFloat clippingPanelPos;
+@property (nonatomic, assign) CGFloat tableViewScrollPos;
 
 @end
 
@@ -164,6 +166,8 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
+    [self setupClippingPanel];
+    
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [HCYoutubeParser h264videosWithYoutubeID:self.videoId completeBlock:^(NSDictionary *videoDictionary, NSError *error) {
         
@@ -189,12 +193,12 @@
             [self.player prepareToPlay];
             [self.player.view setFrame: self.videoPlayerContainer.frame];
             [self.videoPlayerContainer addSubview: self.player.view];
+
+            [self.view bringSubviewToFront:self.videoPlayerContainer];
             
             self.player.fullscreen = NO;
             self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
             [self.player play];
-            
-            [self addGesturesToVideoPlayer];
         }
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -211,25 +215,22 @@
     [self fetchClips];
 }
 
-- (void)addGesturesToVideoPlayer{
-    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onSliderPan:)];
-    [self.slider addGestureRecognizer:panGestureRecognizer];
+- (void)setupClippingPanel{
+    self.clippingPanelPos = self.clippingPanel.frame.origin.y;
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(scrollClippingPanel:)];
+    panGestureRecognizer.delegate = self;
+    [self.tableView addGestureRecognizer:panGestureRecognizer];
 }
 
-- (void)onSliderPan:(UIPanGestureRecognizer *)panGestureRecognizer{
-    CGPoint point    = [panGestureRecognizer locationInView:self.view];
-//    CGPoint velocity = [panGestureRecognizer velocityInView:self.view];
-    
-    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        self.panStartPosition = CGPointMake(point.x - self.slider.frame.origin.x, point.y - self.slider.frame.origin.y);
-    } else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        float xPos = (point.x - self.panStartPosition.x);
-        if (xPos < 0) {
-            xPos = 0;
-        }
-        self.slider.frame = CGRectMake( xPos, self.slider.frame.origin.y, self.slider.frame.size.width, self.slider.frame.size.height);
-    } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
 
+- (void)scrollClippingPanel:(UIPanGestureRecognizer *)panGestureRecognizer{    
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        self.clippingPanelPos = self.clippingPanel.frame.origin.y;
+        self.tableViewScrollPos = self.tableView.contentOffset.y;
     }
 }
 
@@ -262,5 +263,20 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [SmallClipCell heightForClip:[self.clips objectAtIndex:indexPath.row] cell:self.prototype];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.tableView.contentOffset.y < 0) {
+        self.clippingPanel.frame = CGRectMake(0, self.tableView.frame.origin.y-self.tableView.contentOffset.y, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
+    } else {
+        CGFloat newPos = self.clippingPanelPos+ (self.tableViewScrollPos - self.tableView.contentOffset.y);
+        if (newPos < (self.tableView.frame.origin.y-50)) {
+            newPos = self.tableView.frame.origin.y-50;
+        } else if (newPos > self.tableView.frame.origin.y){
+            newPos = self.tableView.frame.origin.y;
+        }
+        self.clippingPanel.frame = CGRectMake(0, newPos, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
+    }
 }
 @end
