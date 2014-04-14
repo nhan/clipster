@@ -271,8 +271,8 @@
         self.clippingPanel.frame = CGRectMake(0, self.tableView.frame.origin.y-self.tableView.contentOffset.y, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
     } else {
         CGFloat newPos = self.clippingPanelPos+ (self.tableViewScrollPos - self.tableView.contentOffset.y);
-        if (newPos < (self.tableView.frame.origin.y-50)) {
-            newPos = self.tableView.frame.origin.y-50;
+        if (newPos < (self.tableView.frame.origin.y-self.clippingPanel.frame.size.height)) {
+            newPos = self.tableView.frame.origin.y-self.clippingPanel.frame.size.height;
         } else if (newPos > self.tableView.frame.origin.y){
             newPos = self.tableView.frame.origin.y;
         }
