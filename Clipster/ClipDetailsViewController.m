@@ -119,11 +119,13 @@
 
 - (IBAction)clipAction:(id)sender
 {
-    Clip* clip = [[Clip alloc] init];
-    NSTimeInterval currentTime = self.player.currentPlaybackTime * 1000;
-    clip.timeStart = currentTime;
-    clip.timeEnd = currentTime;
-    [self creationDone:clip];
+    self.aNewClip = [[Clip alloc] init];
+    int currentTime = self.player.currentPlaybackTime * 1000;
+    self.aNewClip.timeStart = currentTime;
+    self.aNewClip.timeEnd = currentTime + 10000;
+    
+    NSNumber *thumnailTime = [NSNumber numberWithFloat:(currentTime/1000.0f)];
+    [self.player requestThumbnailImagesAtTimes:@[thumnailTime] timeOption:MPMovieTimeOptionExact];
 }
 
 #pragma mark - ClipCreationDelegate
@@ -148,6 +150,26 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)thumnailRequestDone:(NSNotification *)notification
+{
+    if (notification.userInfo[MPMoviePlayerThumbnailImageKey]) {
+        UIImage *thumbnail = notification.userInfo[MPMoviePlayerThumbnailImageKey];
+        self.aNewClip.thumbnail = [PFFile fileWithData:UIImageJPEGRepresentation(thumbnail, 0.05f)];
+        // save thumbnail image first before saving the clip since that's the way they do it here
+        // https://www.parse.com/tutorials/saving-images
+        [self.aNewClip.thumbnail saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [self creationDone:self.aNewClip];
+        }];
+    } else {
+        [self creationDone:self.aNewClip];
+    }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -157,6 +179,9 @@
     }
     
     [self setupClippingPanel];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(thumnailRequestDone:) name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
+
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [HCYoutubeParser h264videosWithYoutubeID:self.videoId completeBlock:^(NSDictionary *videoDictionary, NSError *error) {

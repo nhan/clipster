@@ -18,6 +18,5 @@
 // user
 @property NSInteger timeStart;
 @property NSInteger timeEnd;
-@property (retain) NSString *thumbnailURL;
-
+@property (retain) PFFile *thumbnail;
 @end

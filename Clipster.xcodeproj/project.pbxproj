@@ -12,6 +12,7 @@
 		6B2C4A6C18FB111E00D9A011 /* SearchResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C4A6A18FB111E00D9A011 /* SearchResultsViewController.xib */; };
 		6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */; };
 		6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */; };
+		6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */; };
 		6BFDCB3E18F8AA98001DC09D /* ClipCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */; };
 		6BFDCB3F18F8AA98001DC09D /* ClipCreationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */; };
 		7E970D2018F1E5DF00517A1F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E970D1F18F1E5DF00517A1F /* Foundation.framework */; };
@@ -63,6 +64,7 @@
 		6B2C4A7218FB4CDC00D9A011 /* HamburgerMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HamburgerMenuController.h; sourceTree = "<group>"; };
 		6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HamburgerMenuController.m; sourceTree = "<group>"; };
 		6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HamburgerMenuController.xib; sourceTree = "<group>"; };
+		6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = stream_thumbnail_placeholder.gif; path = images/stream_thumbnail_placeholder.gif; sourceTree = "<group>"; };
 		6BFDCB3B18F8AA98001DC09D /* ClipCreationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipCreationViewController.h; sourceTree = "<group>"; };
 		6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipCreationViewController.m; sourceTree = "<group>"; };
 		6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClipCreationViewController.xib; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 		7E970D6118F1F9C800517A1F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */,
 				7E970D5F18F1F9C300517A1F /* menu@2x.png */,
 			);
 			name = Images;
@@ -344,6 +347,7 @@
 				7E970D4F18F1E69D00517A1F /* Podfile in Resources */,
 				7EF9A4C218F899E40058FE1C /* spool.png in Resources */,
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
+				6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */,
 				7E970D6E18F221AD00517A1F /* MenuViewController.xib in Resources */,
 				7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */,
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,
