@@ -53,7 +53,7 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
-            NSLog(@"Successfully retrieved %lu clips.", objects.count);
+            NSLog(@"Successfully retrieved %d clips.", objects.count);
             self.clips = objects;
             [self.tableView reloadData];
         } else {

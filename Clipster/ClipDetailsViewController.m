@@ -120,20 +120,10 @@
 - (IBAction)clipAction:(id)sender
 {
     Clip* clip = [[Clip alloc] init];
-
-    // convert to miliseconds
-    clip.timeStart = self.player.currentPlaybackTime * 1000;
-    self.aNewClip = clip;
-}
-
-- (IBAction)doneAction:(id)sender
-{
-    if (self.aNewClip) {
-        self.aNewClip.timeEnd = self.player.currentPlaybackTime * 1000;
-        ClipCreationViewController *vc = [[ClipCreationViewController alloc] initWithClip:self.aNewClip];
-        vc.delegate = self;
-        [self presentViewController:vc animated:YES completion:nil];
-    }
+    NSTimeInterval currentTime = self.player.currentPlaybackTime * 1000;
+    clip.timeStart = currentTime;
+    clip.timeEnd = currentTime;
+    [self creationDone:clip];
 }
 
 #pragma mark - ClipCreationDelegate
