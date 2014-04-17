@@ -8,6 +8,8 @@
 
 #import "SmallClipCell.h"
 
+#define DURATION_TAG 9017
+
 @implementation SmallClipCell
 
 + (CGFloat)heightForClip:(Clip *)clip cell:(SmallClipCell *)prototype{
@@ -38,6 +40,21 @@
     
     self.thumbnail.layer.cornerRadius = 2.0;
     self.thumbnail.layer.masksToBounds = YES;
+    
+    [[self.contentView viewWithTag:DURATION_TAG]removeFromSuperview];
+    
+    // TODO get real total duration of VIDEO
+    CGFloat totalSeconds = 300;
+    CGFloat durationStart = (self.clip.timeStart/1000)*(320/totalSeconds);
+    NSInteger durationLength = ((self.clip.timeEnd-self.clip.timeStart)/1000)*(320/totalSeconds);
+    if (durationLength < 1) {
+        durationLength = 1;
+    }
+    
+    UIView *durationView = [[UIView alloc] initWithFrame:CGRectMake(durationStart, 0, durationLength, [SmallClipCell heightForClip:self.clip cell:self])];
+    durationView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.05];
+    durationView.tag = DURATION_TAG;
+    [self.contentView insertSubview:durationView belowSubview:[self.contentView.subviews objectAtIndex:0]];
     
 }
 
