@@ -16,6 +16,7 @@
 #import "ClipDetailsViewController.h"
 #import "StreamViewController.h"
 #import "SearchResultsViewController.h"
+#import "ProfileViewController.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) HamburgerMenuController *menuViewController;
@@ -101,7 +102,9 @@
     PFUser *currentUser = [PFUser currentUser];    
     if (currentUser) {
         self.viewControllers = @[[self wrapInNavigationController:[[StreamViewController alloc] init]],
-                                 [self wrapInNavigationController:[[SearchResultsViewController alloc] init]]];
+                                 [self wrapInNavigationController:[[SearchResultsViewController alloc] init]],
+                                 [self wrapInNavigationController:[[ProfileViewController alloc] init]]
+                                 ];
         
         self.menuViewController = [[HamburgerMenuController alloc] init];
         
