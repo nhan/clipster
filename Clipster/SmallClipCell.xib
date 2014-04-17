@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -34,7 +34,7 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video_placeholder.png" translatesAutoresizingMaskIntoConstraints="NO" id="Eb0-Tp-cvK">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video_placeholder.png" translatesAutoresizingMaskIntoConstraints="NO" id="Eb0-Tp-cvK" customClass="PFImageView">
                         <rect key="frame" x="10" y="10" width="60" height="45"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -59,7 +59,7 @@
             <connections>
                 <outlet property="clipTextLabel" destination="YcP-3x-Jvf" id="uwR-vI-d2G"/>
                 <outlet property="clipTimesLabel" destination="AFy-xE-CtB" id="pJS-kO-Bk8"/>
-                <outlet property="thumbnail" destination="Eb0-Tp-cvK" id="dCe-ew-7JN"/>
+                <outlet property="thumbnail" destination="Eb0-Tp-cvK" id="d4i-rw-j1J"/>
             </connections>
         </tableViewCell>
     </objects>

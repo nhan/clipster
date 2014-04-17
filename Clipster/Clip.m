@@ -21,7 +21,7 @@
 // user
 @dynamic timeStart;
 @dynamic timeEnd;
-@dynamic thumbnailURL;
+@dynamic thumbnail;
 
 - (NSString *)formattedTimestamp{
     NSInteger startSeconds = self.timeStart/1000;

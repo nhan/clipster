@@ -7,6 +7,7 @@
 //
 
 #import "SmallClipCell.h"
+#import <Parse/PFImageView.h>
 
 #define DURATION_TAG 9017
 
@@ -56,6 +57,8 @@
     durationView.tag = DURATION_TAG;
     [self.contentView insertSubview:durationView belowSubview:[self.contentView.subviews objectAtIndex:0]];
     
+    self.thumbnail.file = clip.thumbnail;
+    [self.thumbnail loadInBackground];
 }
 
 - (void)awakeFromNib
