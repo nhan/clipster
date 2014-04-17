@@ -8,9 +8,11 @@
 
 #import "ProfileViewController.h"
 #import "HamburgerMenuController.h"
+#import "User.h"
 
 @interface ProfileViewController ()
-
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @end
 
 @implementation ProfileViewController

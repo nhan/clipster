@@ -101,9 +101,11 @@
 {
     PFUser *currentUser = [PFUser currentUser];    
     if (currentUser) {
+        ProfileViewController *profileVC = [[ProfileViewController alloc] init];
+        profileVC.user = currentUser;
         self.viewControllers = @[[self wrapInNavigationController:[[StreamViewController alloc] init]],
                                  [self wrapInNavigationController:[[SearchResultsViewController alloc] init]],
-                                 [self wrapInNavigationController:[[ProfileViewController alloc] init]]
+                                 [self wrapInNavigationController: profileVC]
                                  ];
         
         self.menuViewController = [[HamburgerMenuController alloc] init];
