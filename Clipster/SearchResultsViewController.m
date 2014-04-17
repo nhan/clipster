@@ -7,25 +7,14 @@
 //
 
 #import "SearchResultsViewController.h"
-#import <GTMOAuth2ViewControllerTouch.h>
-#import <GTLServiceYouTube.h>
-#import <GTLYouTubeConstants.h>
-#import <GTLQueryYouTube.h>
-#import <GTLYouTubeSearchListResponse.h>
 #import <MBProgressHUD/MBProgressHUD.h>
-#import <GTLYouTubeSearchResult.h>
-#import <GTLYouTubeVideoPlayer.h>
 
-#import <GTLYouTubeVideo.h>
 #import <AFNetworking/UIImageView+AFNetworking.h>
-#import "HamburgerMenuController.h"
 
+#import "HamburgerMenuController.h"
 #import "SmallClipCell.h"
 #import "ClipDetailsViewController.h"
-
 #import "YouTubeVideo.h"
-
-static NSString *const kAPIKey = @"AIzaSyC2068T7T8YpkzNsHK-Cx5kMVJ7f-ZNhOw";
 
 @interface SearchResultsViewController ()
 @property (nonatomic, strong) NSArray *searchResults;
@@ -49,9 +38,6 @@ static NSString *const kAPIKey = @"AIzaSyC2068T7T8YpkzNsHK-Cx5kMVJ7f-ZNhOw";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Initialize the youtube service & load existing credentials from the keychain if available
-    self.youtubeService = [[GTLServiceYouTube alloc] init];
-    self.youtubeService.APIKey = kAPIKey;
     
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
     self.navigationItem.leftBarButtonItem = menuButton;
@@ -88,34 +74,12 @@ static NSString *const kAPIKey = @"AIzaSyC2068T7T8YpkzNsHK-Cx5kMVJ7f-ZNhOw";
 
 - (void)searchYouTube:(NSString *) queryString
 {
-    
-    GTLServiceYouTube *service = self.youtubeService;
-    
-    GTLQueryYouTube *query = [GTLQueryYouTube queryForSearchListWithPart:@"snippet,id"];
-    query.q = queryString;
-    query.type = @"video";
-    
-    // maxResults specifies the number of results per page.  Since we earlier
-    // specified shouldFetchNextPages=YES, all results should be fetched,
-    // though specifying a larger maxResults will reduce the number of fetches
-    // needed to retrieve all pages.
-    query.maxResults = 10;
-    
-    // We can specify the fields we want here to reduce the network
-    // bandwidth and memory needed for the fetched collection.
-    //
-    // For example, leave query.fields as nil during development.
-    // When ready to test and optimize your app, specify just the fields needed.
-    // For example, this sample app might use
-    //
-    // query.fields = @"kind,etag,items(id,etag,kind,contentDetails)";
-    
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [service executeQuery:query completionHandler:^(GTLServiceTicket *ticket, GTLYouTubeSearchListResponse *response, NSError *error) {
+    [YouTubeVideo searchVideosWithQuery:queryString completionHandler:^(NSArray *videos, NSError *error) {
         if (error) {
-            NSLog(@"Error --------------------------- !\n%@", error);
+            NSLog(@"Error searching videos ---------------------- !\n%@", error);
         } else {
-            self.searchResults = [YouTubeVideo videosFromSearchResults:response.items];
+            self.searchResults = videos;
             [self.tableView reloadData];
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
