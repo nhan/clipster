@@ -10,6 +10,7 @@
 
 @interface Clip : PFObject<PFSubclassing>
 + (NSString *)parseClassName;
+- (NSString *)formattedTimestamp;
 
 @property (retain) NSString *text;
 @property BOOL isFavorite;

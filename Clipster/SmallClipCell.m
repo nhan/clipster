@@ -25,13 +25,20 @@
         
         height += requiredHeight.size.height;
     }
+    if (height < 65)
+        height = 65;
+
     return height;
 }
 
 -(void)setClip:(Clip *)clip{
     _clip = clip;
     self.clipTextLabel.text = clip.text;
-    self.clipTimesLabel.text = [NSString stringWithFormat:@"%ld - %ld", (long)clip.timeStart, (long)clip.timeEnd];
+    self.clipTimesLabel.text = clip.formattedTimestamp;
+    
+    self.thumbnail.layer.cornerRadius = 2.0;
+    self.thumbnail.layer.masksToBounds = YES;
+    
 }
 
 - (void)awakeFromNib
