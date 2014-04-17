@@ -17,11 +17,14 @@
     NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                           font, NSFontAttributeName, nil];
     
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:clip.text attributes:attributesDictionary];
-    
-    CGRect requiredHeight = [string boundingRectWithSize:constrainedSize options:NSStringDrawingUsesLineFragmentOrigin context:nil];
-    
-    CGFloat height = 50+requiredHeight.size.height;
+    CGFloat height = 50;
+    if ([clip.text length] > 0){
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:clip.text attributes:attributesDictionary];
+        
+        CGRect requiredHeight = [string boundingRectWithSize:constrainedSize options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+        
+        height += requiredHeight.size.height;
+    }
     return height;
 }
 
