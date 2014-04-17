@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -13,43 +13,42 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="279"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TQK-do-1dA" customClass="PFImageView">
-                        <rect key="frame" x="15" y="15" width="290" height="160"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="160" id="ksW-R6-JZK"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Video Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="iW2-YU-1cv">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Video Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="iW2-YU-1cv">
                         <rect key="frame" x="15" y="183" width="290" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="BlY-ww-gqO">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="BlY-ww-gqO">
                         <rect key="frame" x="15" y="205" width="290" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ts5-ml-AYO" customClass="PFImageView">
+                        <rect key="frame" x="15" y="15" width="290" height="160"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="160" id="IOR-hO-9pt"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="TQK-do-1dA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="7jJ-Gz-Kvg"/>
                     <constraint firstItem="BlY-ww-gqO" firstAttribute="top" secondItem="iW2-YU-1cv" secondAttribute="bottom" constant="1" id="E1x-wb-ob3"/>
                     <constraint firstAttribute="trailing" secondItem="BlY-ww-gqO" secondAttribute="trailing" constant="15" id="SEH-NZ-Ozm"/>
                     <constraint firstItem="iW2-YU-1cv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="fQV-bh-6bt"/>
                     <constraint firstItem="BlY-ww-gqO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="gGD-3a-ZeW"/>
-                    <constraint firstItem="iW2-YU-1cv" firstAttribute="top" secondItem="TQK-do-1dA" secondAttribute="bottom" constant="8" id="hNz-dF-5Ca"/>
                     <constraint firstAttribute="trailing" secondItem="iW2-YU-1cv" secondAttribute="trailing" constant="15" id="l1F-lF-Sge"/>
-                    <constraint firstItem="TQK-do-1dA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="pmm-E7-GBQ"/>
-                    <constraint firstAttribute="trailing" secondItem="TQK-do-1dA" secondAttribute="trailing" constant="15" id="vbb-Hl-2e1"/>
+                    <constraint firstItem="Ts5-ml-AYO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="oIZ-7u-DTP"/>
+                    <constraint firstItem="Ts5-ml-AYO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="uyW-9S-qn0"/>
+                    <constraint firstAttribute="trailing" secondItem="Ts5-ml-AYO" secondAttribute="trailing" constant="15" id="xZe-bl-TH1"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="descriptionLabel" destination="BlY-ww-gqO" id="DKy-Y8-g3f"/>
-                <outlet property="thumnail" destination="TQK-do-1dA" id="NVR-dz-Eoo"/>
+                <outlet property="thumbnail" destination="Ts5-ml-AYO" id="0Jb-8P-Y5T"/>
                 <outlet property="titleLabel" destination="iW2-YU-1cv" id="0nM-kw-FAu"/>
             </connections>
         </tableViewCell>

@@ -11,7 +11,8 @@
 @interface ClipCell ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
-@property (weak, nonatomic) IBOutlet PFImageView *thumnail;
+@property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
+
 
 @end
 
@@ -28,10 +29,10 @@
     self.titleLabel.text = self.clip.text;
     self.descriptionLabel.text = [NSString stringWithFormat:@"%d, %d", self.clip.timeStart, self.clip.timeEnd];
     if (self.clip.thumbnail) {
-        self.thumnail.file = self.clip.thumbnail;
-        [self.thumnail loadInBackground];
+        self.thumbnail.file = self.clip.thumbnail;
+        [self.thumbnail loadInBackground];
     } else {
-        self.thumnail.image = [UIImage imageNamed:@"stream_thumbnail_placeholder.gif"];
+        self.thumbnail.image = [UIImage imageNamed:@"stream_thumbnail_placeholder.gif"];
     }
 }
 
