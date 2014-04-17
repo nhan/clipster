@@ -71,6 +71,9 @@ static NSString *const kKeychainItemName = @"Clipster";
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     UINib *nib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"ClipCell"];
     
