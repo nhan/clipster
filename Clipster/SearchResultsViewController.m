@@ -21,6 +21,7 @@
 #import <GTLYouTubeResourceId.h>
 #import <GTLYouTubeVideo.h>
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import "HamburgerMenuController.h"
 
 #import "SmallClipCell.h"
 #import "ClipDetailsViewController.h"
@@ -64,6 +65,9 @@ static NSString *const kKeychainItemName = @"Clipster";
         [[self navigationController] pushViewController:[self createAuthController] animated:YES];
     }
     
+    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
+    self.navigationItem.leftBarButtonItem = menuButton;
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -73,6 +77,17 @@ static NSString *const kKeychainItemName = @"Clipster";
     
     self.searchBar.delegate = self;
     
+}
+
+- (void)onMenuButton:(id)sender
+{
+    HamburgerMenuController* menuController = self.navigationController.hamburgerMenuController;
+    NSLog(@"Hamburger Menu %@", menuController);
+    if (menuController.isMenuRevealed) {
+        [menuController hideMenuWithDuration:menuController.maxAnimationDuration];
+    } else {
+        [menuController revealMenuWithDuration:menuController.maxAnimationDuration];
+    }
 }
 
 - (BOOL)isAuthorized {
