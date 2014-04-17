@@ -1,21 +1,21 @@
 PODS:
-  - AFNetworking (2.2.1):
+  - AFNetworking (2.2.2):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
     - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.2.1):
+  - AFNetworking/NSURLConnection (2.2.2):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.2.1):
+  - AFNetworking/NSURLSession (2.2.2):
     - AFNetworking/NSURLConnection
-  - AFNetworking/Reachability (2.2.1)
-  - AFNetworking/Security (2.2.1)
-  - AFNetworking/Serialization (2.2.1)
-  - AFNetworking/UIKit (2.2.1):
+  - AFNetworking/Reachability (2.2.2)
+  - AFNetworking/Security (2.2.2)
+  - AFNetworking/Serialization (2.2.2)
+  - AFNetworking/UIKit (2.2.2):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Facebook-iOS-SDK (3.13.1)
@@ -171,7 +171,7 @@ PODS:
   - GTMHTTPFetcher (0.1.0)
   - HCYoutubeParser (0.0.1)
   - MBProgressHUD (0.8)
-  - Parse (1.2.18):
+  - Parse (1.2.19):
     - Facebook-iOS-SDK (~> 3.11)
 
 DEPENDENCIES:
@@ -182,13 +182,13 @@ DEPENDENCIES:
   - Parse
 
 SPEC CHECKSUMS:
-  AFNetworking: 0121f4b69be3fa58d1ab317866e036e12ac9651d
+  AFNetworking: dd8c1868e57451e3d17ebd3516f2a8c16f9646fe
   Facebook-iOS-SDK: 0d121e16437981fabff9379e07bf646bd5ab245c
   Google-API-Client: 1e30a893f3a6303afc04d9785ad3d693653b8588
   gtm-oauth2: ec43e283197a3c2eb14e1f3724a83fe2aeb45791
   GTMHTTPFetcher: 1ec07b08bc1df7bf37ad32b3c2adefa020a4b644
   HCYoutubeParser: b5e88f679f613c1bbe58df3e173f46be38dcfbc0
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
-  Parse: 6dd57f2af9f89dc6facc755cec4e96f8b739b1fb
+  Parse: 3739f0b211c49115bad96d6b0969b804d4da2f24
 
 COCOAPODS: 0.32.1

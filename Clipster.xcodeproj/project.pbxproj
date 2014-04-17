@@ -45,6 +45,7 @@
 		7EF9A4C218F899E40058FE1C /* spool.png in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C118F899E40058FE1C /* spool.png */; };
 		7EF9A4C618F8B2A80058FE1C /* SmallClipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C418F8B2A80058FE1C /* SmallClipCell.m */; };
 		7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */; };
+		BB1F17B41900868C0048D9C8 /* YouTubeVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1F17B31900868C0048D9C8 /* YouTubeVideo.m */; };
 		BBAAD84918F3642B0079995E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84818F3642B0079995E /* User.m */; };
 		BBAAD84C18F364490079995E /* Clip.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84B18F364490079995E /* Clip.m */; };
 /* End PBXBuildFile section */
@@ -112,6 +113,8 @@
 		7EF9A4C418F8B2A80058FE1C /* SmallClipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmallClipCell.m; sourceTree = "<group>"; };
 		7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SmallClipCell.xib; sourceTree = "<group>"; };
 		AA37572C4C7B45828AC9FDF5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB1F17B21900868C0048D9C8 /* YouTubeVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YouTubeVideo.h; sourceTree = "<group>"; };
+		BB1F17B31900868C0048D9C8 /* YouTubeVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YouTubeVideo.m; sourceTree = "<group>"; };
 		BBAAD84718F3642B0079995E /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		BBAAD84818F3642B0079995E /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		BBAAD84A18F364490079995E /* Clip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clip.h; sourceTree = "<group>"; };
@@ -216,6 +219,8 @@
 				7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */,
 				6B2C4A6818FB111E00D9A011 /* SearchResultsViewController.h */,
 				6B2C4A6918FB111E00D9A011 /* SearchResultsViewController.m */,
+				BB1F17B21900868C0048D9C8 /* YouTubeVideo.h */,
+				BB1F17B31900868C0048D9C8 /* YouTubeVideo.m */,
 				6B2C4A6A18FB111E00D9A011 /* SearchResultsViewController.xib */,
 				7EE5B3121900921C000F3816 /* ProfileViewController.h */,
 				7EE5B3131900921C000F3816 /* ProfileViewController.m */,
@@ -427,6 +432,7 @@
 				7E970D6D18F221AD00517A1F /* MenuViewController.m in Sources */,
 				6BFDCB3E18F8AA98001DC09D /* ClipCreationViewController.m in Sources */,
 				7E970D5D18F1F2DC00517A1F /* ClipCell.m in Sources */,
+				BB1F17B41900868C0048D9C8 /* YouTubeVideo.m in Sources */,
 				7EF9A4C618F8B2A80058FE1C /* SmallClipCell.m in Sources */,
 				7E970D6518F2165800517A1F /* LoginViewController.m in Sources */,
 				7E970D3018F1E5DF00517A1F /* AppDelegate.m in Sources */,
