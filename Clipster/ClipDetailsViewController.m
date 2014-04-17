@@ -25,6 +25,7 @@
 + (void)h264videosWithYoutubeID:(NSString *)youtubeID
                    completeBlock:(void(^)(NSDictionary *videoDictionary, NSError *error))completeBlock {
     if (youtubeID) {
+        // change this queue name, what is it for anyways??
         dispatch_queue_t queue = dispatch_queue_create("me.hiddencode.yt.backgroundqueue", 0);
         dispatch_async(queue, ^{
             NSDictionary *dict = [HCYoutubeParser h264videosWithYoutubeID:youtubeID];
@@ -39,9 +40,6 @@
 }
 
 @end
-
-#define VIDEO_URL @"http://r8---sn-aigllnek.googlevideo.com/videoplayback?key=yt5&upn=hpIuxpikYqk&id=o-ACP3GlGTImsTQeKLXnZw4a5fq3MrCrtm9wS_d0ipFKU2&sver=3&itag=18&ratebypass=yes&mt=1397256106&ms=au&fexp=926400%2C945030%2C921725%2C919815%2C937417%2C913434%2C936916%2C934022%2C936923&signature=F2482EBCC6888BD89C0F561186ED4275B65EDB56.374093D29335B948C5D40E98C5A28404CE9BF5CD&expire=1397277950&source=youtube&sparams=id%2Cip%2Cipbits%2Citag%2Cratebypass%2Csource%2Cupn%2Cexpire&mv=m&ipbits=0&ip=2a02%3A2498%3Ae002%3A88%3A225%3A90ff%3Afe7c%3Ab806&title=Victoria%27s+Secret+Fashion+Show+2013+Full"
-
 
 @interface ClipDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
