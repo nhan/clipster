@@ -19,4 +19,6 @@
 @property NSInteger timeStart;
 @property NSInteger timeEnd;
 @property (retain) PFFile *thumbnail;
+
+- (BOOL)isPublished;
 @end

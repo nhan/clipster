@@ -35,4 +35,9 @@
     return [NSString stringWithFormat:@"%d:%02d - %d:%02d", startMinutes, startRemainingSeconds, endMinutes, endRemainingSeconds];
 }
 
+- (BOOL)isPublished
+{
+    return !!self.text;
+}
+
 @end

@@ -23,19 +23,18 @@
     return self;
 }
 
-- (IBAction)doneAction:(id)sender {
+- (void)doneAction:(id)sender {
     self.clip.text = self.annotationTextView.text;
     [self.delegate creationDone:self.clip];
-}
-
-- (IBAction)cancelAction:(id)sender {
-    [self.delegate creationCanceled];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.navigationItem.leftBarButtonItem.title = @"Cancel";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction:)];
 }
 
 - (void)didReceiveMemoryWarning

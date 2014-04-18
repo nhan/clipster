@@ -34,9 +34,22 @@
     return height;
 }
 
--(void)setClip:(Clip *)clip{
+-(void)setClip:(Clip *)clip
+{
     _clip = clip;
-    self.clipTextLabel.text = clip.text;
+    [self refreshUI];
+}
+
+- (void)refreshUI
+{
+    Clip *clip = self.clip;
+    
+    if ([self.clip isPublished]) {
+        self.clipTextLabel.text = self.clip.text;
+    } else {
+        self.clipTextLabel.text = @"New clip (press to publish)";
+    }
+    
     self.clipTimesLabel.text = clip.formattedTimestamp;
     
     self.thumbnail.layer.cornerRadius = 2.0;
@@ -59,6 +72,8 @@
     
     self.thumbnail.file = clip.thumbnail;
     [self.thumbnail loadInBackground];
+    
+    
 }
 
 - (void)awakeFromNib

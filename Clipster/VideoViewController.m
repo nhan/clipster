@@ -121,6 +121,11 @@
     int currentTime = self.player.currentPlaybackTime * 1000;
     self.aNewClip.timeStart = currentTime;
     self.aNewClip.timeEnd = currentTime + 10000;
+    self.aNewClip.videoId = self.videoId;
+    [self.clips addObject:self.aNewClip];
+    
+    // animate to new cell
+    [self.tableView reloadData];
     
     NSNumber *thumnailTime = [NSNumber numberWithFloat:(currentTime/1000.0f)];
     [self.player requestThumbnailImagesAtTimes:@[thumnailTime] timeOption:MPMovieTimeOptionExact];
@@ -130,11 +135,11 @@
 
 - (void)creationDone:(Clip *)clip
 {
-    clip.videoId = self.videoId;
-    [self.clips addObject:clip];
     [clip saveInBackground];
+    NSInteger row = [self.clips indexOfObject:clip];
+    // When we finish adding clip we need to sort correctly
     [self.tableView reloadData];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
 - (void)setActiveClip:(Clip *)activeClip
@@ -143,24 +148,17 @@
     self.player.currentPlaybackTime = self.activeClip.timeStart / 1000.0f;
 }
 
-- (void)creationCanceled
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void)thumnailRequestDone:(NSNotification *)notification
 {
     if (notification.userInfo[MPMoviePlayerThumbnailImageKey]) {
         UIImage *thumbnail = notification.userInfo[MPMoviePlayerThumbnailImageKey];
         self.aNewClip.thumbnail = [PFFile fileWithData:UIImageJPEGRepresentation(thumbnail, 0.05f)];
-        // save thumbnail image first before saving the clip since that's the way they do it here
-        // https://www.parse.com/tutorials/saving-images
-        [self.aNewClip.thumbnail saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            [self creationDone:self.aNewClip];
+        [self.aNewClip saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [self.tableView reloadData];
         }];
-    } else {
-        [self creationDone:self.aNewClip];
     }
+    // Create even if thumbnail creation fails
+//    [self creationDone:self.aNewClip];
 }
 
 - (void)dealloc
@@ -266,7 +264,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Clip *clip = self.clips[indexPath.row];
-    self.activeClip = clip;
+    if ([clip isPublished]) {
+        self.activeClip = clip;
+    } else {
+        ClipCreationViewController *ccvc = [[ClipCreationViewController alloc] initWithClip:clip];
+        ccvc.delegate = self;
+        [self.navigationController pushViewController:ccvc animated:YES];
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
