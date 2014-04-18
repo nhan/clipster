@@ -45,6 +45,7 @@
     [self setRootViewController];
     [self subscribeToUserNotifications];
     
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
@@ -94,7 +95,15 @@
 - (UINavigationController *) wrapInNavigationController:(UIViewController *)uiVC
 {
     UINavigationController *ret = [[UINavigationController alloc] initWithRootViewController:uiVC];
+    [self styleNavigationController:ret];
     return ret;
+}
+
+- (void)styleNavigationController:(UINavigationController *)navigationController{
+    navigationController.navigationBar.barTintColor = [UIColor purpleColor];
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    [[UINavigationBar appearance] setTitleTextAttributes: @{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
 }
 
 - (void)setRootViewController

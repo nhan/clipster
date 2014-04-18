@@ -35,8 +35,6 @@
 		7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D5F18F1F9C300517A1F /* menu@2x.png */; };
 		7E970D6518F2165800517A1F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E970D6318F2165800517A1F /* LoginViewController.m */; };
 		7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D6418F2165800517A1F /* LoginViewController.xib */; };
-		7E970D6D18F221AD00517A1F /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E970D6B18F221AD00517A1F /* MenuViewController.m */; };
-		7E970D6E18F221AD00517A1F /* MenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D6C18F221AD00517A1F /* MenuViewController.xib */; };
 		7EE5B31019008633000F3816 /* video_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B30F19008633000F3816 /* video_placeholder.png */; };
 		7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5B3131900921C000F3816 /* ProfileViewController.m */; };
 		7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B3141900921C000F3816 /* ProfileViewController.xib */; };
@@ -100,9 +98,6 @@
 		7E970D6218F2165800517A1F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7E970D6318F2165800517A1F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7E970D6418F2165800517A1F /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
-		7E970D6A18F221AD00517A1F /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
-		7E970D6B18F221AD00517A1F /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
-		7E970D6C18F221AD00517A1F /* MenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuViewController.xib; sourceTree = "<group>"; };
 		7EE5B30F19008633000F3816 /* video_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_placeholder.png; sourceTree = "<group>"; };
 		7EE5B3121900921C000F3816 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		7EE5B3131900921C000F3816 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
@@ -192,9 +187,6 @@
 				7EE5B31119008638000F3816 /* Resources */,
 				7E970D2E18F1E5DF00517A1F /* AppDelegate.h */,
 				7E970D2F18F1E5DF00517A1F /* AppDelegate.m */,
-				7E970D6A18F221AD00517A1F /* MenuViewController.h */,
-				7E970D6B18F221AD00517A1F /* MenuViewController.m */,
-				7E970D6C18F221AD00517A1F /* MenuViewController.xib */,
 				6B2C4A7218FB4CDC00D9A011 /* HamburgerMenuController.h */,
 				6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */,
 				6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */,
@@ -369,7 +361,6 @@
 				7EF9A4C218F899E40058FE1C /* spool.png in Resources */,
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
 				6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */,
-				7E970D6E18F221AD00517A1F /* MenuViewController.xib in Resources */,
 				7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */,
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,
 				7E970D3218F1E5DF00517A1F /* Images.xcassets in Resources */,
@@ -438,7 +429,6 @@
 				7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */,
 				6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */,
 				BBAAD84918F3642B0079995E /* User.m in Sources */,
-				7E970D6D18F221AD00517A1F /* MenuViewController.m in Sources */,
 				6BFDCB3E18F8AA98001DC09D /* ClipCreationViewController.m in Sources */,
 				7EE5B31A1900E594000F3816 /* ProfileCell.m in Sources */,
 				7E970D5D18F1F2DC00517A1F /* ClipCell.m in Sources */,
