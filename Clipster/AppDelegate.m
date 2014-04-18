@@ -23,6 +23,7 @@
 @property (nonatomic, strong) HamburgerMenuController *menuViewController;
 @property (nonatomic, strong) NSArray* viewControllers;
 @property (nonatomic, strong) PFLogInViewController *loginViewController;
+@property (nonatomic, strong) UITableViewCell *logoutCell;
 @end
 
 @implementation AppDelegate
@@ -40,31 +41,16 @@
     [PFFacebookUtils initializeFacebook];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
-    // Register for messages that the login manager will send
-    [[NSNotificationCenter defaultCenter] addObserverForName:kUserDidLoginNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        [self setRootViewController];
-    }];
-    [[NSNotificationCenter defaultCenter] addObserverForName:kUserDidSignupNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        [self setRootViewController];
-    }];
-    
     [self setRootViewController];
     [self subscribeToUserNotifications];
+    
+    self.logoutCell = [[UITableViewCell alloc] init];
+    self.logoutCell.textLabel.text = @"Logout";
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
-}
-
-- (NSInteger)numberOfItemsInMenu:(HamburgerMenuController *)hamburgerMenuController
-{
-    return self.viewControllers.count;
-}
-
-- (UIViewController *)viewControllerAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
-{
-    return self.viewControllers[index];
 }
 
 - (void)databaseTestStuffThatWeMightNeedLater
@@ -143,12 +129,32 @@
         [logInViewController setSignUpController:signUpViewController];
         self.window.rootViewController = logInViewController;
     }
-//    UIViewController *controller = [[SearchResultsViewController alloc] init];
-//    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:controller];
     
 }
 
+# pragma mark - HamburgerMenuDelegate
 
+- (NSInteger)numberOfItemsInMenu:(HamburgerMenuController *)hamburgerMenuController
+{
+    return self.viewControllers.count + 1;
+}
+
+- (UIViewController *)viewControllerAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
+{
+    if (index < self.viewControllers.count) {
+        return self.viewControllers[index];
+    }
+    
+    return nil;
+}
+
+- (UITableViewCell *)cellForMenuItemAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
+{
+    if (index == self.viewControllers.count) {
+        return self.logoutCell;
+    }
+    return nil;
+}
 
 - (void)didSelectItemAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
 {
@@ -156,13 +162,24 @@
     if ([selectedController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *navController = (UINavigationController *) selectedController;
         [navController popToRootViewControllerAnimated:YES];
+    } else if (index == self.viewControllers.count) {
+        [[LoginManager instance] logout];
     }
 }
 
 
-- (void)subscribeToUserNotifications{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:@"UserDidLogin" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:@"UserDidLogout" object:nil];
+- (void)subscribeToUserNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidSignupNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidLogoutNotification object:nil];
+}
+
+- (void)unsubscribeToUserNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidSignupNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidLogoutNotification object:nil];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -189,6 +206,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [self unsubscribeToUserNotification];
 }
 
 - (BOOL)application:(UIApplication *)application

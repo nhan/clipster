@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <Parse/PFLogInViewController.h>
 
-static NSString *kUserDidLoginNotification = @"userdidlogin";
-static NSString *kUserDidSignupNotification = @"userdidsignup";
+static NSString *kUserDidLoginNotification = @"com.clipster.userdidlogin";
+static NSString *kUserDidSignupNotification = @"com.clipster.userdidsignup";
+static NSString *kUserDidLogoutNotification = @"com.clipster.userdidlogout";
 
 
 @interface LoginManager : NSObject<PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 + (LoginManager *)instance;
+- (void) logout;
 @end
