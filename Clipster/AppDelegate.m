@@ -100,10 +100,9 @@
 
 - (void)setRootViewController
 {
-    PFUser *currentUser = [PFUser currentUser];    
+    User *currentUser = (User *)[PFUser currentUser];
     if (currentUser) {
-        ProfileViewController *profileVC = [[ProfileViewController alloc] init];
-        profileVC.user = currentUser;
+        ProfileViewController *profileVC = [[ProfileViewController alloc] initWithUser:currentUser];
         self.viewControllers = @[[self wrapInNavigationController:[[StreamViewController alloc] init]],
                                  [self wrapInNavigationController:[[SearchResultsViewController alloc] init]],
                                  [self wrapInNavigationController: profileVC]

@@ -10,6 +10,7 @@
 #import "Clip.h"
 #import "ClipCreationViewController.h"
 #import "SmallClipCell.h"
+#import "ProfileViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -258,13 +259,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - ClipCellDelegate
+
+- (void)didClickUsername:(NSString *)username
+{
+    ProfileViewController *profileVC = [[ProfileViewController alloc] initWithUsername:username];
+    [self.navigationController pushViewController:profileVC animated:YES];
+}
+
 #pragma mark - UITableViewDelegate and UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SmallClipCell *cell = (SmallClipCell *)[self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
     Clip *clip = (Clip *)self.clips[indexPath.row];
-    [cell setClip:clip];
+    cell.clip = clip;
+    cell.delegate = self;
     return cell;
 }
 

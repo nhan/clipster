@@ -10,5 +10,6 @@
 #import "User.h"
 
 @interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, strong) PFUser *user;
+- (id)initWithUsername:(NSString *)username;
+- (id)initWithUser:(User *)user;
 @end

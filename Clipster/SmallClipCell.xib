@@ -14,17 +14,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Annotation for reading all the stuff" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="230" translatesAutoresizingMaskIntoConstraints="NO" id="YcP-3x-Jvf">
-                        <rect key="frame" x="80" y="30" width="230" height="17"/>
+                        <rect key="frame" x="80" y="35" width="230" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="230" translatesAutoresizingMaskIntoConstraints="NO" id="ryx-uO-hXv">
-                        <rect key="frame" x="80" y="10" width="230" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
-                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3:12 - 3:14" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="54" translatesAutoresizingMaskIntoConstraints="NO" id="AFy-xE-CtB">
@@ -42,25 +35,35 @@
                             <constraint firstAttribute="width" constant="60" id="h7h-SD-Ayr"/>
                         </constraints>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mle-kt-paG">
+                        <rect key="frame" x="80" y="10" width="65" height="29"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                        <state key="normal" title="username">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="onUsernameClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="phW-6I-Fps"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="YcP-3x-Jvf" firstAttribute="top" secondItem="ryx-uO-hXv" secondAttribute="bottom" constant="3" id="QKj-Ai-xd6"/>
+                    <constraint firstItem="Eb0-Tp-cvK" firstAttribute="top" secondItem="Mle-kt-paG" secondAttribute="top" id="3U4-jV-AzK"/>
                     <constraint firstAttribute="trailing" secondItem="YcP-3x-Jvf" secondAttribute="trailing" constant="10" id="Va8-rH-SSh"/>
-                    <constraint firstAttribute="trailing" secondItem="ryx-uO-hXv" secondAttribute="trailing" constant="10" id="cbD-uo-bdN"/>
+                    <constraint firstItem="YcP-3x-Jvf" firstAttribute="leading" secondItem="Mle-kt-paG" secondAttribute="leading" id="b7k-2Y-9vR"/>
                     <constraint firstItem="Eb0-Tp-cvK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="je8-o6-RIX"/>
                     <constraint firstItem="Eb0-Tp-cvK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="lUc-Zt-jMX"/>
-                    <constraint firstItem="ryx-uO-hXv" firstAttribute="leading" secondItem="Eb0-Tp-cvK" secondAttribute="trailing" constant="10" id="pk2-2P-ysY"/>
+                    <constraint firstItem="YcP-3x-Jvf" firstAttribute="top" secondItem="AFy-xE-CtB" secondAttribute="bottom" constant="8" id="mup-ZH-oJ3"/>
                     <constraint firstItem="AFy-xE-CtB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="sxs-ep-z5g"/>
                     <constraint firstItem="YcP-3x-Jvf" firstAttribute="leading" secondItem="Eb0-Tp-cvK" secondAttribute="trailing" constant="10" id="uIz-mc-rcQ"/>
                     <constraint firstAttribute="trailing" secondItem="AFy-xE-CtB" secondAttribute="trailing" constant="10" id="uX3-io-LeW"/>
-                    <constraint firstItem="ryx-uO-hXv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="xKO-I9-E9f"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="clipTextLabel" destination="YcP-3x-Jvf" id="uwR-vI-d2G"/>
                 <outlet property="clipTimesLabel" destination="AFy-xE-CtB" id="pJS-kO-Bk8"/>
                 <outlet property="thumbnail" destination="Eb0-Tp-cvK" id="d4i-rw-j1J"/>
-                <outlet property="usernameLabel" destination="ryx-uO-hXv" id="ZQz-Xm-XNG"/>
+                <outlet property="usernameButton" destination="Mle-kt-paG" id="xtN-Sb-aUH"/>
             </connections>
         </tableViewCell>
     </objects>

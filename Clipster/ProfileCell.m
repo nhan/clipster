@@ -8,7 +8,23 @@
 
 #import "ProfileCell.h"
 
+@interface ProfileCell ()
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@end
+
 @implementation ProfileCell
+
+
+- (void)setUser:(User *)user
+{
+    _user = user;
+    [self refreshUI];
+}
+
+- (void)refreshUI
+{
+    self.usernameLabel.text = self.user.username;
+}
 
 - (void)awakeFromNib
 {

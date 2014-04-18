@@ -10,20 +10,37 @@
 #import "HamburgerMenuController.h"
 #import "SmallClipCell.h"
 #import "User.h"
+#import "ProfileCell.h"
+#import <MBProgressHud/MBProgressHUD.h>
 
 @interface ProfileViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *clips;
+@property (nonatomic, strong) User *user;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) ProfileCell *profileCell;
 @end
 
 @implementation ProfileViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithUsername:(NSString *)username
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super init];
     if (self) {
-        // Custom initialization
+        _username = username;
+        self.title = username;
+        [self fetchUser];
+    }
+    return self;
+}
+
+- (id)initWithUser:(User *)user
+{
+    self = [super init];
+    if (self) {
         self.title = @"Profile";
+        _user = user;
+        _username = user.username;
     }
     return self;
 }
@@ -37,10 +54,55 @@
     
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
     self.navigationItem.leftBarButtonItem = menuButton;
+    self.tableView.tableHeaderView = self.profileCell;
+    [self refreshUI];
+}
+
+- (ProfileCell *)profileCell
+{
     
-    UINib *profileCellNib = [UINib nibWithNibName:@"ProfileCell" bundle:nil];
-    [self.tableView registerNib:profileCellNib forCellReuseIdentifier:@"ProfileCell"];
-    self.tableView.tableHeaderView = [self.tableView dequeueReusableCellWithIdentifier:@"ProfileCell"];
+    if (!_profileCell) {
+        UINib *profileCellNib = [UINib nibWithNibName:@"ProfileCell" bundle:nil];
+        _profileCell = [profileCellNib instantiateWithOwner:self options:nil][0];
+    }
+    return _profileCell;
+}
+
+- (void)setUser:(User *)user
+{
+    _user = user;
+    self.username = user.username;
+    [self refreshUI];
+}
+
+- (void) refreshUI
+{
+    self.profileCell.user = self.user;
+    [self.tableView reloadData];
+}
+
+- (void)fetchUser
+{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    PFQuery *query = [User query];
+    [query whereKey:@"username" equalTo:self.username];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // only one user should match
+            if (objects.count == 1) {
+                self.user = objects[0];
+            }
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+}
+
+- (void)fetchClips
+{
+    
 }
 
 - (void)onMenuButton:(id)sender

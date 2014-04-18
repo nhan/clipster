@@ -13,7 +13,7 @@
 
 @interface SmallClipCell ()
 @property (weak, nonatomic) IBOutlet UILabel *clipTimesLabel;
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *usernameButton;
 @end
 
 @implementation SmallClipCell
@@ -58,7 +58,7 @@
     self.clipTimesLabel.text = clip.formattedTimestamp;
     [[self.contentView viewWithTag:DURATION_TAG]removeFromSuperview];
     
-    self.usernameLabel.text = clip.username;
+    self.usernameButton.titleLabel.text = clip.username;
     
     // TODO get real total duration of VIDEO
     CGFloat totalSeconds = 300;
@@ -82,6 +82,10 @@
     [self.thumbnail setClipsToBounds:YES];
     self.thumbnail.layer.cornerRadius = 2.0;
     self.thumbnail.layer.masksToBounds = YES;
+}
+
+- (IBAction)onUsernameClick:(id)sender {
+    [self.delegate didClickUsername:self.clip.username];
 }
 
 - (void)awakeFromNib
