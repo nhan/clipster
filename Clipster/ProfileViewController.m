@@ -51,9 +51,11 @@
     // Do any additional setup after loading the view from its nib.
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
-    
-    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
-    self.navigationItem.leftBarButtonItem = menuButton;
+
+    if (self.navigationController.viewControllers.count == 1) {
+        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
+        self.navigationItem.leftBarButtonItem = menuButton;
+    }
     self.tableView.tableHeaderView = self.profileCell;
     [self refreshUI];
 }
