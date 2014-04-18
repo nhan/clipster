@@ -8,11 +8,12 @@
 
 #import "ProfileViewController.h"
 #import "HamburgerMenuController.h"
+#import "SmallClipCell.h"
 #import "User.h"
 
 @interface ProfileViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray *clips;
 @end
 
 @implementation ProfileViewController
@@ -36,6 +37,10 @@
     
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
     self.navigationItem.leftBarButtonItem = menuButton;
+    
+    UINib *profileCellNib = [UINib nibWithNibName:@"ProfileCell" bundle:nil];
+    [self.tableView registerNib:profileCellNib forCellReuseIdentifier:@"ProfileCell"];
+    self.tableView.tableHeaderView = [self.tableView dequeueReusableCellWithIdentifier:@"ProfileCell"];
 }
 
 - (void)onMenuButton:(id)sender
@@ -53,6 +58,29 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITableViewDelegate and UITableViewDataSource
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SmallClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SmallClipCell"];
+    cell.clip = self.clips[indexPath.row];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.clips.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 120;
 }
 
 @end
