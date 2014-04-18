@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -60,6 +60,7 @@
                 <outlet property="clipTextLabel" destination="YcP-3x-Jvf" id="uwR-vI-d2G"/>
                 <outlet property="clipTimesLabel" destination="AFy-xE-CtB" id="pJS-kO-Bk8"/>
                 <outlet property="thumbnail" destination="Eb0-Tp-cvK" id="d4i-rw-j1J"/>
+                <outlet property="usernameLabel" destination="ryx-uO-hXv" id="ZQz-Xm-XNG"/>
             </connections>
         </tableViewCell>
     </objects>

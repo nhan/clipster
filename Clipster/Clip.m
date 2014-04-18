@@ -18,10 +18,10 @@
 @dynamic text;
 @dynamic isFavorite;
 @dynamic videoId;
-// user
 @dynamic timeStart;
 @dynamic timeEnd;
 @dynamic thumbnail;
+@dynamic username;
 
 - (NSString *)formattedTimestamp{
     NSInteger startSeconds = self.timeStart/1000;
@@ -33,6 +33,17 @@
     NSInteger endRemainingSeconds = endSeconds - (endMinutes*60);
     
     return [NSString stringWithFormat:@"%d:%02d - %d:%02d", startMinutes, startRemainingSeconds, endMinutes, endRemainingSeconds];
+}
+
+- (void)setUser:(User *)user
+{
+    self.username = user.username;
+    [self setObject:user forKey:@"user"];
+}
+
+- (User*)user
+{
+    return [self objectForKey:@"user"];
 }
 
 - (BOOL)isPublished

@@ -10,10 +10,10 @@
 #import "Clip.h"
 
 @interface SmallClipCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UILabel *clipTextLabel;
-@property (weak, nonatomic) IBOutlet UILabel *clipTimesLabel;
-@property (nonatomic, strong) Clip *clip;
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
+@property (nonatomic, strong) Clip *clip;
 
 + (CGFloat)heightForClip:(Clip *)clip cell:(SmallClipCell *)prototype;
 - (void)setClip:(Clip *)clip;

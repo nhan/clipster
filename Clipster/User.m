@@ -11,6 +11,4 @@
 
 @implementation User
 
-@dynamic thumbnailURL;
-@dynamic name;
 @end

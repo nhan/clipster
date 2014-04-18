@@ -11,8 +11,6 @@
 @interface User : PFUser
 
 
-@property (retain) NSString *thumbnailURL;
-@property (retain) NSString *name;
-// following users
+// customize with our own stuff later
 
 @end

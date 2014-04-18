@@ -45,13 +45,11 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidLogout" object:nil];
         } else if (user.isNew) {
             User *myUser = (User *)user;
-            myUser.thumbnailURL = @"fuckit";
             [myUser saveInBackground];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidLogin" object:nil];
         } else {
             NSLog(@"User logged in through Facebook!");
-            User *myUser = (User *)user;
-            NSLog(@"thumbnail: %@", myUser.thumbnailURL);
+//            User *myUser = (User *)user;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidLogin" object:nil];
         }
     }];

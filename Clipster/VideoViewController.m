@@ -122,6 +122,8 @@
     self.aNewClip.timeStart = currentTime;
     self.aNewClip.timeEnd = currentTime + 10000;
     self.aNewClip.videoId = self.videoId;
+    self.aNewClip.user = (User *)[PFUser currentUser];
+    
     [self.clips addObject:self.aNewClip];
     
     // animate to new cell
@@ -140,6 +142,11 @@
     // When we finish adding clip we need to sort correctly
     [self.tableView reloadData];
     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+}
+
+- (void)creationCanceled
+{
+    // when present a modal instead of using the nav controller we'll need this
 }
 
 - (void)setActiveClip:(Clip *)activeClip

@@ -189,9 +189,9 @@
 			children = (
 				7EE5B31119008638000F3816 /* Resources */,
 				7E970D2E18F1E5DF00517A1F /* AppDelegate.h */,
+				7E970D2F18F1E5DF00517A1F /* AppDelegate.m */,
 				6BEECC9A1901CDB90055081E /* LoginManager.h */,
 				6BEECC9B1901CDB90055081E /* LoginManager.m */,
-				7E970D2F18F1E5DF00517A1F /* AppDelegate.m */,
 				6B2C4A7218FB4CDC00D9A011 /* HamburgerMenuController.h */,
 				6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */,
 				6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */,

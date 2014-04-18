@@ -7,11 +7,15 @@
 //
 
 #import <Parse/Parse.h>
+#import "User.h"
 
 @interface Clip : PFObject<PFSubclassing>
 + (NSString *)parseClassName;
 - (NSString *)formattedTimestamp;
 
+@property (retain) User *user;
+// duplicate so that we don't have to fetch the user all the time
+@property (retain) NSString *username;
 @property (retain) NSString *text;
 @property BOOL isFavorite;
 @property (retain) NSString *videoId;
