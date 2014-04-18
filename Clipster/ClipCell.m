@@ -34,6 +34,7 @@
     } else {
         self.thumbnail.image = [UIImage imageNamed:@"stream_thumbnail_placeholder.gif"];
     }
+    [self.thumbnail setClipsToBounds:YES];
 }
 
 @end

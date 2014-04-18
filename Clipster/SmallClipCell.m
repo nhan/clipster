@@ -51,10 +51,6 @@
     }
     
     self.clipTimesLabel.text = clip.formattedTimestamp;
-    
-    self.thumbnail.layer.cornerRadius = 2.0;
-    self.thumbnail.layer.masksToBounds = YES;
-    
     [[self.contentView viewWithTag:DURATION_TAG]removeFromSuperview];
     
     // TODO get real total duration of VIDEO
@@ -72,8 +68,15 @@
     
     self.thumbnail.file = clip.thumbnail;
     [self.thumbnail loadInBackground];
+    [self refreshThumbnail];
     
     
+}
+
+- (void)refreshThumbnail{
+    [self.thumbnail setClipsToBounds:YES];
+    self.thumbnail.layer.cornerRadius = 2.0;
+    self.thumbnail.layer.masksToBounds = YES;
 }
 
 - (void)awakeFromNib

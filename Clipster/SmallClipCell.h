@@ -17,4 +17,6 @@
 
 + (CGFloat)heightForClip:(Clip *)clip cell:(SmallClipCell *)prototype;
 - (void)setClip:(Clip *)clip;
+- (void)refreshUI;
+- (void)refreshThumbnail;
 @end

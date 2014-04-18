@@ -99,7 +99,7 @@
     YouTubeVideo *video = self.searchResults[indexPath.row];
     cell.clipTextLabel.text = video.title;
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:video.thumbnailURL]];
-    
+    [cell refreshThumbnail];
     return cell;
 }
 
