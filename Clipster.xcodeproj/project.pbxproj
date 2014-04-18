@@ -40,8 +40,8 @@
 		7EE5B31019008633000F3816 /* video_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B30F19008633000F3816 /* video_placeholder.png */; };
 		7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5B3131900921C000F3816 /* ProfileViewController.m */; };
 		7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B3141900921C000F3816 /* ProfileViewController.xib */; };
-		7EF9A4BF18F884580058FE1C /* ClipDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9A4BD18F884580058FE1C /* ClipDetailsViewController.m */; };
-		7EF9A4C018F884580058FE1C /* ClipDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4BE18F884580058FE1C /* ClipDetailsViewController.xib */; };
+		7EF9A4BF18F884580058FE1C /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9A4BD18F884580058FE1C /* VideoViewController.m */; };
+		7EF9A4C018F884580058FE1C /* VideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4BE18F884580058FE1C /* VideoViewController.xib */; };
 		7EF9A4C218F899E40058FE1C /* spool.png in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C118F899E40058FE1C /* spool.png */; };
 		7EF9A4C618F8B2A80058FE1C /* SmallClipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C418F8B2A80058FE1C /* SmallClipCell.m */; };
 		7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */; };
@@ -105,9 +105,9 @@
 		7EE5B3121900921C000F3816 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		7EE5B3131900921C000F3816 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		7EE5B3141900921C000F3816 /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
-		7EF9A4BC18F884580058FE1C /* ClipDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipDetailsViewController.h; sourceTree = "<group>"; };
-		7EF9A4BD18F884580058FE1C /* ClipDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipDetailsViewController.m; sourceTree = "<group>"; };
-		7EF9A4BE18F884580058FE1C /* ClipDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClipDetailsViewController.xib; sourceTree = "<group>"; };
+		7EF9A4BC18F884580058FE1C /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
+		7EF9A4BD18F884580058FE1C /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
+		7EF9A4BE18F884580058FE1C /* VideoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoViewController.xib; sourceTree = "<group>"; };
 		7EF9A4C118F899E40058FE1C /* spool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spool.png; sourceTree = "<group>"; };
 		7EF9A4C318F8B2A80058FE1C /* SmallClipCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmallClipCell.h; sourceTree = "<group>"; };
 		7EF9A4C418F8B2A80058FE1C /* SmallClipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmallClipCell.m; sourceTree = "<group>"; };
@@ -208,9 +208,9 @@
 				BBAAD84B18F364490079995E /* Clip.m */,
 				BBAAD84718F3642B0079995E /* User.h */,
 				BBAAD84818F3642B0079995E /* User.m */,
-				7EF9A4BC18F884580058FE1C /* ClipDetailsViewController.h */,
-				7EF9A4BD18F884580058FE1C /* ClipDetailsViewController.m */,
-				7EF9A4BE18F884580058FE1C /* ClipDetailsViewController.xib */,
+				7EF9A4BC18F884580058FE1C /* VideoViewController.h */,
+				7EF9A4BD18F884580058FE1C /* VideoViewController.m */,
+				7EF9A4BE18F884580058FE1C /* VideoViewController.xib */,
 				6BFDCB3B18F8AA98001DC09D /* ClipCreationViewController.h */,
 				6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */,
 				6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */,
@@ -356,7 +356,7 @@
 			files = (
 				6BFDCB3F18F8AA98001DC09D /* ClipCreationViewController.xib in Resources */,
 				7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */,
-				7EF9A4C018F884580058FE1C /* ClipDetailsViewController.xib in Resources */,
+				7EF9A4C018F884580058FE1C /* VideoViewController.xib in Resources */,
 				7E970D4F18F1E69D00517A1F /* Podfile in Resources */,
 				7EF9A4C218F899E40058FE1C /* spool.png in Resources */,
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
@@ -424,7 +424,7 @@
 			files = (
 				7E970D5818F1F06400517A1F /* StreamViewController.m in Sources */,
 				BBAAD84C18F364490079995E /* Clip.m in Sources */,
-				7EF9A4BF18F884580058FE1C /* ClipDetailsViewController.m in Sources */,
+				7EF9A4BF18F884580058FE1C /* VideoViewController.m in Sources */,
 				6B2C4A6B18FB111E00D9A011 /* SearchResultsViewController.m in Sources */,
 				7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */,
 				6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */,

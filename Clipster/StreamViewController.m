@@ -8,7 +8,7 @@
 
 #import "StreamViewController.h"
 #import "ClipCell.h"
-#import "ClipDetailsViewController.h"
+#import "VideoViewController.h"
 #import "HamburgerMenuController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -86,7 +86,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ClipDetailsViewController *clipDetailsVC = [[ClipDetailsViewController alloc] initWithClip:self.clips[indexPath.row]];
+    VideoViewController *clipDetailsVC = [[VideoViewController alloc] initWithClip:self.clips[indexPath.row]];
     [self.navigationController pushViewController:clipDetailsVC animated:YES];
 }
 

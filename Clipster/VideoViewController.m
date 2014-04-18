@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Nathan Speller. All rights reserved.
 //
 
-#import "ClipDetailsViewController.h"
+#import "VideoViewController.h"
 #import "Clip.h"
 #import "ClipCreationViewController.h"
 #import "SmallClipCell.h"
@@ -41,7 +41,7 @@
 
 @end
 
-@interface ClipDetailsViewController ()
+@interface VideoViewController ()
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) MPMoviePlayerController *player;
@@ -58,7 +58,7 @@
 
 @end
 
-@implementation ClipDetailsViewController
+@implementation VideoViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

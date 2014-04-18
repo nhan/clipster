@@ -13,7 +13,7 @@
 
 #import "HamburgerMenuController.h"
 #import "SmallClipCell.h"
-#import "ClipDetailsViewController.h"
+#import "VideoViewController.h"
 #import "YouTubeVideo.h"
 
 @interface SearchResultsViewController ()
@@ -111,7 +111,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     YouTubeVideo *video = self.searchResults[indexPath.row];
-    [self.navigationController pushViewController:[[ClipDetailsViewController alloc] initWithVideoId:video.videoId] animated:YES];
+    [self.navigationController pushViewController:[[VideoViewController alloc] initWithVideoId:video.videoId] animated:YES];
 }
 
 @end

@@ -13,7 +13,7 @@
 #import "Clip.h"
 #import "User.h"
 
-#import "ClipDetailsViewController.h"
+#import "VideoViewController.h"
 #import "StreamViewController.h"
 #import "SearchResultsViewController.h"
 #import "ProfileViewController.h"
