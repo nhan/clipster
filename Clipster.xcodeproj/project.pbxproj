@@ -13,6 +13,7 @@
 		6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */; };
 		6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */; };
 		6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */; };
+		6BEECC9C1901CDB90055081E /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BEECC9B1901CDB90055081E /* LoginManager.m */; };
 		6BFDCB3E18F8AA98001DC09D /* ClipCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */; };
 		6BFDCB3F18F8AA98001DC09D /* ClipCreationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */; };
 		7E970D2018F1E5DF00517A1F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E970D1F18F1E5DF00517A1F /* Foundation.framework */; };
@@ -68,6 +69,8 @@
 		6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HamburgerMenuController.m; sourceTree = "<group>"; };
 		6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HamburgerMenuController.xib; sourceTree = "<group>"; };
 		6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = stream_thumbnail_placeholder.gif; path = images/stream_thumbnail_placeholder.gif; sourceTree = "<group>"; };
+		6BEECC9A1901CDB90055081E /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
+		6BEECC9B1901CDB90055081E /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
 		6BFDCB3B18F8AA98001DC09D /* ClipCreationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipCreationViewController.h; sourceTree = "<group>"; };
 		6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipCreationViewController.m; sourceTree = "<group>"; };
 		6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClipCreationViewController.xib; sourceTree = "<group>"; };
@@ -186,6 +189,8 @@
 			children = (
 				7EE5B31119008638000F3816 /* Resources */,
 				7E970D2E18F1E5DF00517A1F /* AppDelegate.h */,
+				6BEECC9A1901CDB90055081E /* LoginManager.h */,
+				6BEECC9B1901CDB90055081E /* LoginManager.m */,
 				7E970D2F18F1E5DF00517A1F /* AppDelegate.m */,
 				6B2C4A7218FB4CDC00D9A011 /* HamburgerMenuController.h */,
 				6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */,
@@ -435,6 +440,7 @@
 				BB1F17B41900868C0048D9C8 /* YouTubeVideo.m in Sources */,
 				7EF9A4C618F8B2A80058FE1C /* SmallClipCell.m in Sources */,
 				7E970D6518F2165800517A1F /* LoginViewController.m in Sources */,
+				6BEECC9C1901CDB90055081E /* LoginManager.m in Sources */,
 				7E970D3018F1E5DF00517A1F /* AppDelegate.m in Sources */,
 				7E970D2C18F1E5DF00517A1F /* main.m in Sources */,
 			);

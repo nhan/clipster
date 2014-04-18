@@ -17,11 +17,12 @@
 #import "StreamViewController.h"
 #import "SearchResultsViewController.h"
 #import "ProfileViewController.h"
+#import "LoginManager.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) HamburgerMenuController *menuViewController;
 @property (nonatomic, strong) NSArray* viewControllers;
-@property (nonatomic, strong) LoginViewController *loginViewController;
+@property (nonatomic, strong) PFLogInViewController *loginViewController;
 @end
 
 @implementation AppDelegate
@@ -29,7 +30,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
     
     // Register my model sublcasses
     [Clip registerSubclass];
@@ -40,8 +40,14 @@
     [PFFacebookUtils initializeFacebook];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
-
-    self.loginViewController = [[LoginViewController alloc] init];
+    // Register for messages that the login manager will send
+    [[NSNotificationCenter defaultCenter] addObserverForName:kUserDidLoginNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        [self setRootViewController];
+    }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:kUserDidSignupNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        [self setRootViewController];
+    }];
+    
     [self setRootViewController];
     [self subscribeToUserNotifications];
     
@@ -122,9 +128,20 @@
         self.menuViewController.delegate = self;
         [self.menuViewController reloadMenuItems];
         self.window.rootViewController = self.menuViewController;
-        NSLog(@"%@", currentUser.username);
+        NSLog(@"====== User name ===== %@", currentUser.username);
     } else {
-        self.window.rootViewController = self.loginViewController;
+        LoginManager *loginManager = [LoginManager instance];
+        
+        PFLogInViewController *logInViewController = self.loginViewController = [[PFLogInViewController alloc] init];
+        [logInViewController setDelegate:loginManager]; // Set ourselves as the delegate
+        
+        // Create the sign up view controller
+        PFSignUpViewController *signUpViewController = [[PFSignUpViewController alloc] init];
+        [signUpViewController setDelegate:loginManager]; // Set ourselves as the delegate
+        
+        // Assign our sign up controller to be displayed from the login controller
+        [logInViewController setSignUpController:signUpViewController];
+        self.window.rootViewController = logInViewController;
     }
 //    UIViewController *controller = [[SearchResultsViewController alloc] init];
 //    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:controller];
