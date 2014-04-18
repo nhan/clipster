@@ -17,6 +17,7 @@
 #import "StreamViewController.h"
 #import "SearchResultsViewController.h"
 #import "ProfileViewController.h"
+#import "ClippingViewController.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) HamburgerMenuController *menuViewController;
@@ -114,7 +115,8 @@
         profileVC.user = currentUser;
         self.viewControllers = @[[self wrapInNavigationController:[[StreamViewController alloc] init]],
                                  [self wrapInNavigationController:[[SearchResultsViewController alloc] init]],
-                                 [self wrapInNavigationController: profileVC]
+                                 [self wrapInNavigationController: profileVC],
+                                 [self wrapInNavigationController:[[ClippingViewController alloc] init]]
                                  ];
         
         self.menuViewController = [[HamburgerMenuController alloc] init];

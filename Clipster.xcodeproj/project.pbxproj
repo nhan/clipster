@@ -35,6 +35,10 @@
 		7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D5F18F1F9C300517A1F /* menu@2x.png */; };
 		7E970D6518F2165800517A1F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E970D6318F2165800517A1F /* LoginViewController.m */; };
 		7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D6418F2165800517A1F /* LoginViewController.xib */; };
+		7E9B20711901C596008C3E01 /* ClippingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B206F1901C596008C3E01 /* ClippingViewController.m */; };
+		7E9B20721901C596008C3E01 /* ClippingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20701901C596008C3E01 /* ClippingViewController.xib */; };
+		7E9B20741901C92F008C3E01 /* drag_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20731901C92F008C3E01 /* drag_green.png */; };
+		7E9B20761901CA1A008C3E01 /* drag_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20751901CA1A008C3E01 /* drag_red.png */; };
 		7EE5B31019008633000F3816 /* video_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B30F19008633000F3816 /* video_placeholder.png */; };
 		7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5B3131900921C000F3816 /* ProfileViewController.m */; };
 		7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B3141900921C000F3816 /* ProfileViewController.xib */; };
@@ -98,6 +102,11 @@
 		7E970D6218F2165800517A1F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7E970D6318F2165800517A1F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7E970D6418F2165800517A1F /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		7E9B206E1901C596008C3E01 /* ClippingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClippingViewController.h; sourceTree = "<group>"; };
+		7E9B206F1901C596008C3E01 /* ClippingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClippingViewController.m; sourceTree = "<group>"; };
+		7E9B20701901C596008C3E01 /* ClippingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClippingViewController.xib; sourceTree = "<group>"; };
+		7E9B20731901C92F008C3E01 /* drag_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drag_green.png; sourceTree = "<group>"; };
+		7E9B20751901CA1A008C3E01 /* drag_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drag_red.png; sourceTree = "<group>"; };
 		7EE5B30F19008633000F3816 /* video_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_placeholder.png; sourceTree = "<group>"; };
 		7EE5B3121900921C000F3816 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		7EE5B3131900921C000F3816 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
@@ -225,6 +234,9 @@
 				7EE5B3171900E594000F3816 /* ProfileCell.h */,
 				7EE5B3181900E594000F3816 /* ProfileCell.m */,
 				7EE5B3191900E594000F3816 /* ProfileCell.xib */,
+				7E9B206E1901C596008C3E01 /* ClippingViewController.h */,
+				7E9B206F1901C596008C3E01 /* ClippingViewController.m */,
+				7E9B20701901C596008C3E01 /* ClippingViewController.xib */,
 			);
 			path = Clipster;
 			sourceTree = "<group>";
@@ -271,6 +283,8 @@
 		7EE5B31119008638000F3816 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7E9B20751901CA1A008C3E01 /* drag_red.png */,
+				7E9B20731901C92F008C3E01 /* drag_green.png */,
 				7EE5B30F19008633000F3816 /* video_placeholder.png */,
 				7EF9A4C118F899E40058FE1C /* spool.png */,
 			);
@@ -361,15 +375,18 @@
 				7EF9A4C218F899E40058FE1C /* spool.png in Resources */,
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
 				6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */,
+				7E9B20761901CA1A008C3E01 /* drag_red.png in Resources */,
 				7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */,
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,
 				7E970D3218F1E5DF00517A1F /* Images.xcassets in Resources */,
 				7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */,
 				6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */,
+				7E9B20721901C596008C3E01 /* ClippingViewController.xib in Resources */,
 				7E970D5E18F1F2DC00517A1F /* ClipCell.xib in Resources */,
 				7EE5B31019008633000F3816 /* video_placeholder.png in Resources */,
 				7EE5B31B1900E594000F3816 /* ProfileCell.xib in Resources */,
 				6B2C4A6C18FB111E00D9A011 /* SearchResultsViewController.xib in Resources */,
+				7E9B20741901C92F008C3E01 /* drag_green.png in Resources */,
 				7E970D5918F1F06400517A1F /* StreamViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -430,6 +447,7 @@
 				6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */,
 				BBAAD84918F3642B0079995E /* User.m in Sources */,
 				6BFDCB3E18F8AA98001DC09D /* ClipCreationViewController.m in Sources */,
+				7E9B20711901C596008C3E01 /* ClippingViewController.m in Sources */,
 				7EE5B31A1900E594000F3816 /* ProfileCell.m in Sources */,
 				7E970D5D18F1F2DC00517A1F /* ClipCell.m in Sources */,
 				BB1F17B41900868C0048D9C8 /* YouTubeVideo.m in Sources */,
