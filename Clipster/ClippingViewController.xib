@@ -7,7 +7,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ClippingViewController">
             <connections>
                 <outlet property="endSlider" destination="fEx-QB-dQL" id="Opo-Yu-qfT"/>
+                <outlet property="endTimeLabel" destination="sqa-ew-XFY" id="yeW-SX-WVM"/>
+                <outlet property="rulerContainer" destination="gm3-cZ-3lL" id="1Nt-l0-LaX"/>
                 <outlet property="startSlider" destination="xL0-fe-V85" id="JiP-Fn-RO3"/>
+                <outlet property="startTimeLabel" destination="n9O-tb-YQF" id="rRn-qw-NqV"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -25,28 +28,42 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gm3-cZ-3lL">
-                    <rect key="frame" x="0.0" y="205" width="320" height="3"/>
+                    <rect key="frame" x="0.0" y="180" width="320" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="3" id="Rsz-C1-EsL"/>
+                        <constraint firstAttribute="height" constant="50" id="zuu-Lp-v37"/>
                     </constraints>
                 </view>
                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="drag_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="xL0-fe-V85">
-                    <rect key="frame" x="50" y="192" width="30" height="30"/>
+                    <rect key="frame" x="50" y="189" width="30" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="drag_red.png" translatesAutoresizingMaskIntoConstraints="NO" id="fEx-QB-dQL">
-                    <rect key="frame" x="240" y="192" width="30" height="30"/>
+                    <rect key="frame" x="240" y="189" width="30" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sqa-ew-XFY">
+                    <rect key="frame" x="196" y="261" width="112" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n9O-tb-YQF">
+                    <rect key="frame" x="20" y="261" width="134" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="gm3-cZ-3lL" firstAttribute="top" secondItem="umy-2L-R6M" secondAttribute="bottom" id="38J-wu-ZPr"/>
                 <constraint firstItem="umy-2L-R6M" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4gK-mX-DZz"/>
+                <constraint firstItem="gm3-cZ-3lL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="HaB-PW-WMG"/>
                 <constraint firstAttribute="trailing" secondItem="gm3-cZ-3lL" secondAttribute="trailing" id="OAE-5S-wKD"/>
-                <constraint firstItem="gm3-cZ-3lL" firstAttribute="top" secondItem="umy-2L-R6M" secondAttribute="bottom" constant="25" id="Q94-P2-LXt"/>
                 <constraint firstItem="gm3-cZ-3lL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fdw-uU-pHW"/>
+                <constraint firstAttribute="trailing" secondItem="gm3-cZ-3lL" secondAttribute="trailing" id="rC4-Hn-b9V"/>
                 <constraint firstItem="umy-2L-R6M" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="veg-BG-o9C"/>
                 <constraint firstAttribute="trailing" secondItem="umy-2L-R6M" secondAttribute="trailing" id="z1c-mf-ax6"/>
             </constraints>
