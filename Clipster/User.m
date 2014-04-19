@@ -10,7 +10,5 @@
 #import <Parse/PFObject+Subclass.h>
 
 @implementation User
-
-@dynamic thumbnailURL;
-@dynamic name;
+@dynamic friends;
 @end

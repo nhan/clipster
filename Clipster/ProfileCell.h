@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
+
+@protocol ProfileCellDelegate <NSObject>
+- (void)toggleFriendship:(User *)user;
+@end
 
 @interface ProfileCell : UITableViewCell
-
+@property (strong, nonatomic) User *user;
+@property (nonatomic, assign) BOOL isFriend;
+@property (nonatomic, weak) id<ProfileCellDelegate> delegate;
 @end

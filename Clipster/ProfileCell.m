@@ -8,18 +8,40 @@
 
 #import "ProfileCell.h"
 
+@interface ProfileCell ()
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *followButton;
+@end
+
 @implementation ProfileCell
 
-- (void)awakeFromNib
+
+- (void)setUser:(User *)user
 {
-    // Initialization code
+    _user = user;
+    [self refreshUI];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+- (void)setIsFriend:(BOOL)isFriend
 {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    _isFriend = isFriend;
+    [self refreshUI];
 }
+
+- (void)refreshUI
+{
+    self.usernameLabel.text = self.user.username;
+    if (self.isFriend) {
+        [self.followButton setTitle:@"Unfollow" forState:UIControlStateNormal];
+    } else {
+        [self.followButton setTitle:@"Follow" forState:UIControlStateNormal];
+    }
+}
+
+- (IBAction)followButtonClicked:(id)sender
+{
+    [self.delegate toggleFriendship:self.user];
+}
+
 
 @end

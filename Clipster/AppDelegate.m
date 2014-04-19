@@ -18,11 +18,13 @@
 #import "SearchResultsViewController.h"
 #import "ProfileViewController.h"
 #import "ClippingViewController.h"
+#import "LoginManager.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) HamburgerMenuController *menuViewController;
 @property (nonatomic, strong) NSArray* viewControllers;
-@property (nonatomic, strong) LoginViewController *loginViewController;
+@property (nonatomic, strong) PFLogInViewController *loginViewController;
+@property (nonatomic, strong) UITableViewCell *logoutCell;
 @end
 
 @implementation AppDelegate
@@ -30,7 +32,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
     
     // Register my model sublcasses
     [Clip registerSubclass];
@@ -41,25 +42,16 @@
     [PFFacebookUtils initializeFacebook];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
-
-    self.loginViewController = [[LoginViewController alloc] init];
     [self setRootViewController];
     [self subscribeToUserNotifications];
+    
+    self.logoutCell = [[UITableViewCell alloc] init];
+    self.logoutCell.textLabel.text = @"Logout";
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
-}
-
-- (NSInteger)numberOfItemsInMenu:(HamburgerMenuController *)hamburgerMenuController
-{
-    return self.viewControllers.count;
-}
-
-- (UIViewController *)viewControllerAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
-{
-    return self.viewControllers[index];
 }
 
 - (void)databaseTestStuffThatWeMightNeedLater
@@ -91,6 +83,23 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
+    
+    // Test some relationship query
+    User *currentUser = (User *)[PFUser currentUser];
+    PFQuery *uquery = [User query];
+    [uquery whereKey:@"username" equalTo:@"nhan"];
+    [uquery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        [currentUser.friends addObject:objects[0]];
+        [currentUser saveInBackground];
+    }];
+    
+    PFQuery *rquery = [currentUser.friends query];
+    [rquery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        NSLog(@"I have the following friends:");
+        for (User *friend in objects) {
+            NSLog(@"%@", friend.username);
+        }
+    }];
 }
 
 - (UINavigationController *) wrapInNavigationController:(UIViewController *)uiVC
@@ -109,10 +118,10 @@
 
 - (void)setRootViewController
 {
-    PFUser *currentUser = [PFUser currentUser];    
+    User *currentUser = (User *)[PFUser currentUser];
     if (currentUser) {
-        ProfileViewController *profileVC = [[ProfileViewController alloc] init];
-        profileVC.user = currentUser;
+        
+        ProfileViewController *profileVC = [[ProfileViewController alloc] initWithUser:currentUser];
         self.viewControllers = @[[self wrapInNavigationController:[[StreamViewController alloc] init]],
                                  [self wrapInNavigationController:[[SearchResultsViewController alloc] init]],
                                  [self wrapInNavigationController: profileVC],
@@ -124,16 +133,47 @@
         self.menuViewController.delegate = self;
         [self.menuViewController reloadMenuItems];
         self.window.rootViewController = self.menuViewController;
-        NSLog(@"%@", currentUser.username);
+        NSLog(@"====== User name ===== %@", currentUser.username);
     } else {
-        self.window.rootViewController = self.loginViewController;
+        LoginManager *loginManager = [LoginManager instance];
+        
+        PFLogInViewController *logInViewController = self.loginViewController = [[PFLogInViewController alloc] init];
+        [logInViewController setDelegate:loginManager]; // Set ourselves as the delegate
+        
+        // Create the sign up view controller
+        PFSignUpViewController *signUpViewController = [[PFSignUpViewController alloc] init];
+        [signUpViewController setDelegate:loginManager]; // Set ourselves as the delegate
+        
+        // Assign our sign up controller to be displayed from the login controller
+        [logInViewController setSignUpController:signUpViewController];
+        self.window.rootViewController = logInViewController;
     }
-//    UIViewController *controller = [[SearchResultsViewController alloc] init];
-//    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:controller];
     
 }
 
+# pragma mark - HamburgerMenuDelegate
 
+- (NSInteger)numberOfItemsInMenu:(HamburgerMenuController *)hamburgerMenuController
+{
+    return self.viewControllers.count + 1;
+}
+
+- (UIViewController *)viewControllerAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
+{
+    if (index < self.viewControllers.count) {
+        return self.viewControllers[index];
+    }
+    
+    return nil;
+}
+
+- (UITableViewCell *)cellForMenuItemAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
+{
+    if (index == self.viewControllers.count) {
+        return self.logoutCell;
+    }
+    return nil;
+}
 
 - (void)didSelectItemAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
 {
@@ -141,13 +181,24 @@
     if ([selectedController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *navController = (UINavigationController *) selectedController;
         [navController popToRootViewControllerAnimated:YES];
+    } else if (index == self.viewControllers.count) {
+        [[LoginManager instance] logout];
     }
 }
 
 
-- (void)subscribeToUserNotifications{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:@"UserDidLogin" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:@"UserDidLogout" object:nil];
+- (void)subscribeToUserNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidSignupNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidLogoutNotification object:nil];
+}
+
+- (void)unsubscribeToUserNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidSignupNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setRootViewController) name:kUserDidLogoutNotification object:nil];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -174,6 +225,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [self unsubscribeToUserNotification];
 }
 
 - (BOOL)application:(UIApplication *)application

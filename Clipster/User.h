@@ -9,9 +9,5 @@
 #import <Parse/Parse.h>
 
 @interface User : PFUser
-
-@property (retain) NSString *thumbnailURL;
-@property (retain) NSString *name;
-// following users
-
+@property (retain) PFRelation *friends;
 @end

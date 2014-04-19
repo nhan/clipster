@@ -11,6 +11,11 @@
 
 #define DURATION_TAG 9017
 
+@interface SmallClipCell ()
+@property (weak, nonatomic) IBOutlet UILabel *clipTimesLabel;
+@property (weak, nonatomic) IBOutlet UIButton *usernameButton;
+@end
+
 @implementation SmallClipCell
 
 + (CGFloat)heightForClip:(Clip *)clip cell:(SmallClipCell *)prototype{
@@ -53,6 +58,8 @@
     self.clipTimesLabel.text = clip.formattedTimestamp;
     [[self.contentView viewWithTag:DURATION_TAG]removeFromSuperview];
     
+    [self.usernameButton setTitle:clip.username forState:UIControlStateNormal];
+    
     // TODO get real total duration of VIDEO
     CGFloat totalSeconds = 300;
     CGFloat durationStart = (self.clip.timeStart/1000)*(320/totalSeconds);
@@ -69,14 +76,16 @@
     self.thumbnail.file = clip.thumbnail;
     [self.thumbnail loadInBackground];
     [self refreshThumbnail];
-    
-    
 }
 
 - (void)refreshThumbnail{
     [self.thumbnail setClipsToBounds:YES];
     self.thumbnail.layer.cornerRadius = 2.0;
     self.thumbnail.layer.masksToBounds = YES;
+}
+
+- (IBAction)onUsernameClick:(id)sender {
+    [self.delegate didClickUsername:self.clip.username];
 }
 
 - (void)awakeFromNib

@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "User.h"
+#import "ProfileCell.h"
 
-@interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, strong) PFUser *user;
+@interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ProfileCellDelegate>
+- (id)initWithUsername:(NSString *)username;
+- (id)initWithUser:(User *)user;
 @end

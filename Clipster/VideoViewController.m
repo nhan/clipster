@@ -10,6 +10,7 @@
 #import "Clip.h"
 #import "ClipCreationViewController.h"
 #import "SmallClipCell.h"
+#import "ProfileViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -122,6 +123,8 @@
     self.aNewClip.timeStart = currentTime;
     self.aNewClip.timeEnd = currentTime + 10000;
     self.aNewClip.videoId = self.videoId;
+    self.aNewClip.user = (User *)[PFUser currentUser];
+    
     [self.clips addObject:self.aNewClip];
     
     // animate to new cell
@@ -140,6 +143,11 @@
     // When we finish adding clip we need to sort correctly
     [self.tableView reloadData];
     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+}
+
+- (void)creationCanceled
+{
+    // when present a modal instead of using the nav controller we'll need this
 }
 
 - (void)setActiveClip:(Clip *)activeClip
@@ -251,13 +259,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - ClipCellDelegate
+
+- (void)didClickUsername:(NSString *)username
+{
+    ProfileViewController *profileVC = [[ProfileViewController alloc] initWithUsername:username];
+    [self.navigationController pushViewController:profileVC animated:YES];
+}
+
 #pragma mark - UITableViewDelegate and UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SmallClipCell *cell = (SmallClipCell *)[self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
     Clip *clip = (Clip *)self.clips[indexPath.row];
-    [cell setClip:clip];
+    cell.clip = clip;
+    cell.delegate = self;
     return cell;
 }
 
