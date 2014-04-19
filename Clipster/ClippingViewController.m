@@ -19,12 +19,13 @@
 @property (nonatomic, assign) CGFloat   endTime;
 @property (weak, nonatomic) IBOutlet UILabel *startTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *endTimeLabel;
+@property (nonatomic, assign) CGFloat translation;
 @end
 
 @implementation ClippingViewController
 
-static NSInteger startSliderHomePos = 50;
-static NSInteger   endSliderHomePos = 240;
+static CGFloat startSliderHomePos = 50;
+static CGFloat   endSliderHomePos = 240;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,9 +52,8 @@ static NSInteger   endSliderHomePos = 240;
     UIPanGestureRecognizer *endPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onEndSliderDrag:)];
     [self.endSlider addGestureRecognizer:endPanGestureRecognizer];
     
-    //Draw the ruler
+    // Draw the ruler
     RulerView *ruler = [[RulerView alloc] initWithFrame:CGRectMake(0, 0, self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
-    [ruler redrawLinesWithStartPos:self.startSlider.frame.origin.x scale:0.4];
     [self.rulerContainer addSubview:ruler];
     
     // Get this from the clip later
@@ -61,6 +61,19 @@ static NSInteger   endSliderHomePos = 240;
     self.endTime = 20.0;
     self.startTimeLabel.text = [NSString stringWithFormat:@"%f", self.startTime];
     self.endTimeLabel.text = [NSString stringWithFormat:@"%f", self.endTime];
+    
+    [self updateRulerData:ruler];
+}
+
+- (void)updateRulerData:(RulerView *)ruler{
+    ruler.startPos = startSliderHomePos;
+    ruler.startTime = self.startTime;
+    ruler.endPos = endSliderHomePos;
+    ruler.endTime = self.endTime;
+    ruler.sliderOffset = self.startSlider.frame.size.width/2;
+    NSLog(@"START %f END %f", self.startTime, self.endTime);
+    
+    [ruler setNeedsDisplay];
 }
 
 - (void)onStartSliderDrag:(UIPanGestureRecognizer *)panGestureRecognizer{
@@ -91,9 +104,9 @@ static NSInteger   endSliderHomePos = 240;
         
         CGFloat newScale = (((originalTimeDiff/newTimeDiff)*self.rulerContainer.frame.size.width)-self.rulerContainer.frame.size.width)/2;
         CGFloat halfWidth = self.rulerContainer.frame.size.width/2;
-        CGFloat translation = -newScale*((self.endSlider.frame.origin.x+(self.endSlider.frame.size.width/2))-halfWidth)/halfWidth;
+        self.translation = -newScale*((self.endSlider.frame.origin.x+(self.endSlider.frame.size.width/2))-halfWidth)/halfWidth;
         
-        CGAffineTransform translate = CGAffineTransformMakeTranslation(translation,0);
+        CGAffineTransform translate = CGAffineTransformMakeTranslation(self.translation,0);
         CGAffineTransform scale = CGAffineTransformMakeScale(originalTimeDiff/newTimeDiff, 1.0);
         CGAffineTransform transform =  CGAffineTransformConcat(scale, translate);
         RulerView *rulerView = self.rulerContainer.subviews[0];
@@ -106,7 +119,7 @@ static NSInteger   endSliderHomePos = 240;
             [rulerView removeFromSuperview];
             RulerView *newRulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
             [self.rulerContainer addSubview:newRulerView];
-            [rulerView redrawLinesWithStartPos:self.startSlider.frame.origin.x scale:0.4];
+            [self updateRulerData:newRulerView];
         }];
     }
 }
@@ -136,11 +149,12 @@ static NSInteger   endSliderHomePos = 240;
         CGFloat originalTimeDiff = self.endTime - self.startTime;
         CGFloat newTimeDiff = ((self.endSlider.frame.origin.x - startSliderHomePos)/(endSliderHomePos - startSliderHomePos))*originalTimeDiff;
         self.endTime = self.startTime+newTimeDiff;
+        NSLog(@"%f", self.endTime);
         
         CGFloat newScale = (((originalTimeDiff/newTimeDiff)*self.rulerContainer.frame.size.width)-self.rulerContainer.frame.size.width)/2;
-        CGFloat translation = newScale*(((self.rulerContainer.frame.size.width/2)-(startSliderHomePos+(self.startSlider.frame.size.width/2)))/(self.rulerContainer.frame.size.width/2));
+        self.translation = newScale*(((self.rulerContainer.frame.size.width/2)-(startSliderHomePos+(self.startSlider.frame.size.width/2)))/(self.rulerContainer.frame.size.width/2));
         
-        CGAffineTransform translate = CGAffineTransformMakeTranslation(translation,0);
+        CGAffineTransform translate = CGAffineTransformMakeTranslation(self.translation,0);
         CGAffineTransform scale = CGAffineTransformMakeScale(originalTimeDiff/newTimeDiff, 1.0);
         CGAffineTransform transform =  CGAffineTransformConcat(scale, translate);
         RulerView *rulerView = self.rulerContainer.subviews[0];
@@ -153,7 +167,7 @@ static NSInteger   endSliderHomePos = 240;
             [rulerView removeFromSuperview];
             RulerView *newRulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
             [self.rulerContainer addSubview:newRulerView];
-            [rulerView redrawLinesWithStartPos:self.startSlider.frame.origin.x scale:0.4];
+            [self updateRulerData:newRulerView];
         }];
     }
 }

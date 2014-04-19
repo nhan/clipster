@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface RulerView : UIView
-- (void)redrawLinesWithStartPos:(CGFloat)startPos scale:(CGFloat)scale;
+@property (nonatomic, assign) CGFloat startPos;
+@property (nonatomic, assign) CGFloat startTime;
+@property (nonatomic, assign) CGFloat endPos;
+@property (nonatomic, assign) CGFloat endTime;
+@property (nonatomic, assign) CGFloat sliderOffset;
 @end

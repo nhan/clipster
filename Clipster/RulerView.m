@@ -25,17 +25,19 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    // Drawing code
+    //draw every half second
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGFloat penColor[4] = {0.8f, 0.8f, 0.8f, 1.0f};
-    NSInteger gapSize = 20;
+    CGFloat gapSize = (self.endPos - self.startPos)/(self.endTime - self.startTime); //one second
+    CGFloat offset = self.startPos - gapSize*(self.startTime - floor(self.startTime));
+    
     CGContextSetStrokeColor(context, penColor);
     
-    for (int i = 1; i <= 1000; i++)
+    for (int i = -100; i <= 100; i++)
     {
         CGContextBeginPath(context);
-        CGContextMoveToPoint(context, i*gapSize, 0);
-        CGContextAddLineToPoint(context, i*gapSize, 50);
+        CGContextMoveToPoint(context, i*gapSize+offset+self.sliderOffset, 0);
+        CGContextAddLineToPoint(context, i*gapSize+offset+self.sliderOffset, 50);
         CGContextStrokePath(context);
     }
 }
