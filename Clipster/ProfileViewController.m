@@ -64,18 +64,37 @@
 
 - (ProfileCell *)profileCell
 {
-    
     if (!_profileCell) {
         UINib *profileCellNib = [UINib nibWithNibName:@"ProfileCell" bundle:nil];
         _profileCell = [profileCellNib instantiateWithOwner:self options:nil][0];
+        _profileCell.delegate = self;
     }
     return _profileCell;
+}
+
+#pragma mark - ProfileCellDelegate
+- (void)toggleFriendship:(User *)user
+{
+    User *currentUser = [User currentUser];
+    if (self.isFriend) {
+        [currentUser.friends removeObject:user];
+    } else {
+        [currentUser.friends addObject:user];
+    }
+    [currentUser saveInBackground];
+    self.isFriend = !self.isFriend;
 }
 
 - (void)setUser:(User *)user
 {
     _user = user;
     self.username = user.username;
+    [self refreshUI];
+}
+
+- (void)setIsFriend:(BOOL)isFriend
+{
+    _isFriend = isFriend;
     [self refreshUI];
 }
 
@@ -116,7 +135,6 @@
         } else {
             if (objects.count == 1) {
                 self.isFriend = YES;
-                [self refreshUI];
             }
         }
     }];

@@ -32,23 +32,16 @@
 {
     self.usernameLabel.text = self.user.username;
     if (self.isFriend) {
-        self.followButton.titleLabel.text = @"Unfollow";
+        [self.followButton setTitle:@"Unfollow" forState:UIControlStateNormal];
     } else {
-        self.followButton.titleLabel.text = @"Follow";
+        [self.followButton setTitle:@"Follow" forState:UIControlStateNormal];
     }
-    
 }
 
-- (void)awakeFromNib
+- (IBAction)followButtonClicked:(id)sender
 {
-    // Initialization code
+    [self.delegate toggleFriendship:self.user];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
 
 @end

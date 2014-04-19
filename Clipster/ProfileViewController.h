@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "User.h"
+#import "ProfileCell.h"
 
-@interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ProfileCellDelegate>
 - (id)initWithUsername:(NSString *)username;
 - (id)initWithUser:(User *)user;
 @end

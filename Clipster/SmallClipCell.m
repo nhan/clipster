@@ -58,7 +58,7 @@
     self.clipTimesLabel.text = clip.formattedTimestamp;
     [[self.contentView viewWithTag:DURATION_TAG]removeFromSuperview];
     
-    self.usernameButton.titleLabel.text = clip.username;
+    [self.usernameButton setTitle:clip.username forState:UIControlStateNormal];
     
     // TODO get real total duration of VIDEO
     CGFloat totalSeconds = 300;
