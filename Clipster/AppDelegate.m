@@ -82,6 +82,23 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
+    
+    // Test some relationship query
+    User *currentUser = (User *)[PFUser currentUser];
+    PFQuery *uquery = [User query];
+    [uquery whereKey:@"username" equalTo:@"nhan"];
+    [uquery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        [currentUser.friends addObject:objects[0]];
+        [currentUser saveInBackground];
+    }];
+    
+    PFQuery *rquery = [currentUser.friends query];
+    [rquery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        NSLog(@"I have the following friends:");
+        for (User *friend in objects) {
+            NSLog(@"%@", friend.username);
+        }
+    }];
 }
 
 - (UINavigationController *) wrapInNavigationController:(UIViewController *)uiVC
@@ -102,6 +119,7 @@
 {
     User *currentUser = (User *)[PFUser currentUser];
     if (currentUser) {
+        
         ProfileViewController *profileVC = [[ProfileViewController alloc] initWithUser:currentUser];
         self.viewControllers = @[[self wrapInNavigationController:[[StreamViewController alloc] init]],
                                  [self wrapInNavigationController:[[SearchResultsViewController alloc] init]],

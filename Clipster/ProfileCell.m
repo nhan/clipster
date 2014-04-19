@@ -10,6 +10,7 @@
 
 @interface ProfileCell ()
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *followButton;
 @end
 
 @implementation ProfileCell
@@ -21,9 +22,21 @@
     [self refreshUI];
 }
 
+- (void)setIsFriend:(BOOL)isFriend
+{
+    _isFriend = isFriend;
+    [self refreshUI];
+}
+
 - (void)refreshUI
 {
     self.usernameLabel.text = self.user.username;
+    if (self.isFriend) {
+        self.followButton.titleLabel.text = @"Unfollow";
+    } else {
+        self.followButton.titleLabel.text = @"Follow";
+    }
+    
 }
 
 - (void)awakeFromNib

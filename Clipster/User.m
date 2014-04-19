@@ -10,5 +10,5 @@
 #import <Parse/PFObject+Subclass.h>
 
 @implementation User
-
+@dynamic friends;
 @end

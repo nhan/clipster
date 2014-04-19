@@ -11,4 +11,5 @@
 
 @interface ProfileCell : UITableViewCell
 @property (strong, nonatomic) User *user;
+@property (nonatomic, assign) BOOL isFriend;
 @end

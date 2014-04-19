@@ -19,6 +19,7 @@
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) ProfileCell *profileCell;
+@property (nonatomic, assign) BOOL isFriend;
 @end
 
 @implementation ProfileViewController
@@ -30,6 +31,7 @@
         _username = username;
         self.title = username;
         [self fetchUser];
+        [self fetchFriendship];
     }
     return self;
 }
@@ -80,6 +82,7 @@
 - (void) refreshUI
 {
     self.profileCell.user = self.user;
+    self.profileCell.isFriend = self.isFriend;
     [self.tableView reloadData];
 }
 
@@ -99,6 +102,23 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+}
+
+- (void)fetchFriendship
+{
+    User *currentUser = [User currentUser];
+    PFQuery *query = [currentUser.friends query];
+    [query whereKey:@"username" equalTo:self.username];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (error) {
+            NSLog(@"error fetching friendshipness");
+        } else {
+            if (objects.count == 1) {
+                self.isFriend = YES;
+                [self refreshUI];
+            }
+        }
     }];
 }
 

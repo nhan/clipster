@@ -9,8 +9,5 @@
 #import <Parse/Parse.h>
 
 @interface User : PFUser
-
-
-// customize with our own stuff later
-
+@property (retain) PFRelation *friends;
 @end
