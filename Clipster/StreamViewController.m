@@ -15,6 +15,7 @@
 @interface StreamViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *clips;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @end
 
 @implementation StreamViewController
@@ -42,6 +43,10 @@
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
     self.navigationItem.leftBarButtonItem = menuButton;
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(fetchClips) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refreshControl];
+    
     [self fetchClips];
 }
 
@@ -60,6 +65,7 @@
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
+        [self.refreshControl endRefreshing];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }

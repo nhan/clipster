@@ -61,12 +61,6 @@
     
     // Initialize search to clips
     self.searchTypeControl.selectedSegmentIndex = CLIP_SEARCH;
-    
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-//                                   initWithTarget:self
-//                                   action:@selector(dismissKeyboard)];
-//    [self.view addGestureRecognizer:tap];
-    
 }
 
 // Dismiss keyboard when we scroll the table
@@ -74,7 +68,6 @@
 {
     [self.searchBar resignFirstResponder];
 }
-
 
 - (IBAction)searchTypeChanged:(id)sender
 {
