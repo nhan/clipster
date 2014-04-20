@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *clips;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, assign) BOOL isDirty;
 @end
 
 @implementation StreamViewController
@@ -26,6 +27,7 @@
     if (self) {
         // Custom initialization
         self.title = @"Stream";
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setStreamDirty) name:@"SetStreamDirty" object:nil];
     }
     return self;
 }
@@ -50,6 +52,24 @@
     [self fetchClips];
 }
 
+- (void)viewDidUnload
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SetStreamDirty" object:nil];
+}
+
+- (void)setStreamDirty
+{
+    self.isDirty = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.isDirty) {
+        [self fetchClips];
+    }
+}
+
 - (void)fetchClips
 {
     // Get clips for current user and all friends
@@ -60,6 +80,7 @@
             [users addObject:[User currentUser]];
             [Clip searchClipsForUsers:users completionHandler:^(NSArray *clips, NSError *error) {
                 if (!error) {
+                    self.isDirty = NO;
                     self.clips = clips;
                     [self.tableView reloadData];
                 } else {
@@ -72,8 +93,6 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
-    
-    
 }
 
 - (void)onMenuButton:(id)sender

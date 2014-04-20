@@ -140,9 +140,13 @@
 {
     [clip saveInBackground];
     NSInteger row = [self.clips indexOfObject:clip];
+    
     // When we finish adding clip we need to sort correctly
     [self.tableView reloadData];
     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+    
+    // Dirty the stream when we've created a new clip
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
 }
 
 - (void)creationCanceled
