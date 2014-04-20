@@ -15,6 +15,7 @@
 #import "SmallClipCell.h"
 #import "VideoViewController.h"
 #import "YouTubeVideo.h"
+#import "ProfileViewController.h"
 
 #define CLIP_SEARCH 0
 #define USER_SEARCH 1
@@ -61,6 +62,23 @@
     // Initialize search to clips
     self.searchTypeControl.selectedSegmentIndex = CLIP_SEARCH;
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    [self.view addGestureRecognizer:tap];
+    
+}
+
+- (void) dismissKeyboard
+{
+    [self.searchBar resignFirstResponder];
+}
+
+- (IBAction)searchTypeChanged:(id)sender
+{
+    // Clear the results
+    self.searchResults = @[];
+    [self.tableView reloadData];
 }
 
 - (void)onMenuButton:(id)sender
@@ -105,7 +123,16 @@
 
 - (void)searchUsers:(NSString *) queryString
 {
-    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [User searchUsersWithQuery:queryString completionHandler:^(NSArray *users, NSError *error) {
+        if (error) {
+            NSLog(@"Error searching users ---------------------- !\n%@", error);
+        } else {
+            self.searchResults = users;
+            [self.tableView reloadData];
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
 }
 
 - (void)searchYouTube:(NSString *) queryString
@@ -148,6 +175,8 @@
 - (UITableViewCell *) cellForUserRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SmallClipCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
+    User *user = self.searchResults[indexPath.row];
+    cell.clipTextLabel.text = user.username;
     return cell;
 }
 
@@ -178,18 +207,14 @@
     if (self.searchTypeControl.selectedSegmentIndex == CLIP_SEARCH) {
         Clip *clip = self.searchResults[indexPath.row];
         vc = [[VideoViewController alloc] initWithClip:clip];
-
     } else if (self.searchTypeControl.selectedSegmentIndex == USER_SEARCH) {
-        NSLog(@"haven't implemented the user search yet");
+        User *user = self.searchResults[indexPath.row];
+        vc = [[ProfileViewController alloc] initWithUser:user];
     } else if (self.searchTypeControl.selectedSegmentIndex == YOUTUBE_SEARCH) {
         YouTubeVideo *video = self.searchResults[indexPath.row];
         vc = [[VideoViewController alloc] initWithVideoId:video.videoId];
     }
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (IBAction)searchTypeChanged:(UISegmentedControl *)sender
-{
 }
 
 @end

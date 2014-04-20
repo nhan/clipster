@@ -38,7 +38,7 @@
                         <segment title="YouTube"/>
                     </segments>
                     <connections>
-                        <action selector="searchTypeChanged:" destination="-1" eventType="valueChanged" id="nZa-OA-wOD"/>
+                        <action selector="searchTypeChanged:" destination="-1" eventType="valueChanged" id="0ej-3d-l8i"/>
                     </connections>
                 </segmentedControl>
             </subviews>

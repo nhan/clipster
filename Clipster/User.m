@@ -11,4 +11,13 @@
 
 @implementation User
 @dynamic friends;
+
++ (void)searchUsersWithQuery:(NSString *)queryString completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+{
+    PFQuery *query = [User query];
+    [query whereKey:@"username" containsString:queryString];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
+        completionHandler(users, error);
+    }];
+}
 @end
