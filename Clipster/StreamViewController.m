@@ -52,22 +52,28 @@
 
 - (void)fetchClips
 {
+    // Get clips for current user and all friends
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    PFQuery *query = [Clip query];
-    [query orderByDescending:@"createdAt"];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    [[User currentUser] fetchFriendsWithCompletionHandler:^(NSArray *friends, NSError *error) {
         if (!error) {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved %d clips.", objects.count);
-            self.clips = objects;
-            [self.tableView reloadData];
+            NSMutableArray *users = [friends mutableCopy];
+            [users addObject:[User currentUser]];
+            [Clip searchClipsForUsers:users completionHandler:^(NSArray *clips, NSError *error) {
+                if (!error) {
+                    self.clips = clips;
+                    [self.tableView reloadData];
+                } else {
+                    NSLog(@"Error: %@ %@", error, [error userInfo]);
+                }
+                [self.refreshControl endRefreshing];
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            }];
         } else {
-            // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
-        [self.refreshControl endRefreshing];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
+    
+    
 }
 
 - (void)onMenuButton:(id)sender

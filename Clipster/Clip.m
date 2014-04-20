@@ -64,6 +64,7 @@
 + (void)searchClipsForUsernames:(NSArray *)usernames completionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
     PFQuery *query = [Clip query];
+    [query orderByDescending:@"createdAt"];
     [query whereKey:@"username" containedIn:usernames];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         completionHandler(objects, error);
