@@ -27,4 +27,7 @@
 - (BOOL)isPublished;
 
 + (void)searchClipsWithQuery:(NSString *)queryString completionHandler:(void(^)(NSArray *clips, NSError *error))completionHandler;
++ (void)searchClipsForUsers:(NSArray *)users completionHandler:(void(^)(NSArray *clips, NSError *error))completionHandler;
++ (void)searchClipsForUsernames:(NSArray *)usernames completionHandler:(void (^)(NSArray *, NSError *))completionHandler;
+
 @end

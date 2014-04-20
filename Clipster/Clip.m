@@ -61,4 +61,22 @@
     }];
 }
 
++ (void)searchClipsForUsernames:(NSArray *)usernames completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+{
+    PFQuery *query = [Clip query];
+    [query whereKey:@"username" containedIn:usernames];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        completionHandler(objects, error);
+    }];
+}
+
++ (void)searchClipsForUsers:(NSArray *)users completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+{
+    NSMutableArray *usernames = [[NSMutableArray alloc] init];
+    for (User *user in users) {
+        [usernames addObject:user.username];
+    }
+    [Clip searchClipsForUsernames:usernames completionHandler:completionHandler];
+}
+
 @end

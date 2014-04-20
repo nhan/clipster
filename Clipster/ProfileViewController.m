@@ -11,11 +11,13 @@
 #import "SmallClipCell.h"
 #import "User.h"
 #import "ProfileCell.h"
+#import "VideoViewController.h"
+
 #import <MBProgressHud/MBProgressHUD.h>
 
 @interface ProfileViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSMutableArray *clips;
+@property (nonatomic, strong) NSArray *clips;
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) ProfileCell *profileCell;
@@ -31,6 +33,7 @@
         _username = username;
         self.title = username;
         [self fetchUser];
+        [self fetchClips];
         [self fetchFriendship];
     }
     return self;
@@ -43,6 +46,8 @@
         self.title = @"Profile";
         _user = user;
         _username = user.username;
+        [self fetchClips];
+        [self fetchFriendship];
     }
     return self;
 }
@@ -59,6 +64,12 @@
         self.navigationItem.leftBarButtonItem = menuButton;
     }
     self.tableView.tableHeaderView = self.profileCell;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    UINib *clipNib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
+    [self.tableView registerNib:clipNib forCellReuseIdentifier:@"ClipCell"];
+    
+    
     [self refreshUI];
 }
 
@@ -150,7 +161,15 @@
 
 - (void)fetchClips
 {
-    
+    [Clip searchClipsForUsernames:@[self.username] completionHandler:^(NSArray *clips, NSError *error) {
+        if (!error) {
+            self.clips = clips;
+            [self.tableView reloadData];
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
 }
 
 - (void)onMenuButton:(id)sender
@@ -174,14 +193,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SmallClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SmallClipCell"];
+    SmallClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClipCell"];
     cell.clip = self.clips[indexPath.row];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    VideoViewController *clipDetailsVC = [[VideoViewController alloc] initWithClip:self.clips[indexPath.row]];
+    [self.navigationController pushViewController:clipDetailsVC animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
