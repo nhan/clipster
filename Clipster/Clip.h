@@ -25,4 +25,6 @@
 @property (retain) PFFile *thumbnail;
 
 - (BOOL)isPublished;
+
++ (void)searchClipsWithQuery:(NSString *)queryString completionHandler:(void(^)(NSArray *clips, NSError *error))completionHandler;
 @end

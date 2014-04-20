@@ -48,7 +48,7 @@
 - (void)fetchClips
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    PFQuery *query = [PFQuery queryWithClassName:@"Clip"];
+    PFQuery *query = [Clip query];
     [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {

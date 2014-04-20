@@ -16,11 +16,16 @@
 #import "VideoViewController.h"
 #import "YouTubeVideo.h"
 
+#define CLIP_SEARCH 0
+#define USER_SEARCH 1
+#define YOUTUBE_SEARCH 2
+
 @interface SearchResultsViewController ()
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) GTLServiceYouTube *youtubeService;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *searchTypeControl;
 @end
 
 @implementation SearchResultsViewController
@@ -51,8 +56,10 @@
     UINib *nib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"ClipCell"];
     
-    
     self.searchBar.delegate = self;
+    
+    // Initialize search to clips
+    self.searchTypeControl.selectedSegmentIndex = CLIP_SEARCH;
     
 }
 
@@ -69,7 +76,36 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self searchYouTube:searchBar.text];
+    switch (self.searchTypeControl.selectedSegmentIndex) {
+        case CLIP_SEARCH:
+            [self searchClips:searchBar.text];
+            break;
+        case USER_SEARCH:
+            [self searchUsers:searchBar.text];
+            break;
+        case YOUTUBE_SEARCH:
+            [self searchYouTube:searchBar.text];
+            break;
+    }
+}
+
+- (void)searchClips:(NSString *) queryString
+{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [Clip searchClipsWithQuery:queryString completionHandler:^(NSArray *clips, NSError *error) {
+        if (error) {
+            NSLog(@"Error searching clips ---------------------- !\n%@", error);
+        } else {
+            self.searchResults = clips;
+            [self.tableView reloadData];
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+}
+
+- (void)searchUsers:(NSString *) queryString
+{
+    
 }
 
 - (void)searchYouTube:(NSString *) queryString
@@ -84,8 +120,6 @@
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
-    
-//    [self updateUI];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -93,14 +127,44 @@
     return self.searchResults.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *) cellForVideoRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SmallClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
+    SmallClipCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
     YouTubeVideo *video = self.searchResults[indexPath.row];
     cell.clipTextLabel.text = video.title;
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:video.thumbnailURL]];
     [cell refreshThumbnail];
     return cell;
+}
+
+- (UITableViewCell *) cellForClipRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SmallClipCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
+    Clip *clip = self.searchResults[indexPath.row];
+    cell.clip = clip;
+    return cell;
+}
+
+- (UITableViewCell *) cellForUserRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SmallClipCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
+    return cell;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (self.searchTypeControl.selectedSegmentIndex) {
+        case CLIP_SEARCH:
+            return [self cellForClipRowAtIndexPath:indexPath];
+            break;
+        case USER_SEARCH:
+            return [self cellForUserRowAtIndexPath:indexPath];
+            break;
+        case YOUTUBE_SEARCH:
+            return [self cellForVideoRowAtIndexPath:indexPath];
+            break;
+    }
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -110,8 +174,22 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    YouTubeVideo *video = self.searchResults[indexPath.row];
-    [self.navigationController pushViewController:[[VideoViewController alloc] initWithVideoId:video.videoId] animated:YES];
+    UIViewController *vc = nil;
+    if (self.searchTypeControl.selectedSegmentIndex == CLIP_SEARCH) {
+        Clip *clip = self.searchResults[indexPath.row];
+        vc = [[VideoViewController alloc] initWithClip:clip];
+
+    } else if (self.searchTypeControl.selectedSegmentIndex == USER_SEARCH) {
+        NSLog(@"haven't implemented the user search yet");
+    } else if (self.searchTypeControl.selectedSegmentIndex == YOUTUBE_SEARCH) {
+        YouTubeVideo *video = self.searchResults[indexPath.row];
+        vc = [[VideoViewController alloc] initWithVideoId:video.videoId];
+    }
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)searchTypeChanged:(UISegmentedControl *)sender
+{
 }
 
 @end

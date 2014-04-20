@@ -23,7 +23,8 @@
 @dynamic thumbnail;
 @dynamic username;
 
-- (NSString *)formattedTimestamp{
+- (NSString *)formattedTimestamp
+{
     NSInteger startSeconds = self.timeStart/1000;
     NSInteger startMinutes = startSeconds/60;
     NSInteger startRemainingSeconds = startSeconds - (startMinutes*60);
@@ -49,6 +50,15 @@
 - (BOOL)isPublished
 {
     return !!self.text;
+}
+
++ (void)searchClipsWithQuery:(NSString *)queryString completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+{
+    PFQuery *query = [Clip query];
+    [query whereKey:@"text" containsString:queryString];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *clips, NSError *error) {
+        completionHandler(clips, error);
+    }];
 }
 
 @end
