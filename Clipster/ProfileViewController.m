@@ -89,6 +89,9 @@
 {
     _user = user;
     self.username = user.username;
+    if (user == [User currentUser]) {
+        self.title = @"Profile";
+    }
     [self refreshUI];
 }
 
@@ -107,21 +110,26 @@
 
 - (void)fetchUser
 {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    PFQuery *query = [User query];
-    [query whereKey:@"username" equalTo:self.username];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            // only one user should match
-            if (objects.count == 1) {
-                self.user = objects[0];
+    User *currentUser = [User currentUser];
+    if ([self.username isEqualToString:currentUser.username]) {
+        self.user = currentUser;
+    } else {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        PFQuery *query = [User query];
+        [query whereKey:@"username" equalTo:self.username];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                // only one user should match
+                if (objects.count == 1) {
+                    self.user = objects[0];
+                }
+            } else {
+                // Log details of the failure
+                NSLog(@"Error: %@ %@", error, [error userInfo]);
             }
-        } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-        }
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    }];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        }];
+    }
 }
 
 - (void)fetchFriendship

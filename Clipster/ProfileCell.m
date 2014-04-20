@@ -31,16 +31,25 @@
 - (void)refreshUI
 {
     self.usernameLabel.text = self.user.username;
-    if (self.isFriend) {
-        [self.followButton setTitle:@"Unfollow" forState:UIControlStateNormal];
+    
+    if (self.user == [User currentUser]) {
+        // User's profile, follow button becomes button to edit profile
+        [self.followButton setTitle:@"Edit" forState:UIControlStateNormal];
     } else {
-        [self.followButton setTitle:@"Follow" forState:UIControlStateNormal];
+        // follow/unfollow button
+        if (self.isFriend) {
+            [self.followButton setTitle:@"Unfollow" forState:UIControlStateNormal];
+        } else {
+            [self.followButton setTitle:@"Follow" forState:UIControlStateNormal];
+        }
     }
 }
 
 - (IBAction)followButtonClicked:(id)sender
 {
-    [self.delegate toggleFriendship:self.user];
+    if (self.user != [User currentUser]) {
+        [self.delegate toggleFriendship:self.user];
+    }
 }
 
 
