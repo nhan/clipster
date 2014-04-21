@@ -56,9 +56,27 @@
                             <constraint firstAttribute="width" constant="30" id="R8T-Z7-cKz"/>
                         </constraints>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fhZ-aW-MhQ">
+                        <rect key="frame" x="10" y="150" width="300" height="60"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title of this YouTube Video that is two lines long" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="zsP-JL-gPg">
+                                <rect key="frame" x="11" y="7" width="279" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="60" id="WRs-E1-KsV"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="BlY-ww-gqO" firstAttribute="top" secondItem="Ts5-ml-AYO" secondAttribute="bottom" constant="7" id="0y2-uG-FU7"/>
+                    <constraint firstAttribute="trailing" secondItem="fhZ-aW-MhQ" secondAttribute="trailing" constant="10" id="9jG-v2-tUa"/>
                     <constraint firstItem="1Bj-sr-Lnp" firstAttribute="top" secondItem="Ts5-ml-AYO" secondAttribute="bottom" constant="10" id="Bjp-A3-eZe"/>
                     <constraint firstItem="Dh3-qC-ma2" firstAttribute="top" secondItem="Ts5-ml-AYO" secondAttribute="bottom" constant="5" id="CCF-Bv-oxl"/>
                     <constraint firstItem="BlY-ww-gqO" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Dh3-qC-ma2" secondAttribute="trailing" constant="10" id="HYh-Tg-fWr"/>
@@ -68,9 +86,11 @@
                     <constraint firstAttribute="trailing" secondItem="BlY-ww-gqO" secondAttribute="trailing" constant="10" id="Vuk-NI-PKe"/>
                     <constraint firstItem="Dh3-qC-ma2" firstAttribute="leading" secondItem="1Bj-sr-Lnp" secondAttribute="trailing" constant="10" id="WBc-0K-Ma0"/>
                     <constraint firstAttribute="trailing" secondItem="Ts5-ml-AYO" secondAttribute="trailing" constant="10" id="Xkz-qd-qM1"/>
+                    <constraint firstItem="fhZ-aW-MhQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Yqq-wD-etu"/>
                     <constraint firstItem="iW2-YU-1cv" firstAttribute="top" secondItem="Ts5-ml-AYO" secondAttribute="bottom" constant="25" id="jM0-tS-bEc"/>
                     <constraint firstItem="Ts5-ml-AYO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="nMs-80-V6v"/>
                     <constraint firstAttribute="trailing" secondItem="iW2-YU-1cv" secondAttribute="trailing" constant="10" id="sAI-ve-dLd"/>
+                    <constraint firstItem="Dh3-qC-ma2" firstAttribute="top" secondItem="fhZ-aW-MhQ" secondAttribute="bottom" constant="5" id="zum-2C-Mht"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -79,6 +99,7 @@
                 <outlet property="thumbnail" destination="Ts5-ml-AYO" id="0Jb-8P-Y5T"/>
                 <outlet property="titleLabel" destination="iW2-YU-1cv" id="0nM-kw-FAu"/>
                 <outlet property="usernameLabel" destination="Dh3-qC-ma2" id="VRf-Up-rqR"/>
+                <outlet property="youTubeLabel" destination="zsP-JL-gPg" id="8M5-m6-YbS"/>
             </connections>
         </tableViewCell>
     </objects>

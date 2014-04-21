@@ -7,6 +7,7 @@
 //
 
 #import "ClipCell.h"
+#import "YouTubeVideo.h"
 
 @interface ClipCell ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -14,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
 @property (weak, nonatomic) IBOutlet UIImageView *profileThumbnail;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
-
+@property (weak, nonatomic) IBOutlet UILabel *youTubeLabel;
 
 @end
 
@@ -44,6 +45,7 @@
     [self.profileThumbnail setClipsToBounds:YES];
     self.profileThumbnail.layer.cornerRadius = self.profileThumbnail.frame.size.width/2;
     self.profileThumbnail.layer.masksToBounds = YES;
+    self.youTubeLabel.text = self.clip.videoId;
 }
 
 @end
