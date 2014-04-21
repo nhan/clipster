@@ -24,6 +24,8 @@
 @property (nonatomic, strong) ProfileCell *profileCell;
 @property (nonatomic, strong) SmallClipCell *prototype;
 @property (nonatomic, assign) BOOL isFriend;
+@property (nonatomic, strong) NSArray *friends;
+@property (nonatomic, strong) NSArray *followers;
 @end
 
 @implementation ProfileViewController
@@ -36,7 +38,9 @@
         self.title = username;
         [self fetchUser];
         [self fetchClips];
-        [self fetchFriendship];
+        [self fetchIfImFollowing];
+        [self fetchFriendships];
+        [self fetchFollowers];
     }
     return self;
 }
@@ -49,7 +53,9 @@
         _user = user;
         _username = user.username;
         [self fetchClips];
-        [self fetchFriendship];
+        [self fetchIfImFollowing];
+        [self fetchFriendships];
+        [self fetchFollowers];
     }
     return self;
 }
@@ -124,8 +130,8 @@
     self.profileCell.user = self.user;
     self.profileCell.isFriend = self.isFriend;
     self.profileCell.numberClips = self.clips.count;
-    self.profileCell.numberFollowers = 1;
-    self.profileCell.numberFollowing = 1;
+    self.profileCell.numberFollowers = self.followers.count;
+    self.profileCell.numberFollowing = self.friends.count;
     [self.tableView reloadData];
 }
 
@@ -153,7 +159,7 @@
     }
 }
 
-- (void)fetchFriendship
+- (void)fetchIfImFollowing
 {
     User *currentUser = [User currentUser];
     PFQuery *query = [currentUser.friends query];
@@ -168,6 +174,38 @@
         }
     }];
 }
+
+- (void)fetchFriendships
+{
+    [self.user fetchFriendsWithCompletionHandler:^(NSArray *friends, NSError *error) {
+        if (error) {
+            NSLog(@"error fetching friendships");
+        } else {
+            self.friends = friends;
+            [self refreshUI];
+        }
+    }];
+}
+
+- (void)fetchFollowers
+{
+    // Create a query for People in Australia
+    PFQuery *usernameQuery = [User query];
+    [usernameQuery whereKey:@"username" equalTo:self.username];
+    
+    // Create a query for Places liked by People in Australia.
+    PFQuery *friendsQuery = [User query];
+    [friendsQuery whereKey:@"friends" matchesQuery:usernameQuery];
+    [friendsQuery findObjectsInBackgroundWithBlock:^(NSArray *followers, NSError*error) {
+        if (error) {
+            NSLog(@"error fetching followers");
+        } else {
+            self.followers = followers;
+            [self refreshUI];
+        }
+    }];
+}
+
 
 - (void)fetchClips
 {
