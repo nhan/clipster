@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
+@property (weak, nonatomic) IBOutlet UIImageView *profileThumbnail;
 
 
 @end
@@ -27,7 +28,7 @@
 - (void)refreshUI
 {
     self.titleLabel.text = self.clip.text;
-    self.descriptionLabel.text = [NSString stringWithFormat:@"%d, %d", self.clip.timeStart, self.clip.timeEnd];
+    self.descriptionLabel.text = self.clip.formattedTimestamp;
     if (self.clip.thumbnail) {
         self.thumbnail.file = self.clip.thumbnail;
         [self.thumbnail loadInBackground];
@@ -35,6 +36,12 @@
         self.thumbnail.image = [UIImage imageNamed:@"stream_thumbnail_placeholder.gif"];
     }
     [self.thumbnail setClipsToBounds:YES];
+    self.thumbnail.layer.cornerRadius = 2.0;
+    self.thumbnail.layer.masksToBounds = YES;
+    
+    [self.profileThumbnail setClipsToBounds:YES];
+    self.profileThumbnail.layer.cornerRadius = self.profileThumbnail.frame.size.width/2;
+    self.profileThumbnail.layer.masksToBounds = YES;
 }
 
 @end

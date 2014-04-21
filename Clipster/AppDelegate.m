@@ -110,7 +110,7 @@
 }
 
 - (void)styleNavigationController:(UINavigationController *)navigationController{
-    navigationController.navigationBar.barTintColor = [UIColor purpleColor];
+    navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.871 green:0.180 blue:0.153 alpha:1.000];
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     [[UINavigationBar appearance] setTitleTextAttributes: @{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
