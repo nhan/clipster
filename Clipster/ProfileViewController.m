@@ -21,6 +21,7 @@
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) ProfileCell *profileCell;
+@property (nonatomic, strong) SmallClipCell *prototype;
 @property (nonatomic, assign) BOOL isFriend;
 @end
 
@@ -67,6 +68,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     UINib *clipNib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
+    self.prototype = [clipNib instantiateWithOwner:self options:nil][0];
     [self.tableView registerNib:clipNib forCellReuseIdentifier:@"ClipCell"];
     
     
@@ -210,7 +212,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 120;
+    return [SmallClipCell heightForClip:[self.clips objectAtIndex:indexPath.row] cell:self.prototype];
 }
 
 @end
