@@ -10,6 +10,7 @@
 #import <Parse/PFImageView.h>
 
 #define DURATION_TAG 9017
+#define TAP_TO_PUBLISH_TAG 9018
 
 @interface SmallClipCell ()
 @property (weak, nonatomic) IBOutlet UILabel *clipTimesLabel;
@@ -48,15 +49,27 @@
 - (void)refreshUI
 {
     Clip *clip = self.clip;
+    [[self.contentView viewWithTag:TAP_TO_PUBLISH_TAG] removeFromSuperview];
     
     if ([self.clip isPublished]) {
         self.clipTextLabel.text = self.clip.text;
+        self.clipTextLabel.alpha = 1.0;
+        self.clipTimesLabel.alpha = 1.0;
     } else {
-        self.clipTextLabel.text = @"New clip (press to publish)";
+        self.clipTextLabel.text = @"add a comment";
+        self.clipTextLabel.alpha = 0.5;
+        self.clipTimesLabel.alpha = 0.0;
+        
+        UIImage *tapToPublish = [UIImage imageNamed:@"tapToPublish.png"];
+        UIImageView *tapToPublishView = [[UIImageView alloc] initWithImage:tapToPublish];
+        tapToPublishView.frame = CGRectMake(self.contentView.frame.size.width - 118,15, 108, 36);
+        [tapToPublishView setTag:TAP_TO_PUBLISH_TAG];
+        [self.contentView addSubview:tapToPublishView];
+        
     }
     
     self.clipTimesLabel.text = clip.formattedTimestamp;
-    [[self.contentView viewWithTag:DURATION_TAG]removeFromSuperview];
+    [[self.contentView viewWithTag:DURATION_TAG] removeFromSuperview];
     
     [self.usernameButton setTitle:clip.username forState:UIControlStateNormal];
     

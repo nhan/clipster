@@ -42,6 +42,7 @@
 		7E9B20761901CA1A008C3E01 /* drag_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20751901CA1A008C3E01 /* drag_red.png */; };
 		7E9B20791901D509008C3E01 /* RulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B20781901D509008C3E01 /* RulerView.m */; };
 		7E9B20841904A59A008C3E01 /* tim.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20831904A59A008C3E01 /* tim.png */; };
+		7E9B20961905D96E008C3E01 /* tapToPublish.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20951905D96E008C3E01 /* tapToPublish.png */; };
 		7EE5B31019008633000F3816 /* video_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B30F19008633000F3816 /* video_placeholder.png */; };
 		7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5B3131900921C000F3816 /* ProfileViewController.m */; };
 		7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B3141900921C000F3816 /* ProfileViewController.xib */; };
@@ -115,6 +116,7 @@
 		7E9B20771901D509008C3E01 /* RulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulerView.h; sourceTree = "<group>"; };
 		7E9B20781901D509008C3E01 /* RulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulerView.m; sourceTree = "<group>"; };
 		7E9B20831904A59A008C3E01 /* tim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tim.png; sourceTree = "<group>"; };
+		7E9B20951905D96E008C3E01 /* tapToPublish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tapToPublish.png; sourceTree = "<group>"; };
 		7EE5B30F19008633000F3816 /* video_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_placeholder.png; sourceTree = "<group>"; };
 		7EE5B3121900921C000F3816 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		7EE5B3131900921C000F3816 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 		7EE5B31119008638000F3816 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7E9B20951905D96E008C3E01 /* tapToPublish.png */,
 				7E9B20831904A59A008C3E01 /* tim.png */,
 				7E9B20751901CA1A008C3E01 /* drag_red.png */,
 				7E9B20731901C92F008C3E01 /* drag_green.png */,
@@ -395,6 +398,7 @@
 				7E970D3218F1E5DF00517A1F /* Images.xcassets in Resources */,
 				7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */,
 				6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */,
+				7E9B20961905D96E008C3E01 /* tapToPublish.png in Resources */,
 				7E9B20721901C596008C3E01 /* ClippingViewController.xib in Resources */,
 				7E970D5E18F1F2DC00517A1F /* ClipCell.xib in Resources */,
 				7EE5B31019008633000F3816 /* video_placeholder.png in Resources */,
