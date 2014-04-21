@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
 @property (weak, nonatomic) IBOutlet UIImageView *profileThumbnail;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 
 
 @end
@@ -29,6 +30,7 @@
 {
     self.titleLabel.text = self.clip.text;
     self.descriptionLabel.text = self.clip.formattedTimestamp;
+    self.usernameLabel.text = self.clip.username;
     if (self.clip.thumbnail) {
         self.thumbnail.file = self.clip.thumbnail;
         [self.thumbnail loadInBackground];

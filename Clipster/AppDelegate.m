@@ -46,6 +46,8 @@
     [self subscribeToUserNotifications];
     
     self.logoutCell = [[UITableViewCell alloc] init];
+    self.logoutCell.backgroundColor = [UIColor clearColor];
+    self.logoutCell.textLabel.textColor = [UIColor whiteColor];
     self.logoutCell.textLabel.text = @"Logout";
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
