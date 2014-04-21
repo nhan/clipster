@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EditProfileViewController : UIViewController
+@interface EditProfileViewController : UIViewController <NSURLConnectionDelegate>
 
 @end
