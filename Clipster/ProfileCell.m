@@ -9,6 +9,7 @@
 #import "ProfileCell.h"
 
 @interface ProfileCell ()
+@property (weak, nonatomic) IBOutlet PFImageView *profileThumbnailView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *followButton;
 @property (weak, nonatomic) IBOutlet UILabel *numberClipsLabel;
@@ -67,6 +68,16 @@
     self.numberClipsLabel.text = [NSString stringWithFormat:@"%d", self.numberClips];
     self.numberFollowersLabel.text = [NSString stringWithFormat:@"%d", self.numberFollowers];
     self.numberFollowingLabel.text = [NSString stringWithFormat:@"%d", self.numberFollowing];
+    
+    if (self.user.thumbnail) {
+        self.profileThumbnailView.file = self.user.thumbnail;
+        [self.profileThumbnailView loadInBackground];
+    } else {
+        self.profileThumbnailView.image = [UIImage imageNamed:@"tim.png"];
+    }
+    [self.profileThumbnailView setClipsToBounds:YES];
+    self.profileThumbnailView.layer.cornerRadius = self.profileThumbnailView.frame.size.width/2;
+    self.profileThumbnailView.layer.masksToBounds = YES;
 }
 
 - (IBAction)followButtonClicked:(id)sender
