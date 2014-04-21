@@ -71,7 +71,6 @@
     self.prototype = [clipNib instantiateWithOwner:self options:nil][0];
     [self.tableView registerNib:clipNib forCellReuseIdentifier:@"ClipCell"];
     
-    
     [self refreshUI];
 }
 
@@ -118,6 +117,9 @@
 {
     self.profileCell.user = self.user;
     self.profileCell.isFriend = self.isFriend;
+    self.profileCell.numberClips = self.clips.count;
+    self.profileCell.numberFollowers = 1;
+    self.profileCell.numberFollowing = 1;
     [self.tableView reloadData];
 }
 
@@ -166,6 +168,7 @@
     [Clip searchClipsForUsernames:@[self.username] completionHandler:^(NSArray *clips, NSError *error) {
         if (!error) {
             self.clips = clips;
+            self.profileCell.numberClips = self.clips.count;
             [self.tableView reloadData];
         } else {
             // Log details of the failure
