@@ -48,7 +48,7 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tim.png" translatesAutoresizingMaskIntoConstraints="NO" id="1Bj-sr-Lnp">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tim.png" translatesAutoresizingMaskIntoConstraints="NO" id="1Bj-sr-Lnp" customClass="PFImageView">
                         <rect key="frame" x="10" y="220" width="30" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -95,7 +95,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="descriptionLabel" destination="BlY-ww-gqO" id="DKy-Y8-g3f"/>
-                <outlet property="profileThumbnail" destination="1Bj-sr-Lnp" id="PvX-Dy-MSw"/>
+                <outlet property="profileThumbnailView" destination="1Bj-sr-Lnp" id="Kl8-hj-FfJ"/>
                 <outlet property="thumbnail" destination="Ts5-ml-AYO" id="0Jb-8P-Y5T"/>
                 <outlet property="titleLabel" destination="iW2-YU-1cv" id="0nM-kw-FAu"/>
                 <outlet property="usernameLabel" destination="Dh3-qC-ma2" id="VRf-Up-rqR"/>

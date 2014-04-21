@@ -13,10 +13,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
-@property (weak, nonatomic) IBOutlet UIImageView *profileThumbnail;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *youTubeLabel;
-
+@property (weak, nonatomic) IBOutlet PFImageView *profileThumbnailView;
 @end
 
 @implementation ClipCell
@@ -41,11 +40,28 @@
     [self.thumbnail setClipsToBounds:YES];
     self.thumbnail.layer.cornerRadius = 2.0;
     self.thumbnail.layer.masksToBounds = YES;
-    
-    [self.profileThumbnail setClipsToBounds:YES];
-    self.profileThumbnail.layer.cornerRadius = self.profileThumbnail.frame.size.width/2;
-    self.profileThumbnail.layer.masksToBounds = YES;
-    self.youTubeLabel.text = self.clip.videoTitle;
+
+
+    if ([self.clip.user isDataAvailable]) {
+        [self refreshUserThumbnail];
+    } else {
+        [self.clip.user fetchInBackgroundWithBlock:^(PFObject *user, NSError *error) {
+            [self refreshUserThumbnail];
+        }];
+    }
+}
+
+- (void)refreshUserThumbnail
+{
+    if (self.clip.user.thumbnail) {
+        self.profileThumbnailView.file = self.clip.user.thumbnail;
+        [self.profileThumbnailView loadInBackground];
+    } else {
+        self.profileThumbnailView.image = [UIImage imageNamed:@"tim.png"];
+    }
+    [self.profileThumbnailView setClipsToBounds:YES];
+    self.profileThumbnailView.layer.cornerRadius = self.profileThumbnailView.frame.size.width/2;
+    self.profileThumbnailView.layer.masksToBounds = YES;
 }
 
 @end
