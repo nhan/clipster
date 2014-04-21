@@ -10,6 +10,7 @@
 
 @interface User : PFUser
 @property (retain) PFRelation *friends;
+@property (retain) PFFile *thumbnail;
 
 - (void)fetchFriendsWithCompletionHandler:(void (^)(NSArray *, NSError *))completionHandler;
 + (void)searchUsersWithQuery:(NSString *)queryString completionHandler:(void(^)(NSArray *users, NSError *error))completionHandler;

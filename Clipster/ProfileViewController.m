@@ -12,6 +12,7 @@
 #import "User.h"
 #import "ProfileCell.h"
 #import "VideoViewController.h"
+#import "EditProfileViewController.h"
 
 #import <MBProgressHud/MBProgressHUD.h>
 
@@ -95,6 +96,11 @@
     }
     [currentUser saveInBackground];
     self.isFriend = !self.isFriend;
+}
+
+- (void)editProfile
+{
+    [self.navigationController pushViewController:[[EditProfileViewController alloc] init] animated:YES];
 }
 
 - (void)setUser:(User *)user

@@ -73,6 +73,8 @@
 {
     if (self.user != [User currentUser]) {
         [self.delegate toggleFriendship:self.user];
+    } else {
+        [self.delegate editProfile];
     }
 }
 

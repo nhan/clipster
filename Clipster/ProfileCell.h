@@ -11,6 +11,7 @@
 
 @protocol ProfileCellDelegate <NSObject>
 - (void)toggleFriendship:(User *)user;
+- (void)editProfile;
 @end
 
 @interface ProfileCell : UITableViewCell
