@@ -11,10 +11,14 @@
 
 @protocol ProfileCellDelegate <NSObject>
 - (void)toggleFriendship:(User *)user;
+- (void)editProfile;
 @end
 
 @interface ProfileCell : UITableViewCell
 @property (strong, nonatomic) User *user;
 @property (nonatomic, assign) BOOL isFriend;
+@property (nonatomic, assign) NSInteger numberClips;
+@property (nonatomic, assign) NSInteger numberFollowing;
+@property (nonatomic, assign) NSInteger numberFollowers;
 @property (nonatomic, weak) id<ProfileCellDelegate> delegate;
 @end

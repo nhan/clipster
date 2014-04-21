@@ -56,6 +56,8 @@
 		BB1F17B41900868C0048D9C8 /* YouTubeVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1F17B31900868C0048D9C8 /* YouTubeVideo.m */; };
 		BBAAD84918F3642B0079995E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84818F3642B0079995E /* User.m */; };
 		BBAAD84C18F364490079995E /* Clip.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84B18F364490079995E /* Clip.m */; };
+		BBEAC47E1905BA3000FB732B /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAC47C1905BA3000FB732B /* EditProfileViewController.m */; };
+		BBEAC47F1905BA3100FB732B /* EditProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBEAC47D1905BA3000FB732B /* EditProfileViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +140,9 @@
 		BBAAD84818F3642B0079995E /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		BBAAD84A18F364490079995E /* Clip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clip.h; sourceTree = "<group>"; };
 		BBAAD84B18F364490079995E /* Clip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Clip.m; sourceTree = "<group>"; };
+		BBEAC47B1905BA3000FB732B /* EditProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditProfileViewController.h; sourceTree = "<group>"; };
+		BBEAC47C1905BA3000FB732B /* EditProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProfileViewController.m; sourceTree = "<group>"; };
+		BBEAC47D1905BA3000FB732B /* EditProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProfileViewController.xib; sourceTree = "<group>"; };
 		E2ACFA0394E640529A314B3C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -208,49 +213,11 @@
 				7E970D2F18F1E5DF00517A1F /* AppDelegate.m */,
 				6BEECC9A1901CDB90055081E /* LoginManager.h */,
 				6BEECC9B1901CDB90055081E /* LoginManager.m */,
-				6B2C4A7218FB4CDC00D9A011 /* HamburgerMenuController.h */,
-				6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */,
-				6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */,
 				7E970D3118F1E5DF00517A1F /* Images.xcassets */,
 				7E970D2618F1E5DF00517A1F /* Supporting Files */,
-				7E970D5518F1F06400517A1F /* StreamViewController.h */,
-				7E970D5618F1F06400517A1F /* StreamViewController.m */,
-				7E970D5718F1F06400517A1F /* StreamViewController.xib */,
-				7E970D5A18F1F2DC00517A1F /* ClipCell.h */,
-				7E970D5B18F1F2DC00517A1F /* ClipCell.m */,
-				7E970D5C18F1F2DC00517A1F /* ClipCell.xib */,
-				7E970D6218F2165800517A1F /* LoginViewController.h */,
-				7E970D6318F2165800517A1F /* LoginViewController.m */,
-				7E970D6418F2165800517A1F /* LoginViewController.xib */,
-				BBAAD84A18F364490079995E /* Clip.h */,
-				BBAAD84B18F364490079995E /* Clip.m */,
-				BBAAD84718F3642B0079995E /* User.h */,
-				BBAAD84818F3642B0079995E /* User.m */,
-				BB1F17B21900868C0048D9C8 /* YouTubeVideo.h */,
-				BB1F17B31900868C0048D9C8 /* YouTubeVideo.m */,
-				7EF9A4BC18F884580058FE1C /* VideoViewController.h */,
-				7EF9A4BD18F884580058FE1C /* VideoViewController.m */,
-				7EF9A4BE18F884580058FE1C /* VideoViewController.xib */,
-				6BFDCB3B18F8AA98001DC09D /* ClipCreationViewController.h */,
-				6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */,
-				6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */,
-				7EF9A4C318F8B2A80058FE1C /* SmallClipCell.h */,
-				7EF9A4C418F8B2A80058FE1C /* SmallClipCell.m */,
-				7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */,
-				6B2C4A6818FB111E00D9A011 /* SearchResultsViewController.h */,
-				6B2C4A6918FB111E00D9A011 /* SearchResultsViewController.m */,
-				6B2C4A6A18FB111E00D9A011 /* SearchResultsViewController.xib */,
-				7EE5B3121900921C000F3816 /* ProfileViewController.h */,
-				7EE5B3131900921C000F3816 /* ProfileViewController.m */,
-				7EE5B3141900921C000F3816 /* ProfileViewController.xib */,
-				7EE5B3171900E594000F3816 /* ProfileCell.h */,
-				7EE5B3181900E594000F3816 /* ProfileCell.m */,
-				7EE5B3191900E594000F3816 /* ProfileCell.xib */,
-				7E9B206E1901C596008C3E01 /* ClippingViewController.h */,
-				7E9B206F1901C596008C3E01 /* ClippingViewController.m */,
-				7E9B20701901C596008C3E01 /* ClippingViewController.xib */,
-				7E9B20771901D509008C3E01 /* RulerView.h */,
-				7E9B20781901D509008C3E01 /* RulerView.m */,
+				BB571AFB1904DC9C0039BB66 /* views */,
+				BB571AFA1904DC900039BB66 /* controllers */,
+				BB571AF91904DC830039BB66 /* models */,
 			);
 			path = Clipster;
 			sourceTree = "<group>";
@@ -305,6 +272,71 @@
 				7EF9A4C118F899E40058FE1C /* spool.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		BB571AF91904DC830039BB66 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				BBAAD84A18F364490079995E /* Clip.h */,
+				BBAAD84B18F364490079995E /* Clip.m */,
+				BBAAD84718F3642B0079995E /* User.h */,
+				BBAAD84818F3642B0079995E /* User.m */,
+				BB1F17B21900868C0048D9C8 /* YouTubeVideo.h */,
+				BB1F17B31900868C0048D9C8 /* YouTubeVideo.m */,
+			);
+			name = models;
+			sourceTree = "<group>";
+		};
+		BB571AFA1904DC900039BB66 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BBEAC47B1905BA3000FB732B /* EditProfileViewController.h */,
+				BBEAC47C1905BA3000FB732B /* EditProfileViewController.m */,
+				BBEAC47D1905BA3000FB732B /* EditProfileViewController.xib */,
+				7E9B206E1901C596008C3E01 /* ClippingViewController.h */,
+				7E9B206F1901C596008C3E01 /* ClippingViewController.m */,
+				7E9B20701901C596008C3E01 /* ClippingViewController.xib */,
+				6B2C4A6818FB111E00D9A011 /* SearchResultsViewController.h */,
+				6B2C4A6918FB111E00D9A011 /* SearchResultsViewController.m */,
+				6B2C4A6A18FB111E00D9A011 /* SearchResultsViewController.xib */,
+				7EE5B3121900921C000F3816 /* ProfileViewController.h */,
+				7EE5B3131900921C000F3816 /* ProfileViewController.m */,
+				7EE5B3141900921C000F3816 /* ProfileViewController.xib */,
+				7EF9A4BC18F884580058FE1C /* VideoViewController.h */,
+				7EF9A4BD18F884580058FE1C /* VideoViewController.m */,
+				7EF9A4BE18F884580058FE1C /* VideoViewController.xib */,
+				6BFDCB3B18F8AA98001DC09D /* ClipCreationViewController.h */,
+				6BFDCB3C18F8AA98001DC09D /* ClipCreationViewController.m */,
+				6BFDCB3D18F8AA98001DC09D /* ClipCreationViewController.xib */,
+				6B2C4A7218FB4CDC00D9A011 /* HamburgerMenuController.h */,
+				6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */,
+				6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */,
+				7E970D5518F1F06400517A1F /* StreamViewController.h */,
+				7E970D5618F1F06400517A1F /* StreamViewController.m */,
+				7E970D5718F1F06400517A1F /* StreamViewController.xib */,
+				7E970D6218F2165800517A1F /* LoginViewController.h */,
+				7E970D6318F2165800517A1F /* LoginViewController.m */,
+				7E970D6418F2165800517A1F /* LoginViewController.xib */,
+			);
+			name = controllers;
+			sourceTree = "<group>";
+		};
+		BB571AFB1904DC9C0039BB66 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				7E9B20771901D509008C3E01 /* RulerView.h */,
+				7E9B20781901D509008C3E01 /* RulerView.m */,
+				7EE5B3171900E594000F3816 /* ProfileCell.h */,
+				7EE5B3181900E594000F3816 /* ProfileCell.m */,
+				7EE5B3191900E594000F3816 /* ProfileCell.xib */,
+				7EF9A4C318F8B2A80058FE1C /* SmallClipCell.h */,
+				7EF9A4C418F8B2A80058FE1C /* SmallClipCell.m */,
+				7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */,
+				7E970D5A18F1F2DC00517A1F /* ClipCell.h */,
+				7E970D5B18F1F2DC00517A1F /* ClipCell.m */,
+				7E970D5C18F1F2DC00517A1F /* ClipCell.xib */,
+			);
+			name = views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -401,6 +433,7 @@
 				7E9B20961905D96E008C3E01 /* tapToPublish.png in Resources */,
 				7E9B20721901C596008C3E01 /* ClippingViewController.xib in Resources */,
 				7E970D5E18F1F2DC00517A1F /* ClipCell.xib in Resources */,
+				BBEAC47F1905BA3100FB732B /* EditProfileViewController.xib in Resources */,
 				7EE5B31019008633000F3816 /* video_placeholder.png in Resources */,
 				7EE5B31B1900E594000F3816 /* ProfileCell.xib in Resources */,
 				6B2C4A6C18FB111E00D9A011 /* SearchResultsViewController.xib in Resources */,
@@ -464,6 +497,7 @@
 				6B2C4A6B18FB111E00D9A011 /* SearchResultsViewController.m in Sources */,
 				7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */,
 				6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */,
+				BBEAC47E1905BA3000FB732B /* EditProfileViewController.m in Sources */,
 				BBAAD84918F3642B0079995E /* User.m in Sources */,
 				6BFDCB3E18F8AA98001DC09D /* ClipCreationViewController.m in Sources */,
 				7E9B20711901C596008C3E01 /* ClippingViewController.m in Sources */,

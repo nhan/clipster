@@ -12,5 +12,5 @@
 
 @interface VideoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ClipCreationDelegate, UIGestureRecognizerDelegate, ClipCellDelegate>
 - (id)initWithClip:(Clip *)clip;
-- (id)initWithVideoId:(NSString *)videoId;
+- (id)initWithVideoId:(NSString *)videoId andTitle:(NSString *)videoTitle;
 @end

@@ -11,9 +11,9 @@
 #import "ClipCreationViewController.h"
 #import "SmallClipCell.h"
 #import "ProfileViewController.h"
+#import "YouTubeVideo.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <MBProgressHUD/MBProgressHUD.h>
-
 #import <HCYoutubeParser.h>
 
 @interface HCYoutubeParser (Async)
@@ -53,6 +53,7 @@
 @property (nonatomic, strong) Clip *aNewClip;
 
 @property (nonatomic, strong) NSString *videoId;
+@property (nonatomic, strong) NSString *videoTitle;
 @property (weak, nonatomic) IBOutlet UIView *clippingPanel;
 @property (nonatomic, assign) CGFloat clippingPanelPos;
 @property (nonatomic, assign) CGFloat tableViewScrollPos;
@@ -71,18 +72,19 @@
 }
 
 - (id)initWithClip:(Clip *)clip {
-    self = [self initWithVideoId:clip.videoId];
+    self = [self initWithVideoId:clip.videoId andTitle:clip.videoTitle];
     if (self) {
         _activeClip = clip;
     }
     return self;
 }
 
-- (id)initWithVideoId:(NSString *)videoId
+- (id)initWithVideoId:(NSString *)videoId andTitle:(NSString *)videoTitle
 {
     self = [super self];
     if (self) {
         _videoId = videoId;
+        _videoTitle = videoTitle;
     }
     return self;
 }
@@ -123,6 +125,7 @@
     self.aNewClip.timeStart = currentTime;
     self.aNewClip.timeEnd = currentTime + 10000;
     self.aNewClip.videoId = self.videoId;
+    self.aNewClip.videoTitle = self.videoTitle;
     self.aNewClip.user = (User *)[PFUser currentUser];
     
     [self.clips addObject:self.aNewClip];

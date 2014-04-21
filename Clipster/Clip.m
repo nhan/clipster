@@ -16,8 +16,10 @@
 }
 
 @dynamic text;
+@dynamic canonicalText;
 @dynamic isFavorite;
 @dynamic videoId;
+@dynamic videoTitle;
 @dynamic timeStart;
 @dynamic timeEnd;
 @dynamic thumbnail;
@@ -34,6 +36,12 @@
     NSInteger endRemainingSeconds = endSeconds - (endMinutes*60);
     
     return [NSString stringWithFormat:@"%d:%02d - %d:%02d", startMinutes, startRemainingSeconds, endMinutes, endRemainingSeconds];
+}
+
+- (void)setText:(NSString *)text
+{
+    self.canonicalText = [text lowercaseString];
+    [self setObject:text forKey:@"text"];
 }
 
 - (void)setUser:(User *)user
@@ -55,7 +63,8 @@
 + (void)searchClipsWithQuery:(NSString *)queryString completionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
     PFQuery *query = [Clip query];
-    [query whereKey:@"text" containsString:queryString];
+    NSString *canonicalQueryString = [queryString lowercaseString];
+    [query whereKey:@"canonicalText" containsString:canonicalQueryString];
     [query findObjectsInBackgroundWithBlock:^(NSArray *clips, NSError *error) {
         completionHandler(clips, error);
     }];

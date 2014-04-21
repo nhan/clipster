@@ -17,9 +17,11 @@
 // duplicate so that we don't have to fetch the user all the time
 @property (retain) NSString *username;
 @property (retain) NSString *text;
+@property (retain) NSString *canonicalText;
 @property BOOL isFavorite;
 @property (retain) NSString *videoId;
-// user
+@property (retain) NSString *videoTitle;
+
 @property NSInteger timeStart;
 @property NSInteger timeEnd;
 @property (retain) PFFile *thumbnail;

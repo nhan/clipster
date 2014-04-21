@@ -12,6 +12,7 @@
 #import "User.h"
 #import "ProfileCell.h"
 #import "VideoViewController.h"
+#import "EditProfileViewController.h"
 
 #import <MBProgressHud/MBProgressHUD.h>
 
@@ -71,7 +72,6 @@
     self.prototype = [clipNib instantiateWithOwner:self options:nil][0];
     [self.tableView registerNib:clipNib forCellReuseIdentifier:@"ClipCell"];
     
-    
     [self refreshUI];
 }
 
@@ -98,6 +98,11 @@
     self.isFriend = !self.isFriend;
 }
 
+- (void)editProfile
+{
+    [self.navigationController pushViewController:[[EditProfileViewController alloc] init] animated:YES];
+}
+
 - (void)setUser:(User *)user
 {
     _user = user;
@@ -118,6 +123,9 @@
 {
     self.profileCell.user = self.user;
     self.profileCell.isFriend = self.isFriend;
+    self.profileCell.numberClips = self.clips.count;
+    self.profileCell.numberFollowers = 1;
+    self.profileCell.numberFollowing = 1;
     [self.tableView reloadData];
 }
 
@@ -166,6 +174,7 @@
     [Clip searchClipsForUsernames:@[self.username] completionHandler:^(NSArray *clips, NSError *error) {
         if (!error) {
             self.clips = clips;
+            self.profileCell.numberClips = self.clips.count;
             [self.tableView reloadData];
         } else {
             // Log details of the failure
