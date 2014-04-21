@@ -207,7 +207,7 @@
         vc = [[ProfileViewController alloc] initWithUser:user];
     } else if (self.searchTypeControl.selectedSegmentIndex == YOUTUBE_SEARCH) {
         YouTubeVideo *video = self.searchResults[indexPath.row];
-        vc = [[VideoViewController alloc] initWithVideoId:video.videoId];
+        vc = [[VideoViewController alloc] initWithVideoId:video.videoId andTitle:video.title];
     }
     [self.navigationController pushViewController:vc animated:YES];
 }

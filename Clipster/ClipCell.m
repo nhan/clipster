@@ -45,7 +45,7 @@
     [self.profileThumbnail setClipsToBounds:YES];
     self.profileThumbnail.layer.cornerRadius = self.profileThumbnail.frame.size.width/2;
     self.profileThumbnail.layer.masksToBounds = YES;
-    self.youTubeLabel.text = self.clip.videoId;
+    self.youTubeLabel.text = self.clip.videoTitle;
 }
 
 @end

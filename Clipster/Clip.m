@@ -19,6 +19,7 @@
 @dynamic canonicalText;
 @dynamic isFavorite;
 @dynamic videoId;
+@dynamic videoTitle;
 @dynamic timeStart;
 @dynamic timeEnd;
 @dynamic thumbnail;

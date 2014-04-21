@@ -20,7 +20,8 @@
 @property (retain) NSString *canonicalText;
 @property BOOL isFavorite;
 @property (retain) NSString *videoId;
-// user
+@property (retain) NSString *videoTitle;
+
 @property NSInteger timeStart;
 @property NSInteger timeEnd;
 @property (retain) PFFile *thumbnail;
