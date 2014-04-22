@@ -308,8 +308,8 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (self.tableView.contentOffset.y < 0) {
-        self.clippingPanel.frame = CGRectMake(0, self.tableView.frame.origin.y-self.tableView.contentOffset.y, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
+    if (self.tableView.contentOffset.y <= 0) {
+        self.clippingPanel.frame = CGRectMake(0, self.tableView.frame.origin.y, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
     } else {
         CGFloat newPos = self.clippingPanelPos+ (self.tableViewScrollPos - self.tableView.contentOffset.y);
         if (newPos < (self.tableView.frame.origin.y-self.clippingPanel.frame.size.height)) {
