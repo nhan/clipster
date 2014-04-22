@@ -194,9 +194,9 @@
         } else {
             self.player = [[MPMoviePlayerController alloc] initWithContentURL: [NSURL URLWithString:videoURL]];
             [self.player prepareToPlay];
-            
-            [self updatePlayer];
+
             self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
+            [self updatePlayer];
             [self.player play];
         }
         
