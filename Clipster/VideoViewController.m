@@ -107,6 +107,7 @@
             [self.tableView reloadData];
             
             [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+            [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES];
             
         } else {
             // Log details of the failure
@@ -289,6 +290,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     Clip *clip = self.clips[indexPath.row];
     if ([clip isPublished]) {
         self.activeClip = clip;
