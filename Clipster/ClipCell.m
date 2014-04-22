@@ -41,19 +41,24 @@
     self.thumbnail.layer.cornerRadius = 2.0;
     self.thumbnail.layer.masksToBounds = YES;
 
+    self.youTubeLabel.text = self.clip.videoTitle;
 
     if ([self.clip.user isDataAvailable]) {
-        [self refreshUserThumbnail];
+        [self refreshUserThumbnail:self.clip.user];
     } else {
-        [self.clip.user fetchInBackgroundWithBlock:^(PFObject *user, NSError *error) {
-            [self refreshUserThumbnail];
+        [self.clip.user fetchInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            if (error) {
+                NSLog(@"Error grabbing profile thumbnail: %@", error);
+            } else {
+                [self refreshUserThumbnail:(User *)object];
+            }
         }];
     }
 }
 
-- (void)refreshUserThumbnail
+- (void)refreshUserThumbnail:(User *)user
 {
-    if (self.clip.user.thumbnail) {
+    if (user.thumbnail) {
         self.profileThumbnailView.file = self.clip.user.thumbnail;
         [self.profileThumbnailView loadInBackground];
     } else {

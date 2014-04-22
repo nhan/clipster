@@ -8,6 +8,7 @@
 
 #import "ClippingViewController.h"
 #import "RulerView.h"
+#import "RPFloatingPlaceholderTextView.h"
 
 @interface ClippingViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *startSlider;
@@ -17,9 +18,18 @@
 @property (weak, nonatomic) IBOutlet UIView *rulerContainer;
 @property (nonatomic, assign) CGFloat startTime;
 @property (nonatomic, assign) CGFloat   endTime;
+@property (nonatomic, assign) CGFloat startTimeIntermediate;
+@property (nonatomic, assign) CGFloat   endTimeIntermediate;
 @property (weak, nonatomic) IBOutlet UILabel *startTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *endTimeLabel;
 @property (nonatomic, assign) CGFloat translation;
+
+
+@property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) Clip *clip;
+@property (nonatomic, strong) MPMoviePlayerController *player;
+@property (weak, nonatomic) IBOutlet RPFloatingPlaceholderTextView *annotationTextView;
 @end
 
 @implementation ClippingViewController
@@ -27,9 +37,9 @@
 static CGFloat startSliderHomePos = 50;
 static CGFloat   endSliderHomePos = 240;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super init];
     if (self) {
         // Custom initialization
         self.title = @"Clipping";
@@ -37,13 +47,29 @@ static CGFloat   endSliderHomePos = 240;
     return self;
 }
 
+- (id)initWithClip:(Clip*)clip moviePlayer:(MPMoviePlayerController*)player
+{
+    self = [self init];
+    if (self) {
+        _clip = clip;
+        _player = player;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction:)];
     
-    // Do any additional setup after loading the view from its nib.
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+    self.annotationTextView.delegate = self;
+    self.annotationTextView.placeholder = @"Enter description";
+
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     // Add pan gestures to draggable sliders
     UIPanGestureRecognizer *startPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onStartSliderDrag:)];
@@ -55,14 +81,79 @@ static CGFloat   endSliderHomePos = 240;
     // Draw the ruler
     RulerView *ruler = [[RulerView alloc] initWithFrame:CGRectMake(0, 0, self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
     [self.rulerContainer addSubview:ruler];
-    
-    // Get this from the clip later
-    self.startTime = 10.0;
-    self.endTime = 20.0;
-    self.startTimeLabel.text = [NSString stringWithFormat:@"%f", self.startTime];
-    self.endTimeLabel.text = [NSString stringWithFormat:@"%f", self.endTime];
-    
+    self.startTime = self.clip.timeStart / 1000.0f;
+    self.endTime = self.clip.timeEnd / 1000.0f;
     [self updateRulerData:ruler];
+
+    // add the player to ourself
+    [self.player pause];
+    [self.player.view setFrame: self.videoPlayerContainer.frame];
+    [self.videoPlayerContainer addSubview: self.player.view];
+    [self.view bringSubviewToFront:self.videoPlayerContainer];
+    self.player.fullscreen = NO;
+}
+
+#pragma mark - UITextViewDelegate
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    [self.scrollView setContentOffset:self.rulerContainer.frame.origin animated:YES];
+}
+
+- (IBAction)tapAction:(id)sender {
+    if (self.annotationTextView.isFirstResponder) {
+        [self.annotationTextView resignFirstResponder];
+    }
+    [self.scrollView setContentOffset:self.videoPlayerContainer.frame.origin animated:YES];
+}
+
+- (void)doneAction:(id)sender {
+    self.clip.text = self.annotationTextView.text;
+    self.clip.timeStart = self.startTime * 1000;
+    self.clip.timeEnd = self.endTime * 1000;
+    [self.delegate creationDone:self.clip];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)cancelAction
+{
+    [self.delegate creationCanceled];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)updateUI:(BOOL)isEndChanged
+{
+    if (isEndChanged) {
+        self.player.currentPlaybackTime = self.endTimeIntermediate;
+    } else {
+        self.player.currentPlaybackTime = self.startTimeIntermediate;
+    }
+    
+    self.startTimeLabel.text = [Clip formatTimeWithSeconds:self.startTimeIntermediate];
+    self.endTimeLabel.text = [Clip formatTimeWithSeconds:self.endTimeIntermediate];
+}
+
+- (void)setStartTimeIntermediate:(CGFloat)startTimeIntermediate
+{
+    _startTimeIntermediate = startTimeIntermediate;
+    [self updateUI:NO];
+}
+
+- (void)setEndTimeIntermediate:(CGFloat)endTimeIntermediate
+{
+    _endTimeIntermediate = endTimeIntermediate;
+    [self updateUI:YES];
+}
+
+- (void)setStartTime:(CGFloat)startTime
+{
+    _startTime = startTime;
+    self.startTimeIntermediate = startTime;
+}
+
+- (void)setEndTime:(CGFloat)endTime
+{
+    _endTime = endTime;
+    self.endTimeIntermediate = endTime;
 }
 
 - (void)updateRulerData:(RulerView *)ruler{
@@ -94,7 +185,8 @@ static CGFloat   endSliderHomePos = 240;
         //update the Labels - DELETE
         CGFloat originalTimeDiff = self.endTime - self.startTime;
         CGFloat newTimeDiff = ((endSliderHomePos - self.startSlider.frame.origin.x)/(endSliderHomePos - startSliderHomePos))*originalTimeDiff;
-        self.startTimeLabel.text = [NSString stringWithFormat:@"%f", self.endTime-newTimeDiff];
+        
+        self.startTimeIntermediate = self.endTime-newTimeDiff;
         
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
         //update starting time
@@ -141,9 +233,8 @@ static CGFloat   endSliderHomePos = 240;
         //update ending time
         CGFloat originalTimeDiff = self.endTime - self.startTime;
         CGFloat newTimeDiff = ((self.endSlider.frame.origin.x - startSliderHomePos)/(endSliderHomePos - startSliderHomePos))*originalTimeDiff;
-        self.endTimeLabel.text = [NSString stringWithFormat:@"%f", self.startTime+newTimeDiff];
         
-        
+        self.endTimeIntermediate = self.startTime+newTimeDiff;
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
         //update ending time
         CGFloat originalTimeDiff = self.endTime - self.startTime;
@@ -169,6 +260,8 @@ static CGFloat   endSliderHomePos = 240;
             [self.rulerContainer addSubview:newRulerView];
             [self updateRulerData:newRulerView];
         }];
+        
+        
     }
 }
 

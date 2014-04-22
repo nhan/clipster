@@ -16,7 +16,7 @@
 
 @interface ProfileCell : UITableViewCell
 @property (strong, nonatomic) User *user;
-@property (nonatomic, assign) BOOL isFriend;
+@property (nonatomic, assign) BOOL currentUserIsFollowing;
 @property (nonatomic, assign) NSInteger numberClips;
 @property (nonatomic, assign) NSInteger numberFollowing;
 @property (nonatomic, assign) NSInteger numberFollowers;

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SmallClipCell.h"
-#import "ClipCreationViewController.h"
+#import "ClippingViewController.h"
 
 @interface VideoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ClipCreationDelegate, UIGestureRecognizerDelegate, ClipCellDelegate>
 - (id)initWithClip:(Clip *)clip;
