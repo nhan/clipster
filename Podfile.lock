@@ -173,6 +173,7 @@ PODS:
   - MBProgressHUD (0.8)
   - Parse (1.2.19):
     - Facebook-iOS-SDK (~> 3.11)
+  - RPFloatingPlaceholders (0.2.5)
 
 DEPENDENCIES:
   - AFNetworking
@@ -180,6 +181,7 @@ DEPENDENCIES:
   - HCYoutubeParser
   - MBProgressHUD
   - Parse
+  - RPFloatingPlaceholders
 
 SPEC CHECKSUMS:
   AFNetworking: dd8c1868e57451e3d17ebd3516f2a8c16f9646fe
@@ -190,5 +192,6 @@ SPEC CHECKSUMS:
   HCYoutubeParser: b5e88f679f613c1bbe58df3e173f46be38dcfbc0
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
   Parse: 3739f0b211c49115bad96d6b0969b804d4da2f24
+  RPFloatingPlaceholders: f18ef716afa3158e8552053d721d4851a934f3d0
 
 COCOAPODS: 0.32.1

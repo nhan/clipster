@@ -25,17 +25,16 @@
 @dynamic thumbnail;
 @dynamic username;
 
++ (NSString *)formatTimeWithSeconds:(NSInteger)seconds
+{
+    NSInteger minutes = seconds/60;
+    NSInteger remainingSeconds = seconds - (minutes*60);
+    return [NSString stringWithFormat:@"%d:%02d", minutes, remainingSeconds];
+}
+
 - (NSString *)formattedTimestamp
 {
-    NSInteger startSeconds = self.timeStart/1000;
-    NSInteger startMinutes = startSeconds/60;
-    NSInteger startRemainingSeconds = startSeconds - (startMinutes*60);
-    
-    NSInteger endSeconds = self.timeEnd/1000;
-    NSInteger endMinutes = endSeconds/60;
-    NSInteger endRemainingSeconds = endSeconds - (endMinutes*60);
-    
-    return [NSString stringWithFormat:@"%d:%02d - %d:%02d", startMinutes, startRemainingSeconds, endMinutes, endRemainingSeconds];
+    return [NSString stringWithFormat:@"%@ - %@", [Clip formatTimeWithSeconds:self.timeStart/1000], [Clip formatTimeWithSeconds:self.timeEnd/1000]];
 }
 
 - (void)setText:(NSString *)text

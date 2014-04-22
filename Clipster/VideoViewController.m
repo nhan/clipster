@@ -8,7 +8,6 @@
 
 #import "VideoViewController.h"
 #import "Clip.h"
-#import "ClipCreationViewController.h"
 #import "SmallClipCell.h"
 #import "ProfileViewController.h"
 #import "YouTubeVideo.h"
@@ -137,26 +136,6 @@
     [self.player requestThumbnailImagesAtTimes:@[thumnailTime] timeOption:MPMovieTimeOptionExact];
 }
 
-#pragma mark - ClipCreationDelegate
-
-- (void)creationDone:(Clip *)clip
-{
-    [clip saveInBackground];
-    NSInteger row = [self.clips indexOfObject:clip];
-    
-    // When we finish adding clip we need to sort correctly
-    [self.tableView reloadData];
-    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
-    
-    // Dirty the stream when we've created a new clip
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
-}
-
-- (void)creationCanceled
-{
-    // when present a modal instead of using the nav controller we'll need this
-}
-
 - (void)setActiveClip:(Clip *)activeClip
 {
     _activeClip = activeClip;
@@ -199,9 +178,6 @@
         
         // We need to consider what our video quality strategy should be
         // not all qualities will be available at all time and what our connectivity is
-        
-        
-        
         NSString *videoURL = nil;
         
         if (videoDictionary && videoDictionary.count > 0) {
@@ -217,13 +193,7 @@
         } else {
             self.player = [[MPMoviePlayerController alloc] initWithContentURL: [NSURL URLWithString:videoURL]];
             [self.player prepareToPlay];
-            [self.player.view setFrame: self.videoPlayerContainer.frame];
-            [self.videoPlayerContainer addSubview: self.player.view];
-
-            [self.view bringSubviewToFront:self.videoPlayerContainer];
-            
-            self.player.fullscreen = NO;
-            self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
+            [self updatePlayer];
             [self.player play];
         }
         
@@ -239,6 +209,38 @@
     [self.tableView registerNib:clipCellNib forCellReuseIdentifier:@"ClipCell"];
     
     [self fetchClips];
+}
+
+- (void)updatePlayer
+{
+    [self.player.view setFrame: self.videoPlayerContainer.frame];
+    [self.videoPlayerContainer addSubview: self.player.view];
+    [self.view bringSubviewToFront:self.videoPlayerContainer];
+    self.player.fullscreen = NO;
+    self.player.currentPlaybackTime = self.activeClip.timeStart / 1000.0f;
+}
+
+#pragma mark - ClipCreationDelegate
+
+- (void)creationDone:(Clip *)clip
+{
+    [clip saveInBackground];
+    NSInteger row = [self.clips indexOfObject:clip];
+    
+    // When we finish adding clip we need to sort correctly
+    [self.tableView reloadData];
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+    
+    [self updatePlayer];
+    [self.player play];
+    // Dirty the stream when we've created a new clip
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
+}
+
+- (void)creationCanceled
+{
+    [self updatePlayer];
+    [self.player play];
 }
 
 - (void)setupClippingPanel{
@@ -291,9 +293,10 @@
     if ([clip isPublished]) {
         self.activeClip = clip;
     } else {
-        ClipCreationViewController *ccvc = [[ClipCreationViewController alloc] initWithClip:clip];
-        ccvc.delegate = self;
-        [self.navigationController pushViewController:ccvc animated:YES];
+        ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:clip moviePlayer:self.player];
+        clippingVC.delegate = self;
+        [self.player pause];
+        [self.navigationController pushViewController:clippingVC animated:YES];
     }
 }
 
