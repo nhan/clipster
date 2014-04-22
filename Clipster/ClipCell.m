@@ -59,7 +59,7 @@
 - (void)refreshUserThumbnail:(User *)user
 {
     if (user.thumbnail) {
-        self.profileThumbnailView.file = self.clip.user.thumbnail;
+        self.profileThumbnailView.file = user.thumbnail;
         [self.profileThumbnailView loadInBackground];
     } else {
         self.profileThumbnailView.image = [UIImage imageNamed:@"tim.png"];
