@@ -41,6 +41,7 @@
     self.thumbnail.layer.cornerRadius = 2.0;
     self.thumbnail.layer.masksToBounds = YES;
 
+    self.youTubeLabel.text = self.clip.videoTitle;
 
     if ([self.clip.user isDataAvailable]) {
         [self refreshUserThumbnail:self.clip.user];
