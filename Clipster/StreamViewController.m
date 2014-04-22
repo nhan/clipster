@@ -74,7 +74,7 @@
 {
     // Get clips for current user and all friends
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [[User currentUser] fetchFriendsWithCompletionHandler:^(NSArray *friends, NSError *error) {
+    [[User currentUser] fetchFollowingWithCompletionHandler:^(NSArray *friends, NSError *error) {
         if (!error) {
             NSMutableArray *users = [friends mutableCopy];
             [users addObject:[User currentUser]];

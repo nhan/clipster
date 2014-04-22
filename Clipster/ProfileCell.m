@@ -26,9 +26,9 @@
     [self refreshUI];
 }
 
-- (void)setIsFriend:(BOOL)isFriend
+- (void)setCurrentUserIsFollowing:(BOOL)isCurrentUserFollowing
 {
-    _isFriend = isFriend;
+    _currentUserIsFollowing = isCurrentUserFollowing;
     [self refreshUI];
 }
 
@@ -59,7 +59,7 @@
         [self.followButton setTitle:@"Edit" forState:UIControlStateNormal];
     } else {
         // follow/unfollow button
-        if (self.isFriend) {
+        if (self.currentUserIsFollowing) {
             [self.followButton setTitle:@"Unfollow" forState:UIControlStateNormal];
         } else {
             [self.followButton setTitle:@"Follow" forState:UIControlStateNormal];

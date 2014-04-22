@@ -23,8 +23,8 @@
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) ProfileCell *profileCell;
 @property (nonatomic, strong) SmallClipCell *prototype;
-@property (nonatomic, assign) BOOL isFriend;
-@property (nonatomic, strong) NSArray *friends;
+@property (nonatomic, assign) BOOL isCurrentUserFollowing;
+@property (nonatomic, strong) NSArray *following;
 @property (nonatomic, strong) NSArray *followers;
 @end
 
@@ -39,7 +39,7 @@
         [self fetchUser];
         [self fetchClips];
         [self fetchIfImFollowing];
-        [self fetchFriendships];
+        [self fetchFollowing];
         [self fetchFollowers];
     }
     return self;
@@ -54,7 +54,7 @@
         _username = user.username;
         [self fetchClips];
         [self fetchIfImFollowing];
-        [self fetchFriendships];
+        [self fetchFollowing];
         [self fetchFollowers];
     }
     return self;
@@ -95,13 +95,13 @@
 - (void)toggleFriendship:(User *)user
 {
     User *currentUser = [User currentUser];
-    if (self.isFriend) {
+    if (self.isCurrentUserFollowing) {
         [currentUser.friends removeObject:user];
     } else {
         [currentUser.friends addObject:user];
     }
     [currentUser saveInBackground];
-    self.isFriend = !self.isFriend;
+    self.isCurrentUserFollowing = !self.isCurrentUserFollowing;
 }
 
 - (void)editProfile
@@ -119,19 +119,19 @@
     [self refreshUI];
 }
 
-- (void)setIsFriend:(BOOL)isFriend
+- (void)setIsCurrentUserFollowing:(BOOL)isFriend
 {
-    _isFriend = isFriend;
+    _isCurrentUserFollowing = isFriend;
     [self refreshUI];
 }
 
 - (void) refreshUI
 {
     self.profileCell.user = self.user;
-    self.profileCell.isFriend = self.isFriend;
+    self.profileCell.currentUserIsFollowing = self.isCurrentUserFollowing;
     self.profileCell.numberClips = self.clips.count;
     self.profileCell.numberFollowers = self.followers.count;
-    self.profileCell.numberFollowing = self.friends.count;
+    self.profileCell.numberFollowing = self.following.count;
     [self.tableView reloadData];
 }
 
@@ -169,19 +169,19 @@
             NSLog(@"error fetching friendshipness");
         } else {
             if (objects.count == 1) {
-                self.isFriend = YES;
+                self.isCurrentUserFollowing = YES;
             }
         }
     }];
 }
 
-- (void)fetchFriendships
+- (void)fetchFollowing
 {
-    [self.user fetchFriendsWithCompletionHandler:^(NSArray *friends, NSError *error) {
+    [self.user fetchFollowingWithCompletionHandler:^(NSArray *friends, NSError *error) {
         if (error) {
             NSLog(@"error fetching friendships");
         } else {
-            self.friends = friends;
+            self.following = friends;
             [self refreshUI];
         }
     }];

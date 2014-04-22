@@ -26,22 +26,12 @@
     }];
 }
 
-- (void)fetchFriendsWithCompletionHandler:(void (^)(NSArray *, NSError *))completionHandler
+- (void)fetchFollowingWithCompletionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
     PFQuery *query = [self.friends query];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *friends, NSError *error) {
-        completionHandler(friends, error);
+    [query findObjectsInBackgroundWithBlock:^(NSArray *following, NSError *error) {
+        completionHandler(following, error);
     }];
-    
-//    if (self.cachedFriends) {
-//        completionHandler(self.cachedFriends, nil);
-//    } else {
-//        PFQuery *query = [self.friends query];
-//        [query findObjectsInBackgroundWithBlock:^(NSArray *friends, NSError *error) {
-//            self.cachedFriends = friends;
-//            completionHandler(friends, error);
-//        }];
-//    }
 }
 
 @end
