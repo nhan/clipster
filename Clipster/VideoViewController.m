@@ -248,7 +248,6 @@
             [self updatePlayer];
             
             [self setupCustomVideoControl];
-            self.isVideoPlaying = YES;
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
@@ -270,6 +269,8 @@
     [self.view bringSubviewToFront:self.videoPlayerContainer];
     self.player.fullscreen = NO;
     self.player.currentPlaybackTime = self.activeClip.timeStart / 1000.0f;
+    
+    self.isVideoPlaying = YES;
 }
 
 #pragma mark - ClipCreationDelegate
@@ -284,7 +285,7 @@
     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
     
     [self updatePlayer];
-    [self.player play];
+    
     // Dirty the stream when we've created a new clip
     [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
 }
@@ -292,7 +293,6 @@
 - (void)creationCanceled
 {
     [self updatePlayer];
-    [self.player play];
 }
 
 - (void)setupClippingPanel{
