@@ -8,13 +8,15 @@
 
 #import "ClipCell.h"
 #import "YouTubeVideo.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ClipCell ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *youTubeLabel;
+@property (weak, nonatomic) IBOutlet UIView *thumbnailContainer;
+@property (weak, nonatomic) IBOutlet UIView *card;
 @property (weak, nonatomic) IBOutlet PFImageView *profileThumbnailView;
 @end
 
@@ -29,7 +31,6 @@
 - (void)refreshUI
 {
     self.titleLabel.text = self.clip.text;
-    self.descriptionLabel.text = self.clip.formattedTimestamp;
     self.usernameLabel.text = self.clip.username;
     if (self.clip.thumbnail) {
         self.thumbnail.file = self.clip.thumbnail;
@@ -38,8 +39,26 @@
         self.thumbnail.image = [UIImage imageNamed:@"stream_thumbnail_placeholder.gif"];
     }
     [self.thumbnail setClipsToBounds:YES];
-    self.thumbnail.layer.cornerRadius = 2.0;
+    self.thumbnail.layer.cornerRadius = 6.0;
     self.thumbnail.layer.masksToBounds = YES;
+    self.profileThumbnailView.alpha = 0.0;
+    
+    [self.thumbnailContainer setClipsToBounds:YES];
+    self.thumbnailContainer.layer.cornerRadius = self.thumbnailContainer.frame.size.width/2;
+    self.thumbnailContainer.layer.masksToBounds = YES;
+    self.thumbnailContainer.backgroundColor = [UIColor whiteColor];
+    
+    [self.card setClipsToBounds:YES];
+    self.card.layer.cornerRadius = 6.0;
+    
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.card.bounds];
+    self.card.layer.masksToBounds = NO;
+    self.card.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.card.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
+    self.card.layer.shadowOpacity = 0.1f;
+    self.card.layer.shadowPath = shadowPath.CGPath;
+    self.card.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.28].CGColor;
+    self.card.layer.borderWidth = 1;
 
     self.youTubeLabel.text = self.clip.videoTitle;
 
@@ -67,6 +86,7 @@
     [self.profileThumbnailView setClipsToBounds:YES];
     self.profileThumbnailView.layer.cornerRadius = self.profileThumbnailView.frame.size.width/2;
     self.profileThumbnailView.layer.masksToBounds = YES;
+    self.profileThumbnailView.alpha = 1.0;
 }
 
 @end

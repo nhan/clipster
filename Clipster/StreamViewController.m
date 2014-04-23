@@ -116,10 +116,6 @@
 {
     ClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClipCell"];
     cell.clip = self.clips[indexPath.row];
-    UIView *bgColorView = [[UIView alloc] init];
-    bgColorView.backgroundColor = [UIColor colorWithRed:0.871 green:0.820 blue:0.740 alpha:0.230];
-    bgColorView.layer.masksToBounds = YES;
-    [cell setSelectedBackgroundView:bgColorView];
     return cell;
 }
 
@@ -135,7 +131,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 280;
+    return 370;
 }
 
 
