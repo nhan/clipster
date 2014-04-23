@@ -68,6 +68,10 @@
 @property (nonatomic, strong) NSTimer *playbackMonitorTimer;
 @property (nonatomic, assign) BOOL isScrubbing;
 @property (nonatomic, assign) BOOL wasVideoPlayingBeforeScrub;
+@property (nonatomic, assign) BOOL isVideoControlMinimized;
+@property (nonatomic, assign) NSInteger numberTimerEventsSinceVideoInteraction;
+@property (nonatomic, assign) CGFloat videoControlHeight;
+@property (nonatomic, assign) CGFloat videoControlYOffset;
 @end
 
 @implementation VideoViewController
@@ -172,8 +176,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
 }
 
-static int VIDEO_CONTROL_HEIGHT = 20;
-static int PLAY_BUTTON_WIDTH = 70;
+static const float VIDEO_MONITOR_INTERVAL = .2;
+static const float VIDEO_CONTROL_MINIMIZE_INTERVAL = 3.;
+static const int VIDEO_CONTROL_HEIGHT = 20;
+static const int VIDEO_CONTROL_HEIGHT_MIN = 5;
+static const int PLAY_BUTTON_WIDTH = 70;
+
+- (CGFloat)videoControlHeight
+{
+    return self.isVideoControlMinimized ? VIDEO_CONTROL_HEIGHT_MIN : VIDEO_CONTROL_HEIGHT;
+}
 
 #pragma mark - Custom Video Control
 - (void)setupCustomVideoControl
@@ -183,22 +195,22 @@ static int PLAY_BUTTON_WIDTH = 70;
     
     UIView *movieView = self.player.view;
     
-    self.videoControlView = [[VideoControlView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - VIDEO_CONTROL_HEIGHT, movieView.frame.size.width, VIDEO_CONTROL_HEIGHT)];
+    self.videoControlView = [[VideoControlView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight)];
     self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
     
     // play/pause region
-    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,PLAY_BUTTON_WIDTH,VIDEO_CONTROL_HEIGHT)];
+    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,PLAY_BUTTON_WIDTH,self.videoControlHeight)];
     [self.playButton setTitle:@"P" forState:UIControlStateNormal];
     self.playButton.alpha = 0.3;
     [self.playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControlView addSubview:self.playButton];
     
     // scrubbing/vis region
-    self.scrubView = [[UIView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, VIDEO_CONTROL_HEIGHT)];
+    self.scrubView = [[UIView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
     self.scrubView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.8];
     
     // add a visualization of video viewing progress
-    self.scrubPastView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, VIDEO_CONTROL_HEIGHT)];
+    self.scrubPastView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, self.videoControlHeight)];
     self.scrubPastView.backgroundColor = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:0.8];
     [self.scrubView addSubview:self.scrubPastView];
     
@@ -212,6 +224,19 @@ static int PLAY_BUTTON_WIDTH = 70;
     
     [movieView addSubview:self.videoControlView];
     [movieView bringSubviewToFront:self.videoControlView];
+}
+
+- (void)setIsVideoControlMinimized:(BOOL)isVideoControlMinimized
+{
+    _isVideoControlMinimized = isVideoControlMinimized;
+    
+    // hid the play button
+    UIView *movieView = self.player.view;
+    self.playButton.hidden = isVideoControlMinimized;
+    self.videoControlView.frame = CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight);
+    self.scrubView.frame = CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight);
+    // set past frame resizes automatically
+    self.currentPlaybackPosition = self.currentPlaybackPosition;
 }
 
 - (void)setIsVideoPlaying:(BOOL)isVideoPlaying
@@ -232,7 +257,7 @@ static int PLAY_BUTTON_WIDTH = 70;
 
 - (void)startMonitorPlaybackTimer
 {
-    self.playbackMonitorTimer = [NSTimer timerWithTimeInterval:.2 target:self selector:@selector(monitorPlayback) userInfo:nil repeats:YES];
+    self.playbackMonitorTimer = [NSTimer timerWithTimeInterval:VIDEO_MONITOR_INTERVAL target:self selector:@selector(monitorPlayback) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self.playbackMonitorTimer forMode:NSDefaultRunLoopMode];
 }
 
@@ -244,15 +269,22 @@ static int PLAY_BUTTON_WIDTH = 70;
 - (void)setCurrentPlaybackPosition:(CGFloat)currentPlaybackPosition
 {
     // Change width of scrub depending on new playback position
-    self.scrubPastView.frame = CGRectMake(0, 0, currentPlaybackPosition, VIDEO_CONTROL_HEIGHT);
+    self.scrubPastView.frame = CGRectMake(0, 0, currentPlaybackPosition, self.videoControlHeight);
     _currentPlaybackPosition = currentPlaybackPosition;
 }
 
 - (void)monitorPlayback
 {
     if (self.player.duration) {
+        // Set the playback position feedback
         CGFloat percentPlayed = self.player.currentPlaybackTime / self.player.duration;
         self.currentPlaybackPosition = self.scrubView.frame.size.width * percentPlayed;
+    }
+    
+    // If we have not interacted with the video in a while lets minimize
+    int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
+    if (!self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction++ > maxNumberIntervalsBeforeMinimize) {
+        self.isVideoControlMinimized = YES;
     }
 }
 
