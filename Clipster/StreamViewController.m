@@ -116,6 +116,7 @@
 {
     ClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClipCell"];
     cell.clip = self.clips[indexPath.row];
+    cell.delegate = self;
     return cell;
 }
 
@@ -132,6 +133,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 370;
+}
+
+#pragma mark - ClipCellDelegate
+
+- (void)didClickUsername:(NSString *)username
+{
+    ProfileViewController *profileVC = [[ProfileViewController alloc] initWithUsername:username];
+    [self.navigationController pushViewController:profileVC animated:YES];
 }
 
 

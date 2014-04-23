@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Clip.h"
+#import "SmallClipCell.h"
 
 @interface ClipCell : UITableViewCell
 @property (nonatomic, strong) Clip *clip;
+@property (nonatomic, weak) id<ClipCellDelegate> delegate;
 @end

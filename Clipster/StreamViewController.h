@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ClipCell.h"
 
-@interface StreamViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface StreamViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ClipCellDelegate>
 
 @end
