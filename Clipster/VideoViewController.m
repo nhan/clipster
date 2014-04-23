@@ -66,6 +66,8 @@
 @property (nonatomic, assign) CGFloat currentPlaybackPosition;
 @property (nonatomic, assign) NSTimeInterval currentPlaybackTime;
 @property (nonatomic, strong) NSTimer *playbackMonitorTimer;
+@property (nonatomic, assign) BOOL isScrubbing;
+@property (nonatomic, assign) BOOL wasVideoPlayingBeforeScrub;
 @end
 
 @implementation VideoViewController
@@ -200,8 +202,9 @@ static int PLAY_BUTTON_WIDTH = 70;
     self.scrubPastView.backgroundColor = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:0.8];
     [self.scrubView addSubview:self.scrubPastView];
     
-    UITapGestureRecognizer *tapScrubRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapScrubber:)];
-    [self.scrubView addGestureRecognizer:tapScrubRecognizer];
+    UIPanGestureRecognizer *panScrub = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panScrubber:)];
+    [self.scrubView addGestureRecognizer:panScrub];
+    
     [self.videoControlView addSubview:self.scrubView];
     
     // Setting the current playback position will set playback time and progress
@@ -216,20 +219,26 @@ static int PLAY_BUTTON_WIDTH = 70;
     if (isVideoPlaying) {
         self.playButton.alpha = 0.3;
         [self.player play];
-        
-        // Start a timer to monitor playback
-        self.playbackMonitorTimer = [NSTimer timerWithTimeInterval:.2 target:self selector:@selector(monitorPlayback) userInfo:nil repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:self.playbackMonitorTimer forMode:NSDefaultRunLoopMode];
+        [self startMonitorPlaybackTimer];
         
     } else if (!isVideoPlaying) {
         self.playButton.alpha = 1.;
         [self.player pause];
-        
-        // Remove timer
-        [self.playbackMonitorTimer invalidate];
+        [self stopMonitorPlaybackTimer];
         
     }
     _isVideoPlaying = isVideoPlaying;
+}
+
+- (void)startMonitorPlaybackTimer
+{
+    self.playbackMonitorTimer = [NSTimer timerWithTimeInterval:.2 target:self selector:@selector(monitorPlayback) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:self.playbackMonitorTimer forMode:NSDefaultRunLoopMode];
+}
+
+- (void)stopMonitorPlaybackTimer
+{
+    [self.playbackMonitorTimer invalidate];
 }
 
 - (void)setCurrentPlaybackPosition:(CGFloat)currentPlaybackPosition
@@ -247,13 +256,35 @@ static int PLAY_BUTTON_WIDTH = 70;
     }
 }
 
-- (void)tapScrubber:(UITapGestureRecognizer *)tapGesture
+- (void)setIsScrubbing:(BOOL)isScrubbing
 {
-    CGPoint point = [tapGesture locationInView:self.scrubView];
-    self.currentPlaybackPosition = point.x;
-    // change current playback time based on position
-    CGFloat percentPlayed = self.currentPlaybackPosition / self.scrubView.bounds.size.width;
-    self.player.currentPlaybackTime = self.player.duration * percentPlayed;
+    if (!_isScrubbing && isScrubbing) {
+        // Going from not scrubbing to scrubbing capture video play state
+        self.wasVideoPlayingBeforeScrub = self.isVideoPlaying;
+        self.isVideoPlaying = NO;
+    } else if (_isScrubbing && !isScrubbing) {
+        // Going from scrubbing to not scrubbing
+        self.isVideoPlaying = self.wasVideoPlayingBeforeScrub;
+    }
+    _isScrubbing = isScrubbing;
+}
+
+- (void)panScrubber:(UIPanGestureRecognizer *)panGesture
+{
+    if (panGesture.state == UIGestureRecognizerStateBegan) {
+        // might want to only start scrubbing if we are close to the current playback position
+        self.isScrubbing = YES;
+    } else if (panGesture.state == UIGestureRecognizerStateChanged && self.isScrubbing) {
+        // change current playback time based on position
+        CGPoint point = [panGesture locationInView:self.scrubView];
+        self.currentPlaybackPosition = point.x;
+        CGFloat percentPlayed = self.currentPlaybackPosition / self.scrubView.bounds.size.width;
+        self.player.currentPlaybackTime = self.player.duration * percentPlayed;
+    } else if (panGesture.state == UIGestureRecognizerStateEnded) {
+        self.isScrubbing = NO;
+    } else if (panGesture.state == UIGestureRecognizerStateFailed) {
+        self.isScrubbing = NO;
+    }
 }
 
 - (void)onPlayButtonClicked
@@ -297,8 +328,6 @@ static int PLAY_BUTTON_WIDTH = 70;
             self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
             [self updatePlayer];
             [self setupCustomVideoControl];
-            
-            
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
