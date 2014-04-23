@@ -226,6 +226,11 @@ static int PLAY_BUTTON_WIDTH = 70;
 {
     // Change width of scrub depending on new playback position
     self.scrubPastView.frame = CGRectMake(0, 0, currentPlaybackPosition, VIDEO_CONTROL_HEIGHT);
+    
+    // change current playback time based on position
+    CGFloat percentPlayed = currentPlaybackPosition / self.scrubView.bounds.size.width;
+    self.player.currentPlaybackTime = self.player.duration * percentPlayed;
+    
     _currentPlaybackPosition = currentPlaybackPosition;
 }
 
