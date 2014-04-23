@@ -258,8 +258,8 @@ static const int PLAY_BUTTON_WIDTH = 70;
         self.playButton.alpha = 1.;
         [self.player pause];
         [self stopMonitorPlaybackTimer];
-        
     }
+    self.numberTimerEventsSinceVideoInteraction = 0;
     _isVideoPlaying = isVideoPlaying;
 }
 
@@ -291,7 +291,7 @@ static const int PLAY_BUTTON_WIDTH = 70;
     
     // If we have not interacted with the video in a while lets minimize
     int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
-    if (!self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction++ > maxNumberIntervalsBeforeMinimize) {
+    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction++ > maxNumberIntervalsBeforeMinimize) {
         self.isVideoControlMinimized = YES;
     }
 }
@@ -321,12 +321,14 @@ static const int PLAY_BUTTON_WIDTH = 70;
     if (panGesture.state == UIGestureRecognizerStateBegan) {
         // might want to only start scrubbing if we are close to the current playback position
         self.isScrubbing = YES;
+        self.numberTimerEventsSinceVideoInteraction = 0;
     } else if (panGesture.state == UIGestureRecognizerStateChanged && self.isScrubbing) {
         // change current playback time based on position
         CGPoint point = [panGesture locationInView:self.scrubView];
         self.currentPlaybackPosition = point.x;
         CGFloat percentPlayed = self.currentPlaybackPosition / self.scrubView.bounds.size.width;
         self.player.currentPlaybackTime = self.player.duration * percentPlayed;
+        self.numberTimerEventsSinceVideoInteraction = 0;
     } else if (panGesture.state == UIGestureRecognizerStateEnded) {
         self.isScrubbing = NO;
     } else if (panGesture.state == UIGestureRecognizerStateFailed) {
