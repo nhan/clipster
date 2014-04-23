@@ -61,6 +61,10 @@
 @property (nonatomic, strong) VideoControlView *videoControlView;
 @property (nonatomic, strong) UIButton *playButton;
 @property (nonatomic, assign) BOOL isVideoPlaying;
+@property (nonatomic, strong) UIView *scrubView;
+@property (nonatomic, strong) UIView *scrubPastView;
+@property (nonatomic, assign) CGFloat currentPlaybackPosition;
+@property (nonatomic, assign) NSTimeInterval currentPlaybackTime;
 @end
 
 @implementation VideoViewController
@@ -165,30 +169,42 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
 }
 
+static int VIDEO_CONTROL_HEIGHT = 20;
+static int PLAY_BUTTON_WIDTH = 70;
+
 #pragma mark - Custom Video Control
 - (void)setupCustomVideoControl
 {
     // add custom video control to player
     self.player.controlStyle = MPMovieControlStyleNone;
     
-    int controlHeight = 20;
-    int playButtonWidth = 70;
     UIView *movieView = self.player.view;
     
-    self.videoControlView = [[VideoControlView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - controlHeight, movieView.frame.size.width, controlHeight)];
+    self.videoControlView = [[VideoControlView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - VIDEO_CONTROL_HEIGHT, movieView.frame.size.width, VIDEO_CONTROL_HEIGHT)];
     self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
     
     // play/pause region
-    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,playButtonWidth,controlHeight)];
+    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,PLAY_BUTTON_WIDTH,VIDEO_CONTROL_HEIGHT)];
     [self.playButton setTitle:@"P" forState:UIControlStateNormal];
     self.playButton.alpha = 0.3;
     [self.playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControlView addSubview:self.playButton];
     
     // scrubbing/vis region
-    UIView *scrubView = [[UIView alloc] initWithFrame:CGRectMake(playButtonWidth, 0, movieView.frame.size.width - playButtonWidth, controlHeight)];
-    scrubView.backgroundColor = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:0.8];
-    [self.videoControlView addSubview:scrubView];
+    self.scrubView = [[UIView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, VIDEO_CONTROL_HEIGHT)];
+    self.scrubView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.8];
+    
+    // add a visualization of video viewing progress
+    self.scrubPastView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, VIDEO_CONTROL_HEIGHT)];
+    self.scrubPastView.backgroundColor = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:0.8];
+    [self.scrubView addSubview:self.scrubPastView];
+    
+    UITapGestureRecognizer *tapScrubRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapScrubber:)];
+    [self.scrubView addGestureRecognizer:tapScrubRecognizer];
+    [self.videoControlView addSubview:self.scrubView];
+    
+    // Setting the current playback position will set playback time and progress
+    self.currentPlaybackPosition = 0;
     
     [movieView addSubview:self.videoControlView];
     [movieView bringSubviewToFront:self.videoControlView];
@@ -204,6 +220,19 @@
         [self.player pause];
     }
     _isVideoPlaying = isVideoPlaying;
+}
+
+- (void)setCurrentPlaybackPosition:(CGFloat)currentPlaybackPosition
+{
+    // Change width of scrub depending on new playback position
+    self.scrubPastView.frame = CGRectMake(0, 0, currentPlaybackPosition, VIDEO_CONTROL_HEIGHT);
+    _currentPlaybackPosition = currentPlaybackPosition;
+}
+
+- (void)tapScrubber:(UITapGestureRecognizer *)tapGesture
+{
+    CGPoint point = [tapGesture locationInView:self.scrubView];
+    self.currentPlaybackPosition = point.x;
 }
 
 - (void)onPlayButtonClicked
