@@ -195,6 +195,14 @@ static const int PLAY_BUTTON_WIDTH = 70;
     
     UIView *movieView = self.player.view;
     
+    // have to disable all previous gesture recognizers
+    for (UIGestureRecognizer *gesture in movieView.gestureRecognizers) {
+        gesture.enabled = NO;
+    }
+    UITapGestureRecognizer *tapVideoGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapVideo:)];
+    tapVideoGesture.delegate = self;
+    [movieView addGestureRecognizer:tapVideoGesture];
+    
     self.videoControlView = [[VideoControlView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight)];
     self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
     
@@ -286,6 +294,13 @@ static const int PLAY_BUTTON_WIDTH = 70;
     if (!self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction++ > maxNumberIntervalsBeforeMinimize) {
         self.isVideoControlMinimized = YES;
     }
+}
+
+- (void)tapVideo:(UITapGestureRecognizer *)tapGesture
+{
+    // unminimize video controls
+    self.numberTimerEventsSinceVideoInteraction = 0;
+    self.isVideoControlMinimized = NO;
 }
 
 - (void)setIsScrubbing:(BOOL)isScrubbing
