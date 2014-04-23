@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "HamburgerMenuController.h"
 #import "LoginViewController.h"
 #import <Parse/Parse.h>
 #import "Clip.h"
@@ -21,8 +20,6 @@
 #import "LoginManager.h"
 
 @interface AppDelegate ()
-@property (nonatomic, strong) HamburgerMenuController *menuViewController;
-@property (nonatomic, strong) NSArray* viewControllers;
 @property (nonatomic, strong) PFLogInViewController *loginViewController;
 @property (nonatomic, strong) UITableViewCell *logoutCell;
 @end
@@ -45,70 +42,10 @@
     [self setRootViewController];
     [self subscribeToUserNotifications];
     
-    self.logoutCell = [[UITableViewCell alloc] init];
-    self.logoutCell.backgroundColor = [UIColor clearColor];
-    self.logoutCell.textLabel.textColor = [UIColor whiteColor];
-    self.logoutCell.textLabel.text = @"Logout";
-    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
-}
-
-- (void)databaseTestStuffThatWeMightNeedLater
-{
-    // Make some models
-    Clip *clip = [Clip object];
-    clip.text = @"Deadlift standards.";
-    clip.isFavorite = YES;
-    clip.videoId = @"videoid";
-    clip.timeStart = 0;
-    clip.timeEnd = 100;
-    // Save to Parse
-    [clip saveInBackground];
-    
-    
-    // Test some retrieval
-    PFQuery *query = [PFQuery queryWithClassName:@"Clip"];
-    [query whereKey:@"isFavorite" equalTo:@(YES)];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved %d clips.", objects.count);
-            // Do something with the found objects
-            for (Clip *c in objects) {
-                NSLog(@"%@", c.text);
-            }
-        } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-        }
-    }];
-    
-    // Test some relationship query
-    User *currentUser = (User *)[PFUser currentUser];
-    PFQuery *uquery = [User query];
-    [uquery whereKey:@"username" equalTo:@"nhan"];
-    [uquery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        [currentUser.friends addObject:objects[0]];
-        [currentUser saveInBackground];
-    }];
-    
-    PFQuery *rquery = [currentUser.friends query];
-    [rquery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        NSLog(@"I have the following friends:");
-        for (User *friend in objects) {
-            NSLog(@"%@", friend.username);
-        }
-    }];
-}
-
-- (UINavigationController *) wrapInNavigationController:(UIViewController *)uiVC
-{
-    UINavigationController *ret = [[UINavigationController alloc] initWithRootViewController:uiVC];
-    [self styleNavigationController:ret];
-    return ret;
 }
 
 - (void)styleNavigationController:(UINavigationController *)navigationController{
@@ -123,18 +60,10 @@
     User *currentUser = (User *)[PFUser currentUser];
     if (currentUser) {
         
-        ProfileViewController *profileVC = [[ProfileViewController alloc] initWithUser:currentUser];
-        self.viewControllers = @[[self wrapInNavigationController:[[StreamViewController alloc] init]],
-                                 [self wrapInNavigationController:[[SearchResultsViewController alloc] init]],
-                                 [self wrapInNavigationController: profileVC],
-                                 [self wrapInNavigationController:[[ClippingViewController alloc] init]]
-                                 ];
-        
-        self.menuViewController = [[HamburgerMenuController alloc] init];
-        
-        self.menuViewController.delegate = self;
-        [self.menuViewController reloadMenuItems];
-        self.window.rootViewController = self.menuViewController;
+        StreamViewController *streamViewController = [[StreamViewController alloc] init];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:streamViewController];
+        [self styleNavigationController:navigationController];
+        self.window.rootViewController = navigationController;
         NSLog(@"====== User name ===== %@", currentUser.username);
     } else {
         LoginManager *loginManager = [LoginManager instance];
@@ -152,42 +81,6 @@
     }
     
 }
-
-# pragma mark - HamburgerMenuDelegate
-
-- (NSInteger)numberOfItemsInMenu:(HamburgerMenuController *)hamburgerMenuController
-{
-    return self.viewControllers.count + 1;
-}
-
-- (UIViewController *)viewControllerAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
-{
-    if (index < self.viewControllers.count) {
-        return self.viewControllers[index];
-    }
-    
-    return nil;
-}
-
-- (UITableViewCell *)cellForMenuItemAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
-{
-    if (index == self.viewControllers.count) {
-        return self.logoutCell;
-    }
-    return nil;
-}
-
-- (void)didSelectItemAtIndex:(NSInteger)index hamburgerMenuController:(HamburgerMenuController *)hamburgerMenuController
-{
-    UIViewController *selectedController = [self viewControllerAtIndex:index hamburgerMenuController:hamburgerMenuController];
-    if ([selectedController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *navController = (UINavigationController *) selectedController;
-        [navController popToRootViewControllerAnimated:YES];
-    } else if (index == self.viewControllers.count) {
-        [[LoginManager instance] logout];
-    }
-}
-
 
 - (void)subscribeToUserNotifications
 {
@@ -226,8 +119,8 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [self unsubscribeToUserNotification];
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
 - (BOOL)application:(UIApplication *)application

@@ -42,6 +42,8 @@
 		7E9B20841904A59A008C3E01 /* tim.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20831904A59A008C3E01 /* tim.png */; };
 		7E9B20961905D96E008C3E01 /* tapToPublish.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20951905D96E008C3E01 /* tapToPublish.png */; };
 		7E9B209C1905EAD3008C3E01 /* clip-it-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B209B1905EAD3008C3E01 /* clip-it-2.png */; };
+		7E9B20A219073E31008C3E01 /* search-2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20A119073E31008C3E01 /* search-2@2x.png */; };
+		7E9B20B6190744D3008C3E01 /* prof5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20B5190744D3008C3E01 /* prof5@2x.png */; };
 		7EE5B31019008633000F3816 /* video_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B30F19008633000F3816 /* video_placeholder.png */; };
 		7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5B3131900921C000F3816 /* ProfileViewController.m */; };
 		7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5B3141900921C000F3816 /* ProfileViewController.xib */; };
@@ -116,6 +118,8 @@
 		7E9B20831904A59A008C3E01 /* tim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tim.png; sourceTree = "<group>"; };
 		7E9B20951905D96E008C3E01 /* tapToPublish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tapToPublish.png; sourceTree = "<group>"; };
 		7E9B209B1905EAD3008C3E01 /* clip-it-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clip-it-2.png"; sourceTree = "<group>"; };
+		7E9B20A119073E31008C3E01 /* search-2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-2@2x.png"; sourceTree = "<group>"; };
+		7E9B20B5190744D3008C3E01 /* prof5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "prof5@2x.png"; sourceTree = "<group>"; };
 		7EE5B30F19008633000F3816 /* video_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_placeholder.png; sourceTree = "<group>"; };
 		7EE5B3121900921C000F3816 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		7EE5B3131900921C000F3816 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
@@ -261,6 +265,8 @@
 		7EE5B31119008638000F3816 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7E9B20B5190744D3008C3E01 /* prof5@2x.png */,
+				7E9B20A119073E31008C3E01 /* search-2@2x.png */,
 				7E9B209B1905EAD3008C3E01 /* clip-it-2.png */,
 				7E9B20951905D96E008C3E01 /* tapToPublish.png */,
 				7E9B20831904A59A008C3E01 /* tim.png */,
@@ -415,6 +421,7 @@
 				7E9B209C1905EAD3008C3E01 /* clip-it-2.png in Resources */,
 				7EF9A4C018F884580058FE1C /* VideoViewController.xib in Resources */,
 				7E970D4F18F1E69D00517A1F /* Podfile in Resources */,
+				7E9B20A219073E31008C3E01 /* search-2@2x.png in Resources */,
 				7EF9A4C218F899E40058FE1C /* spool.png in Resources */,
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
 				6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */,
@@ -422,6 +429,7 @@
 				7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */,
 				7E9B20841904A59A008C3E01 /* tim.png in Resources */,
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,
+				7E9B20B6190744D3008C3E01 /* prof5@2x.png in Resources */,
 				7E970D3218F1E5DF00517A1F /* Images.xcassets in Resources */,
 				7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */,
 				6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */,

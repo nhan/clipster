@@ -9,7 +9,8 @@
 #import "StreamViewController.h"
 #import "ClipCell.h"
 #import "VideoViewController.h"
-#import "HamburgerMenuController.h"
+#import "SearchResultsViewController.h"
+#import "ProfileViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @interface StreamViewController ()
@@ -42,8 +43,11 @@
     UINib *clipCellNib = [UINib nibWithNibName:@"ClipCell" bundle:nil];
     [self.tableView registerNib:clipCellNib forCellReuseIdentifier:@"ClipCell"];
     
-    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
-    self.navigationItem.leftBarButtonItem = menuButton;
+    UIBarButtonItem *profileButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"prof5"] style:UIBarButtonItemStylePlain target:self action:@selector(onProfileButton:)];
+    self.navigationItem.leftBarButtonItem = profileButton;
+    
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"search-2"] style:UIBarButtonItemStylePlain target:self action:@selector(onSearchButton:)];
+    self.navigationItem.rightBarButtonItem = searchButton;
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchClips) forControlEvents:UIControlEventValueChanged];
@@ -95,15 +99,15 @@
     }];
 }
 
-- (void)onMenuButton:(id)sender
+- (void)onProfileButton:(id)sender
 {
-    HamburgerMenuController* menuController = self.navigationController.hamburgerMenuController;
-    NSLog(@"Hamburger Menu %@", menuController);
-    if (menuController.isMenuRevealed) {
-        [menuController hideMenuWithDuration:menuController.maxAnimationDuration];
-    } else {
-        [menuController revealMenuWithDuration:menuController.maxAnimationDuration];
-    }
+    ProfileViewController *profileVC = [[ProfileViewController alloc] initWithUser:[User currentUser]];
+    [self.navigationController pushViewController:profileVC animated:YES];
+}
+
+- (void)onSearchButton:(id)sender{
+    SearchResultsViewController *searchVC = [[SearchResultsViewController alloc] init];
+    [self.navigationController pushViewController:searchVC animated:YES];
 }
 
 #pragma mark - UITableViewDelegate and UITableViewDataSource
@@ -133,5 +137,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 280;
 }
+
 
 @end

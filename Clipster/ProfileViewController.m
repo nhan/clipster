@@ -7,12 +7,12 @@
 //
 
 #import "ProfileViewController.h"
-#import "HamburgerMenuController.h"
 #import "SmallClipCell.h"
 #import "User.h"
 #import "ProfileCell.h"
 #import "VideoViewController.h"
 #import "EditProfileViewController.h"
+#import "LoginManager.h"
 
 #import <MBProgressHud/MBProgressHUD.h>
 
@@ -67,10 +67,9 @@
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
-    if (self.navigationController.viewControllers.count == 1) {
-        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
-        self.navigationItem.leftBarButtonItem = menuButton;
-    }
+    UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutButton:)];
+    self.navigationItem.rightBarButtonItem = logoutButton;
+
     self.tableView.tableHeaderView = self.profileCell;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -79,6 +78,10 @@
     [self.tableView registerNib:clipNib forCellReuseIdentifier:@"ClipCell"];
     
     [self refreshUI];
+}
+
+- (void)onLogoutButton:(id)sender{
+    [[LoginManager instance] logout];
 }
 
 - (ProfileCell *)profileCell
@@ -219,17 +222,6 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
-}
-
-- (void)onMenuButton:(id)sender
-{
-    HamburgerMenuController* menuController = self.navigationController.hamburgerMenuController;
-    NSLog(@"Hamburger Menu %@", menuController);
-    if (menuController.isMenuRevealed) {
-        [menuController hideMenuWithDuration:menuController.maxAnimationDuration];
-    } else {
-        [menuController revealMenuWithDuration:menuController.maxAnimationDuration];
-    }
 }
 
 - (void)didReceiveMemoryWarning

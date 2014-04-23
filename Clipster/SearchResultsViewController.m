@@ -45,9 +45,6 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButton:)];
-    self.navigationItem.leftBarButtonItem = menuButton;
-    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -74,17 +71,6 @@
     // Clear the results
     self.searchResults = @[];
     [self.tableView reloadData];
-}
-
-- (void)onMenuButton:(id)sender
-{
-    HamburgerMenuController* menuController = self.navigationController.hamburgerMenuController;
-    NSLog(@"Hamburger Menu %@", menuController);
-    if (menuController.isMenuRevealed) {
-        [menuController hideMenuWithDuration:menuController.maxAnimationDuration];
-    } else {
-        [menuController revealMenuWithDuration:menuController.maxAnimationDuration];
-    }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar

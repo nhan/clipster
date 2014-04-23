@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HamburgerMenuController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, HamburgerMenuDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
