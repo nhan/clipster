@@ -65,6 +65,7 @@
 @property (nonatomic, strong) UIView *scrubPastView;
 @property (nonatomic, assign) CGFloat currentPlaybackPosition;
 @property (nonatomic, assign) NSTimeInterval currentPlaybackTime;
+@property (nonatomic, strong) NSTimer *playbackMonitorTimer;
 @end
 
 @implementation VideoViewController
@@ -215,9 +216,18 @@ static int PLAY_BUTTON_WIDTH = 70;
     if (isVideoPlaying) {
         self.playButton.alpha = 0.3;
         [self.player play];
+        
+        // Start a timer to monitor playback
+        self.playbackMonitorTimer = [NSTimer timerWithTimeInterval:.2 target:self selector:@selector(monitorPlayback) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:self.playbackMonitorTimer forMode:NSDefaultRunLoopMode];
+        
     } else if (!isVideoPlaying) {
         self.playButton.alpha = 1.;
         [self.player pause];
+        
+        // Remove timer
+        [self.playbackMonitorTimer invalidate];
+        
     }
     _isVideoPlaying = isVideoPlaying;
 }
@@ -226,18 +236,24 @@ static int PLAY_BUTTON_WIDTH = 70;
 {
     // Change width of scrub depending on new playback position
     self.scrubPastView.frame = CGRectMake(0, 0, currentPlaybackPosition, VIDEO_CONTROL_HEIGHT);
-    
-    // change current playback time based on position
-    CGFloat percentPlayed = currentPlaybackPosition / self.scrubView.bounds.size.width;
-    self.player.currentPlaybackTime = self.player.duration * percentPlayed;
-    
     _currentPlaybackPosition = currentPlaybackPosition;
+}
+
+- (void)monitorPlayback
+{
+    if (self.player.duration) {
+        CGFloat percentPlayed = self.player.currentPlaybackTime / self.player.duration;
+        self.currentPlaybackPosition = self.scrubView.frame.size.width * percentPlayed;
+    }
 }
 
 - (void)tapScrubber:(UITapGestureRecognizer *)tapGesture
 {
     CGPoint point = [tapGesture locationInView:self.scrubView];
     self.currentPlaybackPosition = point.x;
+    // change current playback time based on position
+    CGFloat percentPlayed = self.currentPlaybackPosition / self.scrubView.bounds.size.width;
+    self.player.currentPlaybackTime = self.player.duration * percentPlayed;
 }
 
 - (void)onPlayButtonClicked
@@ -280,8 +296,9 @@ static int PLAY_BUTTON_WIDTH = 70;
             [self.player prepareToPlay];
             self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
             [self updatePlayer];
-            
             [self setupCustomVideoControl];
+            
+            
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
@@ -294,6 +311,12 @@ static int PLAY_BUTTON_WIDTH = 70;
     [self.tableView registerNib:clipCellNib forCellReuseIdentifier:@"ClipCell"];
     
     [self fetchClips];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.playbackMonitorTimer invalidate];
+    [super viewWillDisappear:animated];
 }
 
 - (void)updatePlayer
