@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UIView *thumbnailContainer;
 @property (weak, nonatomic) IBOutlet UIView *card;
 @property (weak, nonatomic) IBOutlet PFImageView *profileThumbnailView;
+@property (weak, nonatomic) IBOutlet UIButton *likeButton;
+- (IBAction)onLikeButton:(id)sender;
 @end
 
 @implementation ClipCell
@@ -33,6 +35,7 @@
 {
     self.titleLabel.text = self.clip.text;
     self.usernameLabel.text = self.clip.username;
+    [self refreshLikeButton];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -96,11 +99,35 @@
     self.profileThumbnailView.alpha = 1.0;
 }
 
-- (void)onThumbnailTap:(id)sender{
-    [self.delegate didClickUsername:self.clip.username];
-    NSLog(@"TAP TAP");
+- (void)refreshLikeButton{
+    if ([self.clip isLikedByUser:[User currentUser]]) {
+        UIImage *likedImage = [UIImage imageNamed:@"liked"];
+        [self.likeButton setBackgroundImage:likedImage forState:UIControlStateNormal];
+    } else {
+        UIImage *likeImage = [UIImage imageNamed:@"like"];
+        [self.likeButton setBackgroundImage:likeImage forState:UIControlStateNormal];
+    }
 }
 
+- (void)onThumbnailTap:(id)sender{
+    [self.delegate didClickUsername:self.clip.username];
+}
 
+- (IBAction)onLikeButton:(id)sender {
+    // switch image immediately
+//    if (![self.clip isLikedByUser:[User currentUser]]) {
+//        UIImage *likedImage = [UIImage imageNamed:@"liked"];
+//        [self.likeButton setBackgroundImage:likedImage forState:UIControlStateNormal];
+//    } else {
+//        UIImage *likeImage = [UIImage imageNamed:@"like"];
+//        [self.likeButton setBackgroundImage:likeImage forState:UIControlStateNormal];
+//    }
+    
+    [self.clip toggleLikeForClip:self.clip success:^(Clip *clip) {
+        [self refreshLikeButton];
+    } failure:^(NSError *error) {
+        NSLog(@"LIKE BUTTON ERROR: %@", error);
+    }];
+}
 
 @end

@@ -21,12 +21,16 @@
 @property BOOL isFavorite;
 @property (retain) NSString *videoId;
 @property (retain) NSString *videoTitle;
+@property (retain) NSMutableArray *likers;
 
 @property NSInteger timeStart;
 @property NSInteger timeEnd;
 @property (retain) PFFile *thumbnail;
 
 - (BOOL)isPublished;
+- (BOOL)isLikedByUser:(User *)user;
+
+- (void)toggleLikeForClip:(Clip *)clip success:(void (^)(Clip *))success failure:(void (^)(NSError *))failure;
 
 + (NSString *)formatTimeWithSeconds:(NSInteger)seconds;
 

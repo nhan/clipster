@@ -24,6 +24,7 @@
 @dynamic timeEnd;
 @dynamic thumbnail;
 @dynamic username;
+@dynamic likers;
 
 + (NSString *)formatTimeWithSeconds:(NSInteger)seconds
 {
@@ -57,6 +58,28 @@
 - (BOOL)isPublished
 {
     return !!self.text;
+}
+
+- (BOOL)isLikedByUser:(User *)user{
+    return [self.likers containsObject:user.objectId];
+}
+
+- (void)toggleLikeForClip:(Clip *)clip success:(void (^)(Clip *))success failure:(void (^)(NSError *))failure{
+    if ([self.likers containsObject:[User currentUser].objectId]) {
+        [self.likers removeObject:[User currentUser].objectId];
+    } else {
+        if (self.likers == nil) {
+            self.likers = [NSMutableArray array];
+        }
+        [self.likers addObject:[User currentUser].objectId];
+    }
+    [self saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            success(clip);
+        } else {
+            failure(error);
+        }
+    }];
 }
 
 + (void)searchClipsWithQuery:(NSString *)queryString completionHandler:(void (^)(NSArray *, NSError *))completionHandler

@@ -14,6 +14,8 @@
 		6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */; };
 		6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */; };
 		6BEECC9C1901CDB90055081E /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BEECC9B1901CDB90055081E /* LoginManager.m */; };
+		7E6A917A190877E200865E7E /* liked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9178190877E200865E7E /* liked.png */; };
+		7E6A917B190877E200865E7E /* liked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9179190877E200865E7E /* liked@2x.png */; };
 		7E970D2018F1E5DF00517A1F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E970D1F18F1E5DF00517A1F /* Foundation.framework */; };
 		7E970D2218F1E5DF00517A1F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E970D2118F1E5DF00517A1F /* CoreGraphics.framework */; };
 		7E970D2418F1E5DF00517A1F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E970D2318F1E5DF00517A1F /* UIKit.framework */; };
@@ -83,6 +85,8 @@
 		6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = stream_thumbnail_placeholder.gif; path = images/stream_thumbnail_placeholder.gif; sourceTree = "<group>"; };
 		6BEECC9A1901CDB90055081E /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
 		6BEECC9B1901CDB90055081E /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
+		7E6A9178190877E200865E7E /* liked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liked.png; sourceTree = "<group>"; };
+		7E6A9179190877E200865E7E /* liked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "liked@2x.png"; sourceTree = "<group>"; };
 		7E970D1C18F1E5DF00517A1F /* Clipster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clipster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E970D1F18F1E5DF00517A1F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7E970D2118F1E5DF00517A1F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -269,6 +273,8 @@
 		7EE5B31119008638000F3816 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7E6A9178190877E200865E7E /* liked.png */,
+				7E6A9179190877E200865E7E /* liked@2x.png */,
 				7E9B20B7190780A9008C3E01 /* like.png */,
 				7E9B20B8190780A9008C3E01 /* like@2x.png */,
 				7E9B20B5190744D3008C3E01 /* prof5@2x.png */,
@@ -432,6 +438,7 @@
 				7EF9A4C218F899E40058FE1C /* spool.png in Resources */,
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
 				6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */,
+				7E6A917A190877E200865E7E /* liked.png in Resources */,
 				7E9B20761901CA1A008C3E01 /* drag_red.png in Resources */,
 				7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */,
 				7E9B20B9190780A9008C3E01 /* like.png in Resources */,
@@ -444,6 +451,7 @@
 				7E9B20961905D96E008C3E01 /* tapToPublish.png in Resources */,
 				7E9B20721901C596008C3E01 /* ClippingViewController.xib in Resources */,
 				7E970D5E18F1F2DC00517A1F /* ClipCell.xib in Resources */,
+				7E6A917B190877E200865E7E /* liked@2x.png in Resources */,
 				BBEAC47F1905BA3100FB732B /* EditProfileViewController.xib in Resources */,
 				7EE5B31019008633000F3816 /* video_placeholder.png in Resources */,
 				7EE5B31B1900E594000F3816 /* ProfileCell.xib in Resources */,
