@@ -57,7 +57,10 @@
 @property (weak, nonatomic) IBOutlet UIView *clippingPanel;
 @property (nonatomic, assign) CGFloat clippingPanelPos;
 @property (nonatomic, assign) CGFloat tableViewScrollPos;
+
 @property (nonatomic, strong) VideoControlView *videoControlView;
+@property (nonatomic, strong) UIButton *playButton;
+@property (nonatomic, assign) BOOL isVideoPlaying;
 @end
 
 @implementation VideoViewController
@@ -162,6 +165,52 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
 }
 
+#pragma mark - Custom Video Control
+- (void)setupCustomVideoControl
+{
+    // add custom video control to player
+    self.player.controlStyle = MPMovieControlStyleNone;
+    
+    int controlHeight = 20;
+    int playButtonWidth = 70;
+    UIView *movieView = self.player.view;
+    
+    self.videoControlView = [[VideoControlView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - controlHeight, movieView.frame.size.width, controlHeight)];
+    self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
+    
+    // play/pause region
+    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,playButtonWidth,controlHeight)];
+    [self.playButton setTitle:@"P" forState:UIControlStateNormal];
+    self.playButton.alpha = 0.3;
+    [self.playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControlView addSubview:self.playButton];
+    
+    // scrubbing/vis region
+    UIView *scrubView = [[UIView alloc] initWithFrame:CGRectMake(playButtonWidth, 0, movieView.frame.size.width - playButtonWidth, controlHeight)];
+    scrubView.backgroundColor = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:0.8];
+    [self.videoControlView addSubview:scrubView];
+    
+    [movieView addSubview:self.videoControlView];
+    [movieView bringSubviewToFront:self.videoControlView];
+}
+
+- (void)setIsVideoPlaying:(BOOL)isVideoPlaying
+{
+    if (isVideoPlaying) {
+        self.playButton.alpha = 0.3;
+        [self.player play];
+    } else if (!isVideoPlaying) {
+        self.playButton.alpha = 1.;
+        [self.player pause];
+    }
+    _isVideoPlaying = isVideoPlaying;
+}
+
+- (void)onPlayButtonClicked
+{
+    self.isVideoPlaying = !self.isVideoPlaying;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -197,34 +246,12 @@
             [self.player prepareToPlay];
             self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
             [self updatePlayer];
-            [self.player play];
             
-            // add custom video control to player
-            self.player.controlStyle = MPMovieControlStyleNone;
-            
-            int controlHeight = 20;
-            int playButtonWidth = 70;
-            UIView *movieView = self.player.view;
-            
-            self.videoControlView = [[VideoControlView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - controlHeight, movieView.frame.size.width, controlHeight)];
-            self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
-      
-            // play/pause region
-            UIButton *playButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,playButtonWidth,controlHeight)];
-            [playButton setTitle:@"P" forState:UIControlStateNormal];
-            [self.videoControlView addSubview:playButton];
-
-            // scrubbing/vis region
-            UIView *scrubView = [[UIView alloc] initWithFrame:CGRectMake(playButtonWidth, 0, movieView.frame.size.width - playButtonWidth, controlHeight)];
-            scrubView.backgroundColor = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:0.8];
-            [self.videoControlView addSubview:scrubView];
-            
-            [movieView addSubview:self.videoControlView];
-            [movieView bringSubviewToFront:self.videoControlView];
+            [self setupCustomVideoControl];
+            self.isVideoPlaying = YES;
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
-    
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
