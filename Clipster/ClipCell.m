@@ -9,7 +9,7 @@
 #import "ClipCell.h"
 #import "YouTubeVideo.h"
 #import "ProfileViewController.h"
-#import <QuartzCore/QuartzCore.h>
+//#import <QuartzCore/QuartzCore.h>
 
 @interface ClipCell ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -76,12 +76,12 @@ static CGFloat lineHeight = 24.f;
     [self.card setClipsToBounds:YES];
     self.card.layer.cornerRadius = 5.0;
     
-    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.card.bounds];
-    self.card.layer.masksToBounds = NO;
-    self.card.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.card.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
-    self.card.layer.shadowOpacity = 0.1f;
-    self.card.layer.shadowPath = shadowPath.CGPath;
+//    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.card.bounds];
+//    self.card.layer.masksToBounds = NO;
+//    self.card.layer.shadowColor = [UIColor blackColor].CGColor;
+//    self.card.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
+//    self.card.layer.shadowOpacity = 0.1f;
+//    self.card.layer.shadowPath = shadowPath.CGPath;
     self.card.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.28].CGColor;
     self.card.layer.borderWidth = 1;
 
