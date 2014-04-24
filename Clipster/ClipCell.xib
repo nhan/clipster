@@ -165,6 +165,7 @@
                 <outlet property="profileThumbnailView" destination="1Bj-sr-Lnp" id="Kl8-hj-FfJ"/>
                 <outlet property="thumbnail" destination="Ts5-ml-AYO" id="0Jb-8P-Y5T"/>
                 <outlet property="thumbnailContainer" destination="HKN-T0-deG" id="WBW-RI-Vlk"/>
+                <outlet property="timeAgoLabel" destination="It7-iq-kvT" id="MWH-hg-PdV"/>
                 <outlet property="titleLabel" destination="iW2-YU-1cv" id="0nM-kw-FAu"/>
                 <outlet property="usernameLabel" destination="Dh3-qC-ma2" id="VRf-Up-rqR"/>
                 <outlet property="youTubeLabel" destination="zsP-JL-gPg" id="8M5-m6-YbS"/>

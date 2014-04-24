@@ -12,6 +12,7 @@
 @interface Clip : PFObject<PFSubclassing>
 + (NSString *)parseClassName;
 - (NSString *)formattedTimestamp;
+- (NSString *)timeAgo;
 
 @property (retain) User *user;
 // duplicate so that we don't have to fetch the user all the time

@@ -38,6 +38,20 @@
     return [NSString stringWithFormat:@"%@ - %@", [Clip formatTimeWithSeconds:self.timeStart/1000], [Clip formatTimeWithSeconds:self.timeEnd/1000]];
 }
 
+- (NSString *)timeAgo
+{
+    int secondsAgo = (int) [[NSDate date] timeIntervalSinceDate:self.createdAt];
+    if (secondsAgo < 60){ //seconds
+        return [NSString stringWithFormat:@"%ds", secondsAgo];
+    } else if (secondsAgo < (60*60)){ //minutes
+        return [NSString stringWithFormat:@"%dm", secondsAgo/60];
+    } else if(secondsAgo < (60*60*24)) { // hours
+        return [NSString stringWithFormat:@"%dh", secondsAgo/(60*60)];
+    } else { // days
+        return [NSString stringWithFormat:@"%dd", secondsAgo/(60*60*24)];
+    }
+}
+
 - (void)setText:(NSString *)text
 {
     self.canonicalText = [text lowercaseString];

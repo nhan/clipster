@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIView *card;
 @property (weak, nonatomic) IBOutlet PFImageView *profileThumbnailView;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UILabel *timeAgoLabel;
 - (IBAction)onLikeButton:(id)sender;
 @end
 
@@ -35,6 +36,7 @@
 {
     self.titleLabel.text = self.clip.text;
     self.usernameLabel.text = self.clip.username;
+    self.timeAgoLabel.text = [self.clip timeAgo];
     [self refreshLikeButton];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -114,15 +116,6 @@
 }
 
 - (IBAction)onLikeButton:(id)sender {
-    // switch image immediately
-//    if (![self.clip isLikedByUser:[User currentUser]]) {
-//        UIImage *likedImage = [UIImage imageNamed:@"liked"];
-//        [self.likeButton setBackgroundImage:likedImage forState:UIControlStateNormal];
-//    } else {
-//        UIImage *likeImage = [UIImage imageNamed:@"like"];
-//        [self.likeButton setBackgroundImage:likeImage forState:UIControlStateNormal];
-//    }
-    
     [self.clip toggleLikeForClip:self.clip success:^(Clip *clip) {
         [self refreshLikeButton];
     } failure:^(NSError *error) {
