@@ -17,6 +17,7 @@
 #import "SearchResultsViewController.h"
 #import "ProfileViewController.h"
 #import "ClippingViewController.h"
+#import "VideoPlayerViewController.h"
 #import "LoginManager.h"
 
 @interface AppDelegate ()
@@ -59,7 +60,6 @@
 {
     User *currentUser = (User *)[PFUser currentUser];
     if (currentUser) {
-        
         StreamViewController *streamViewController = [[StreamViewController alloc] init];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:streamViewController];
         [self styleNavigationController:navigationController];

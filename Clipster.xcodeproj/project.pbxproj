@@ -13,6 +13,9 @@
 		6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */; };
 		6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */; };
 		6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */; };
+		6BAACCF919085148003B5084 /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BAACCF719085148003B5084 /* VideoPlayerViewController.m */; };
+		6BAACCFA19085148003B5084 /* VideoPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BAACCF819085148003B5084 /* VideoPlayerViewController.xib */; };
+		6BAACCFD1908526E003B5084 /* VideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BAACCFC1908526E003B5084 /* VideoPlayerView.m */; };
 		6BEECC9C1901CDB90055081E /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BEECC9B1901CDB90055081E /* LoginManager.m */; };
 		7E6A917A190877E200865E7E /* liked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9178190877E200865E7E /* liked.png */; };
 		7E6A917B190877E200865E7E /* liked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9179190877E200865E7E /* liked@2x.png */; };
@@ -83,6 +86,11 @@
 		6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HamburgerMenuController.m; sourceTree = "<group>"; };
 		6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HamburgerMenuController.xib; sourceTree = "<group>"; };
 		6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = stream_thumbnail_placeholder.gif; path = images/stream_thumbnail_placeholder.gif; sourceTree = "<group>"; };
+		6BAACCF619085148003B5084 /* VideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewController.h; sourceTree = "<group>"; };
+		6BAACCF719085148003B5084 /* VideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewController.m; sourceTree = "<group>"; };
+		6BAACCF819085148003B5084 /* VideoPlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoPlayerViewController.xib; sourceTree = "<group>"; };
+		6BAACCFB1908526E003B5084 /* VideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerView.h; sourceTree = "<group>"; };
+		6BAACCFC1908526E003B5084 /* VideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerView.m; sourceTree = "<group>"; };
 		6BEECC9A1901CDB90055081E /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
 		6BEECC9B1901CDB90055081E /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
 		7E6A9178190877E200865E7E /* liked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liked.png; sourceTree = "<group>"; };
@@ -180,6 +188,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B9B8DD61909ED0F007F420A /* components */ = {
+			isa = PBXGroup;
+			children = (
+				6BAACCF619085148003B5084 /* VideoPlayerViewController.h */,
+				6BAACCF719085148003B5084 /* VideoPlayerViewController.m */,
+				6BAACCFB1908526E003B5084 /* VideoPlayerView.h */,
+				6BAACCFC1908526E003B5084 /* VideoPlayerView.m */,
+				6BAACCF819085148003B5084 /* VideoPlayerViewController.xib */,
+			);
+			name = components;
+			sourceTree = "<group>";
+		};
 		7E970D1318F1E5DF00517A1F = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +246,7 @@
 				7E970D2618F1E5DF00517A1F /* Supporting Files */,
 				BB571AFB1904DC9C0039BB66 /* views */,
 				BB571AFA1904DC900039BB66 /* controllers */,
+				6B9B8DD61909ED0F007F420A /* components */,
 				BB571AF91904DC830039BB66 /* models */,
 			);
 			path = Clipster;
@@ -431,6 +452,7 @@
 			files = (
 				7E9B20BA190780A9008C3E01 /* like@2x.png in Resources */,
 				7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */,
+				6BAACCFA19085148003B5084 /* VideoPlayerViewController.xib in Resources */,
 				7E9B209C1905EAD3008C3E01 /* clip-it-2.png in Resources */,
 				7EF9A4C018F884580058FE1C /* VideoViewController.xib in Resources */,
 				7E970D4F18F1E69D00517A1F /* Podfile in Resources */,
@@ -522,7 +544,9 @@
 				7EE5B31A1900E594000F3816 /* ProfileCell.m in Sources */,
 				7E970D5D18F1F2DC00517A1F /* ClipCell.m in Sources */,
 				BB1F17B41900868C0048D9C8 /* YouTubeVideo.m in Sources */,
+				6BAACCF919085148003B5084 /* VideoPlayerViewController.m in Sources */,
 				7EF9A4C618F8B2A80058FE1C /* SmallClipCell.m in Sources */,
+				6BAACCFD1908526E003B5084 /* VideoPlayerView.m in Sources */,
 				7E970D6518F2165800517A1F /* LoginViewController.m in Sources */,
 				6BEECC9C1901CDB90055081E /* LoginManager.m in Sources */,
 				7E970D3018F1E5DF00517A1F /* AppDelegate.m in Sources */,

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "Clip.h"
+#import "VideoPlayerViewController.h"
 
 @protocol ClipCreationDelegate <NSObject>
 - (void) creationDone:(Clip *)clip;
@@ -17,5 +18,5 @@
 
 @interface ClippingViewController : UIViewController<UITextViewDelegate>
 @property id<ClipCreationDelegate> delegate;
-- (id)initWithClip:(Clip*)clip moviePlayer:(MPMoviePlayerController*)player;
+- (id)initWithClip:(Clip*)clip playerController:(VideoPlayerViewController*)playerController;
 @end
