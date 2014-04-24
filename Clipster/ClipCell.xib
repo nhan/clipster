@@ -162,6 +162,7 @@
             <connections>
                 <outlet property="card" destination="zZe-Vp-Bmr" id="Uwr-LD-7C2"/>
                 <outlet property="likeButton" destination="5Mr-a6-0si" id="UIe-u7-SXq"/>
+                <outlet property="likeCountLabel" destination="RUA-qm-dOT" id="2Gn-AV-U9c"/>
                 <outlet property="profileThumbnailView" destination="1Bj-sr-Lnp" id="Kl8-hj-FfJ"/>
                 <outlet property="thumbnail" destination="Ts5-ml-AYO" id="0Jb-8P-Y5T"/>
                 <outlet property="thumbnailContainer" destination="HKN-T0-deG" id="WBW-RI-Vlk"/>

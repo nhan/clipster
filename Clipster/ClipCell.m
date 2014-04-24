@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet PFImageView *profileThumbnailView;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UILabel *timeAgoLabel;
+@property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
 - (IBAction)onLikeButton:(id)sender;
 @end
 
@@ -37,7 +38,7 @@
     self.titleLabel.text = self.clip.text;
     self.usernameLabel.text = self.clip.username;
     self.timeAgoLabel.text = [self.clip timeAgo];
-    [self refreshLikeButton];
+    [self refreshLikes];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -101,13 +102,21 @@
     self.profileThumbnailView.alpha = 1.0;
 }
 
-- (void)refreshLikeButton{
+- (void)refreshLikes{
     if ([self.clip isLikedByUser:[User currentUser]]) {
         UIImage *likedImage = [UIImage imageNamed:@"liked"];
         [self.likeButton setBackgroundImage:likedImage forState:UIControlStateNormal];
     } else {
         UIImage *likeImage = [UIImage imageNamed:@"like"];
         [self.likeButton setBackgroundImage:likeImage forState:UIControlStateNormal];
+    }
+    if (self.clip.likers.count == 0) {
+        self.likeCountLabel.text = @"";
+    }
+    else if (self.clip.likers.count == 1){
+        self.likeCountLabel.text = @"1 like";
+    } else {
+        self.likeCountLabel.text = [NSString stringWithFormat:@"%ld likes", (long)self.clip.likers.count];
     }
 }
 
@@ -117,7 +126,7 @@
 
 - (IBAction)onLikeButton:(id)sender {
     [self.clip toggleLikeForClip:self.clip success:^(Clip *clip) {
-        [self refreshLikeButton];
+        [self refreshLikes];
     } failure:^(NSError *error) {
         NSLog(@"LIKE BUTTON ERROR: %@", error);
     }];
