@@ -13,4 +13,6 @@
 @interface ClipCell : UITableViewCell
 @property (nonatomic, strong) Clip *clip;
 @property (nonatomic, weak) id<ClipCellDelegate> delegate;
+
++ (CGFloat)heightForClip:(Clip *)clip prototype:(ClipCell *)prototype;
 @end

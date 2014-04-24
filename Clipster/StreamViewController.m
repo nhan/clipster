@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSArray *clips;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, assign) BOOL isDirty;
+@property (nonatomic, strong) ClipCell *prototype;
 @end
 
 @implementation StreamViewController
@@ -41,6 +42,7 @@
     self.tableView.dataSource = self;
     
     UINib *clipCellNib = [UINib nibWithNibName:@"ClipCell" bundle:nil];
+    self.prototype = [clipCellNib instantiateWithOwner:self options:nil][0];
     [self.tableView registerNib:clipCellNib forCellReuseIdentifier:@"ClipCell"];
     
     UIBarButtonItem *profileButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"prof5"] style:UIBarButtonItemStylePlain target:self action:@selector(onProfileButton:)];
@@ -132,7 +134,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 370;
+    return [ClipCell heightForClip:self.clips[indexPath.row] prototype:self.prototype];
 }
 
 #pragma mark - ClipCellDelegate

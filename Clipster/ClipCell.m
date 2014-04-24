@@ -27,6 +27,8 @@
 
 @implementation ClipCell
 
+static CGFloat lineHeight = 24.f;
+
 - (void)setClip:(Clip *)clip
 {
     _clip = clip;
@@ -35,7 +37,17 @@
 
 - (void)refreshUI
 {
-    self.titleLabel.text = self.clip.text;
+    NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
+    style.minimumLineHeight = lineHeight;
+    style.maximumLineHeight = lineHeight;
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,};
+    
+    if (self.clip.text == nil) {
+        self.clip.text = @"";
+    }
+    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:self.clip.text
+                                                                         attributes:attributes];
+    
     self.usernameLabel.text = self.clip.username;
     self.timeAgoLabel.text = [self.clip timeAgo];
     [self refreshLikes];
@@ -130,6 +142,31 @@
     } failure:^(NSError *error) {
         NSLog(@"LIKE BUTTON ERROR: %@", error);
     }];
+}
+
++ (CGFloat)heightForClip:(Clip *)clip prototype:(ClipCell *)prototype{
+    if (clip.text == nil || clip.text.length == 0){
+        return 320;
+    }
+    
+    CGFloat nameWidth = prototype.titleLabel.frame.size.width;
+    UIFont *font = prototype.titleLabel.font;
+    CGSize constrainedSize = CGSizeMake(nameWidth, 9999);
+    NSLog(@"%f %@", nameWidth, clip.text);
+    
+    NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
+    style.minimumLineHeight = lineHeight;
+    style.maximumLineHeight = lineHeight;
+    
+    NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          font, NSFontAttributeName,
+                                          style, NSParagraphStyleAttributeName, nil];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:clip.text attributes:attributesDictionary];
+    
+    CGRect requiredHeight = [string boundingRectWithSize:constrainedSize options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    
+    return 340+(requiredHeight.size.height);
 }
 
 @end
