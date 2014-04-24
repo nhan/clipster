@@ -14,18 +14,19 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        [self setOpaque:NO];
     }
     return self;
 }
 
-/*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    // Drawing code
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
+    CGContextFillRect(context, self.bounds);
 }
-*/
+
 
 @end

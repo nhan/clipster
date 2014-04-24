@@ -58,11 +58,11 @@
 @property (nonatomic, assign) CGFloat clippingPanelPos;
 @property (nonatomic, assign) CGFloat tableViewScrollPos;
 
-@property (nonatomic, strong) VideoControlView *videoControlView;
+@property (nonatomic, strong) UIView *videoControlView;
 @property (nonatomic, strong) UIButton *playButton;
 @property (nonatomic, assign) BOOL isVideoPlaying;
 @property (nonatomic, strong) UIView *scrubView;
-@property (nonatomic, strong) UIView *scrubPastView;
+@property (nonatomic, strong) VideoControlView *scrubPastView;
 @property (nonatomic, assign) CGFloat currentPlaybackPosition;
 @property (nonatomic, assign) NSTimeInterval currentPlaybackTime;
 @property (nonatomic, strong) NSTimer *playbackMonitorTimer;
@@ -203,7 +203,7 @@ static const int PLAY_BUTTON_WIDTH = 70;
     tapVideoGesture.delegate = self;
     [movieView addGestureRecognizer:tapVideoGesture];
     
-    self.videoControlView = [[VideoControlView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight)];
+    self.videoControlView = [[UIView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight)];
     self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
     
     // play/pause region
@@ -214,13 +214,16 @@ static const int PLAY_BUTTON_WIDTH = 70;
     [self.videoControlView addSubview:self.playButton];
     
     // scrubbing/vis region
-    self.scrubView = [[UIView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
-    self.scrubView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.8];
+    self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
+    self.scrubView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.4];
     
     // add a visualization of video viewing progress
-    self.scrubPastView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, self.videoControlHeight)];
-    self.scrubPastView.backgroundColor = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:0.8];
+    self.scrubPastView = [[VideoControlView alloc] initWithFrame:CGRectMake(0, 0, 0, self.videoControlHeight)];
+    // I think we have to set content mode to redraw because the rectangle becomes zero right away
+    self.scrubPastView.contentMode = UIViewContentModeRedraw;
+    self.scrubPastView.backgroundColor = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:1.0];
     [self.scrubView addSubview:self.scrubPastView];
+    [self.scrubView bringSubviewToFront:self.scrubPastView];
     
     UIPanGestureRecognizer *panScrub = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panScrubber:)];
     [self.scrubView addGestureRecognizer:panScrub];
