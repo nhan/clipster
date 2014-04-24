@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UILabel *timeAgoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
+@property (nonatomic, assign) BOOL likeButtonState;
 - (IBAction)onLikeButton:(id)sender;
 @end
 
@@ -32,6 +33,7 @@ static CGFloat lineHeight = 24.f;
 - (void)setClip:(Clip *)clip
 {
     _clip = clip;
+    self.likeButtonState = [self.clip isLikedByUser:[User currentUser]];
     [self refreshUI];
 }
 
@@ -115,7 +117,7 @@ static CGFloat lineHeight = 24.f;
 }
 
 - (void)refreshLikes{
-    if ([self.clip isLikedByUser:[User currentUser]]) {
+    if (self.likeButtonState) {
         UIImage *likedImage = [UIImage imageNamed:@"liked"];
         [self.likeButton setBackgroundImage:likedImage forState:UIControlStateNormal];
     } else {
@@ -137,11 +139,16 @@ static CGFloat lineHeight = 24.f;
 }
 
 - (IBAction)onLikeButton:(id)sender {
+    // toggle it instantly before making the query to parse
+    self.likeButtonState = !self.likeButtonState;
+    [self refreshLikes];
+    
     [self.clip toggleLikeForClip:self.clip success:^(Clip *clip) {
-        [self refreshLikes];
+        self.likeButtonState = [self.clip isLikedByUser:[User currentUser]];
     } failure:^(NSError *error) {
         NSLog(@"LIKE BUTTON ERROR: %@", error);
     }];
+    [self refreshLikes];
 }
 
 + (CGFloat)heightForClip:(Clip *)clip prototype:(ClipCell *)prototype{
