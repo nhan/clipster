@@ -61,8 +61,7 @@
 @property (nonatomic, strong) UIView *videoControlView;
 @property (nonatomic, strong) UIButton *playButton;
 @property (nonatomic, assign) BOOL isVideoPlaying;
-@property (nonatomic, strong) UIView *scrubView;
-@property (nonatomic, strong) VideoControlView *scrubPastView;
+@property (nonatomic, strong) VideoControlView *scrubView;
 @property (nonatomic, assign) CGFloat currentPlaybackPosition;
 @property (nonatomic, assign) NSTimeInterval currentPlaybackTime;
 @property (nonatomic, strong) NSTimer *playbackMonitorTimer;
@@ -216,18 +215,10 @@ static const int PLAY_BUTTON_WIDTH = 70;
     // scrubbing/vis region
     self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
     self.scrubView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.4];
-    
-    // add a visualization of video viewing progress
-    self.scrubPastView = [[VideoControlView alloc] initWithFrame:CGRectMake(0, 0, 0, self.videoControlHeight)];
-    // I think we have to set content mode to redraw because the rectangle becomes zero right away
-    self.scrubPastView.contentMode = UIViewContentModeRedraw;
-    self.scrubPastView.backgroundColor = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:1.0];
-    [self.scrubView addSubview:self.scrubPastView];
-    [self.scrubView bringSubviewToFront:self.scrubPastView];
+    self.scrubView.color = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:1.0];
     
     UIPanGestureRecognizer *panScrub = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panScrubber:)];
     [self.scrubView addGestureRecognizer:panScrub];
-    
     [self.videoControlView addSubview:self.scrubView];
     
     // Setting the current playback position will set playback time and progress
@@ -280,7 +271,8 @@ static const int PLAY_BUTTON_WIDTH = 70;
 - (void)setCurrentPlaybackPosition:(CGFloat)currentPlaybackPosition
 {
     // Change width of scrub depending on new playback position
-    self.scrubPastView.frame = CGRectMake(0, 0, currentPlaybackPosition, self.videoControlHeight);
+    self.scrubView.currentPlaybackPosition = currentPlaybackPosition;
+    [self.scrubView setNeedsDisplay];
     _currentPlaybackPosition = currentPlaybackPosition;
 }
 

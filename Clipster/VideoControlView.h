@@ -10,4 +10,5 @@
 
 @interface VideoControlView : UIView
 @property (nonatomic, strong) UIColor *color;
+@property (nonatomic, assign) CGFloat currentPlaybackPosition;
 @end

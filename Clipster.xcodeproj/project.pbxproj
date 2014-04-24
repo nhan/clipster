@@ -300,8 +300,6 @@
 				7EF9A4BC18F884580058FE1C /* VideoViewController.h */,
 				7EF9A4BD18F884580058FE1C /* VideoViewController.m */,
 				7EF9A4BE18F884580058FE1C /* VideoViewController.xib */,
-				BB7DE1B119073D9C00CBA9C0 /* VideoControlView.h */,
-				BB7DE1B219073D9C00CBA9C0 /* VideoControlView.m */,
 				7E970D5518F1F06400517A1F /* StreamViewController.h */,
 				7E970D5618F1F06400517A1F /* StreamViewController.m */,
 				7E970D5718F1F06400517A1F /* StreamViewController.xib */,
@@ -324,6 +322,8 @@
 		BB571AFB1904DC9C0039BB66 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				BB7DE1B119073D9C00CBA9C0 /* VideoControlView.h */,
+				BB7DE1B219073D9C00CBA9C0 /* VideoControlView.m */,
 				7E9B20771901D509008C3E01 /* RulerView.h */,
 				7E9B20781901D509008C3E01 /* RulerView.m */,
 				7EE5B3171900E594000F3816 /* ProfileCell.h */,

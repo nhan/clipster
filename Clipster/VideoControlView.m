@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setOpaque:NO];
+//        [self setOpaque:NO];
     }
     return self;
 }
@@ -24,8 +24,14 @@
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
-    CGContextFillRect(context, self.bounds);
+
+    // background
+//    CGContextSetFillColorWithColor(context, self.bcolor.CGColor);
+//    CGContextFillRect(context, self.bounds);
+    
+    // current playback position
+    CGContextSetFillColorWithColor(context, self.color.CGColor);
+    CGContextFillRect(context, CGRectMake(0, 0, self.currentPlaybackPosition, self.bounds.size.height));
 }
 
 
