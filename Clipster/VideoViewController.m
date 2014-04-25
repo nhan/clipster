@@ -160,7 +160,13 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     
     UIPanGestureRecognizer *panScrub = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panScrubber:)];
     [self.scrubView addGestureRecognizer:panScrub];
+    
+    UITapGestureRecognizer *tapScrub = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapScrubber:)];
+    [self.scrubView addGestureRecognizer:tapScrub];
+    
     [self.videoControlView addSubview:self.scrubView];
+    
+    
     
     // Setting the current playback position will set playback time and progress
     self.currentPlaybackPosition = 0;
@@ -262,17 +268,13 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     self.isVideoControlMinimized = NO;
 }
 
-- (void)setIsScrubbing:(BOOL)isScrubbing
+- (void)tapScrubber:(UITapGestureRecognizer *)tapGesture
 {
-    if (!_isScrubbing && isScrubbing) {
-        // Going from not scrubbing to scrubbing capture video play state
-        self.wasVideoPlayingBeforeScrub = self.isVideoPlaying;
-        self.isVideoPlaying = NO;
-    } else if (_isScrubbing && !isScrubbing) {
-        // Going from scrubbing to not scrubbing
-        self.isVideoPlaying = self.wasVideoPlayingBeforeScrub;
-    }
-    _isScrubbing = isScrubbing;
+    CGPoint point = [tapGesture locationInView:self.scrubView];
+    self.currentPlaybackPosition = point.x;
+    CGFloat percentPlayed = self.currentPlaybackPosition / self.scrubView.bounds.size.width;
+    [self.playerController seekToTime:(self.playerController.duration * percentPlayed) done:nil];
+    self.numberTimerEventsSinceVideoInteraction = 0;
 }
 
 - (void)panScrubber:(UIPanGestureRecognizer *)panGesture
@@ -293,6 +295,19 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     } else if (panGesture.state == UIGestureRecognizerStateFailed) {
         self.isScrubbing = NO;
     }
+}
+
+- (void)setIsScrubbing:(BOOL)isScrubbing
+{
+    if (!_isScrubbing && isScrubbing) {
+        // Going from not scrubbing to scrubbing capture video play state
+        self.wasVideoPlayingBeforeScrub = self.isVideoPlaying;
+        self.isVideoPlaying = NO;
+    } else if (_isScrubbing && !isScrubbing) {
+        // Going from scrubbing to not scrubbing
+        self.isVideoPlaying = self.wasVideoPlayingBeforeScrub;
+    }
+    _isScrubbing = isScrubbing;
 }
 
 - (void)onPlayButtonClicked
