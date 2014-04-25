@@ -173,18 +173,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [movieView bringSubviewToFront:self.videoControlView];
 }
 
-- (void)updateCurrentPlaybackLineViewWithPosition:(CGFloat)position
-{
-    // Let's respect the bins for position
-    CGFloat width = self.view.frame.size.width - PLAY_BUTTON_WIDTH;
-    CGFloat binnedPosition = ceil(position*NUMBER_HISTOGRAM_BINS/width) * width/NUMBER_HISTOGRAM_BINS;
-//    CGFloat playerHeight = self.playerController.view.frame.size.height;
-//    CGFloat height = self.view.frame.size.height - playerHeight;
-    
-    CGRect frame = self.currentPlaybackLineView.frame;
-    self.currentPlaybackLineView.frame = CGRectMake(binnedPosition + PLAY_BUTTON_WIDTH, frame.origin.y, frame.size.width, frame.size.height);
-}
-
 - (void)addAllClipsToHistogram
 {
     for (int i=0; i<self.popularityHistogram.count; i++) {
@@ -221,12 +209,23 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 - (CGRect)rectForClip:(Clip *)clip cell:(SmallClipCell *)cell
 {
     NSArray *timeBins = [self timeBinsForClip:clip];
+    // offset to midpoint of bins
     float startBin = [timeBins[0] floatValue];
     float endBin = [timeBins[1] floatValue];
     float sizeBin = (cell.frame.size.width - PLAY_BUTTON_WIDTH) / NUMBER_HISTOGRAM_BINS;
     float width = (endBin - startBin) * sizeBin;
     float x = startBin * sizeBin + PLAY_BUTTON_WIDTH;
     return CGRectMake(x, 0, width, cell.frame.size.height);
+}
+
+- (void)updateCurrentPlaybackLineViewWithPosition:(CGFloat)position
+{
+    // Let's respect the bins for position
+    CGFloat width = self.view.frame.size.width - PLAY_BUTTON_WIDTH;
+    CGFloat binnedPosition = (ceil(position*NUMBER_HISTOGRAM_BINS/width)-0.5) * width/NUMBER_HISTOGRAM_BINS;
+    
+    CGRect frame = self.currentPlaybackLineView.frame;
+    self.currentPlaybackLineView.frame = CGRectMake(binnedPosition + PLAY_BUTTON_WIDTH, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void)setIsVideoControlMinimized:(BOOL)isVideoControlMinimized
