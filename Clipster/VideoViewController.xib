@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VideoViewController">
             <connections>
                 <outlet property="clippingPanel" destination="BmA-Y0-cfA" id="4sl-Rk-ozg"/>
+                <outlet property="currentPlaybackLineView" destination="Mtd-pB-L99" id="DIn-TY-odc"/>
                 <outlet property="tableView" destination="DhY-HW-wjC" id="XxN-ou-Xjq"/>
                 <outlet property="videoPlayerContainer" destination="gte-Wa-9Uv" id="7Cv-PT-4WM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -36,6 +37,14 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mtd-pB-L99">
+                    <rect key="frame" x="198" y="180" width="2" height="388"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="2" id="PPi-Af-WZA"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BmA-Y0-cfA">
                     <rect key="frame" x="0.0" y="180" width="320" height="54"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -68,6 +77,9 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="DhY-HW-wjC" secondAttribute="trailing" id="AUb-qh-0YX"/>
+                <constraint firstItem="Mtd-pB-L99" firstAttribute="top" secondItem="gte-Wa-9Uv" secondAttribute="bottom" id="C94-1T-xKZ"/>
+                <constraint firstAttribute="trailing" secondItem="Mtd-pB-L99" secondAttribute="trailing" constant="120" id="Cwh-C2-6Tp"/>
+                <constraint firstAttribute="bottom" secondItem="Mtd-pB-L99" secondAttribute="bottom" id="EdJ-mJ-aJZ"/>
                 <constraint firstItem="gte-Wa-9Uv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GcA-8h-8FK"/>
                 <constraint firstAttribute="bottom" secondItem="DhY-HW-wjC" secondAttribute="bottom" id="TJb-un-jpX"/>
                 <constraint firstItem="DhY-HW-wjC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="V8b-rj-929"/>
