@@ -119,7 +119,7 @@
 
 static const float VIDEO_MONITOR_INTERVAL = .1;
 static const float VIDEO_CONTROL_MINIMIZE_INTERVAL = 3.;
-static const int VIDEO_CONTROL_HEIGHT = 20;
+static const int VIDEO_CONTROL_HEIGHT = 35;
 static const int VIDEO_CONTROL_HEIGHT_MIN = 5;
 static const int PLAY_BUTTON_WIDTH = 70;
 static const int NUMBER_HISTOGRAM_BINS = 100;

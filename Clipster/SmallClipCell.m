@@ -60,7 +60,7 @@
 {
     if (!_timelineView) {
         _timelineView = [[UIView alloc] init];
-        _timelineView.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
+        _timelineView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.05];
         [self addSubview:_timelineView];
     }
     return _timelineView;
