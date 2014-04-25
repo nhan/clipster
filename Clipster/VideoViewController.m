@@ -75,6 +75,7 @@
 @property (nonatomic, assign) CGFloat videoControlYOffset;
 @property (nonatomic, strong) NSMutableArray *popularityHistogram;
 @property (nonatomic, strong) id timeObserverHandle;
+@property (weak, nonatomic) IBOutlet UIView *currentPlaybackLineView;
 @end
 
 @implementation VideoViewController
@@ -162,15 +163,26 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.scrubView addGestureRecognizer:panScrub];
     UITapGestureRecognizer *tapScrub = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapScrubber:)];
     [self.scrubView addGestureRecognizer:tapScrub];
-    
     [self.videoControlView addSubview:self.scrubView];
-    
     
     // Setting the current playback position will set playback time and progress
     self.currentPlaybackPosition = 0;
-    
+    [self updateCurrentPlaybackLineViewWithPosition:self.currentPlaybackPosition];
+
     [movieView addSubview:self.videoControlView];
     [movieView bringSubviewToFront:self.videoControlView];
+}
+
+- (void)updateCurrentPlaybackLineViewWithPosition:(CGFloat)position
+{
+    // Let's respect the bins for position
+    CGFloat width = self.view.frame.size.width - PLAY_BUTTON_WIDTH;
+    CGFloat binnedPosition = ceil(position*NUMBER_HISTOGRAM_BINS/width) * width/NUMBER_HISTOGRAM_BINS;
+//    CGFloat playerHeight = self.playerController.view.frame.size.height;
+//    CGFloat height = self.view.frame.size.height - playerHeight;
+    
+    CGRect frame = self.currentPlaybackLineView.frame;
+    self.currentPlaybackLineView.frame = CGRectMake(binnedPosition + PLAY_BUTTON_WIDTH, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void)addAllClipsToHistogram
@@ -181,7 +193,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     for (Clip *clip in self.clips) {
         [self addClipToHistogram:clip];
     }
-    
     // reload table simply because this is called once we have the timeline for clips
     [self.tableView reloadData];
 }
@@ -264,6 +275,10 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // Change width of scrub depending on new playback position
     self.scrubView.currentPlaybackPosition = currentPlaybackPosition;
     [self.scrubView setNeedsDisplay];
+    
+    // Change position of current line view
+    [self updateCurrentPlaybackLineViewWithPosition:_currentPlaybackPosition];
+    
     _currentPlaybackPosition = currentPlaybackPosition;
 }
 
