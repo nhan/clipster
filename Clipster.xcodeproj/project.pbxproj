@@ -13,6 +13,7 @@
 		6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */; };
 		6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */; };
 		6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */; };
+		6B9B8DE2190B2A92007F420A /* YouTubeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9B8DE1190B2A92007F420A /* YouTubeParser.m */; };
 		6BAACCF919085148003B5084 /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BAACCF719085148003B5084 /* VideoPlayerViewController.m */; };
 		6BAACCFA19085148003B5084 /* VideoPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BAACCF819085148003B5084 /* VideoPlayerViewController.xib */; };
 		6BAACCFD1908526E003B5084 /* VideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BAACCFC1908526E003B5084 /* VideoPlayerView.m */; };
@@ -96,6 +97,8 @@
 		6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HamburgerMenuController.m; sourceTree = "<group>"; };
 		6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HamburgerMenuController.xib; sourceTree = "<group>"; };
 		6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = stream_thumbnail_placeholder.gif; path = images/stream_thumbnail_placeholder.gif; sourceTree = "<group>"; };
+		6B9B8DE0190B2A92007F420A /* YouTubeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YouTubeParser.h; sourceTree = "<group>"; };
+		6B9B8DE1190B2A92007F420A /* YouTubeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YouTubeParser.m; sourceTree = "<group>"; };
 		6BAACCF619085148003B5084 /* VideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewController.h; sourceTree = "<group>"; };
 		6BAACCF719085148003B5084 /* VideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewController.m; sourceTree = "<group>"; };
 		6BAACCF819085148003B5084 /* VideoPlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoPlayerViewController.xib; sourceTree = "<group>"; };
@@ -350,6 +353,8 @@
 				BBAAD84818F3642B0079995E /* User.m */,
 				BB1F17B21900868C0048D9C8 /* YouTubeVideo.h */,
 				BB1F17B31900868C0048D9C8 /* YouTubeVideo.m */,
+				6B9B8DE0190B2A92007F420A /* YouTubeParser.h */,
+				6B9B8DE1190B2A92007F420A /* YouTubeParser.m */,
 			);
 			name = models;
 			sourceTree = "<group>";
@@ -581,6 +586,7 @@
 				7E3A27EB190B115F00D96503 /* YouTubeCell.m in Sources */,
 				BBAAD84C18F364490079995E /* Clip.m in Sources */,
 				7EF9A4BF18F884580058FE1C /* VideoViewController.m in Sources */,
+				6B9B8DE2190B2A92007F420A /* YouTubeParser.m in Sources */,
 				6B2C4A6B18FB111E00D9A011 /* SearchResultsViewController.m in Sources */,
 				7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */,
 				6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */,

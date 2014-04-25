@@ -9,11 +9,12 @@
 #import "ClipCell.h"
 #import "YouTubeVideo.h"
 #import "ProfileViewController.h"
+#import "VideoPlayerViewController.h"
 //#import <QuartzCore/QuartzCore.h>
 
 @interface ClipCell ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
+@property (weak, nonatomic) IBOutlet PFImageView *clipThumnailImageView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *youTubeLabel;
 @property (weak, nonatomic) IBOutlet UIView *thumbnailContainer;
@@ -22,73 +23,93 @@
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UILabel *timeAgoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
-@property (nonatomic, assign) BOOL likeButtonState;
+
 - (IBAction)onLikeButton:(id)sender;
+
+@property (nonatomic, strong) VideoPlayerViewController *videoPlayer;
+@property (nonatomic, assign) BOOL likeButtonState;
+@property NSDictionary *titleLabelTextAttributes;
 @end
 
 @implementation ClipCell
 
 static CGFloat lineHeight = 24.f;
 
-- (void)setClip:(Clip *)clip
+- (void)awakeFromNib
 {
-    _clip = clip;
-    self.likeButtonState = [self.clip isLikedByUser:[User currentUser]];
-    [self refreshUI];
-}
-
-- (void)refreshUI
-{
+    self.videoPlayer = [[VideoPlayerViewController alloc] init];
+    
     NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
     style.minimumLineHeight = lineHeight;
     style.maximumLineHeight = lineHeight;
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,};
-    
-    if (self.clip.text == nil) {
-        self.clip.text = @"";
-    }
-    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:self.clip.text
-                                                                         attributes:attributes];
-    
-    self.usernameLabel.text = self.clip.username;
-    self.timeAgoLabel.text = [self.clip timeAgo];
-    [self refreshLikes];
+    self.titleLabelTextAttributes = @{NSParagraphStyleAttributeName : style};
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    if (self.clip.thumbnail) {
-        self.thumbnail.file = self.clip.thumbnail;
-        [self.thumbnail loadInBackground];
-    } else {
-        self.thumbnail.image = [UIImage imageNamed:@"stream_thumbnail_placeholder.gif"];
-    }
-    [self.thumbnail setClipsToBounds:YES];
-    self.thumbnail.layer.cornerRadius = 5.0;
-    self.thumbnail.layer.masksToBounds = YES;
-    self.profileThumbnailView.alpha = 0.0;
+    [self addGestureRecognizers];
     
     [self.thumbnailContainer setClipsToBounds:YES];
     self.thumbnailContainer.layer.cornerRadius = self.thumbnailContainer.frame.size.width/2;
     self.thumbnailContainer.layer.masksToBounds = YES;
     self.thumbnailContainer.backgroundColor = [UIColor whiteColor];
     
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onThumbnailTap:)];
-    [self.thumbnailContainer addGestureRecognizer:tapGestureRecognizer];
-    
     [self.card setClipsToBounds:YES];
     self.card.layer.cornerRadius = 5.0;
-    
-//    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.card.bounds];
-//    self.card.layer.masksToBounds = NO;
-//    self.card.layer.shadowColor = [UIColor blackColor].CGColor;
-//    self.card.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
-//    self.card.layer.shadowOpacity = 0.1f;
-//    self.card.layer.shadowPath = shadowPath.CGPath;
+    //    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.card.bounds];
+    //    self.card.layer.masksToBounds = NO;
+    //    self.card.layer.shadowColor = [UIColor blackColor].CGColor;
+    //    self.card.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
+    //    self.card.layer.shadowOpacity = 0.1f;
+    //    self.card.layer.shadowPath = shadowPath.CGPath;
     self.card.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.28].CGColor;
     self.card.layer.borderWidth = 1;
+}
+
+- (void)addGestureRecognizers
+{
+    UITapGestureRecognizer *clipTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClipThumbnailTap:)];
+    [self.clipThumnailImageView addGestureRecognizer:clipTapGestureRecognizer];
+    
+    UITapGestureRecognizer *userTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onUserThumbnailTap:)];
+    [self.thumbnailContainer addGestureRecognizer:userTapGestureRecognizer];
+    
+    UITapGestureRecognizer *usernameTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onUserThumbnailTap:)];
+    self.usernameLabel.userInteractionEnabled = YES;
+    [self.usernameLabel addGestureRecognizer:usernameTapGestureRecognizer];
+
+}
+
+- (void)setClip:(Clip *)clip
+{
+    _clip = clip;
+    [self refreshUI];
+}
+
+- (void)refreshUI
+{
+    if (self.clip.text == nil) {
+        self.clip.text = @"";
+    }
+    
+    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:self.clip.text attributes:self.titleLabelTextAttributes];
+    
+    self.usernameLabel.text = self.clip.username;
+    self.timeAgoLabel.text = [self.clip timeAgo];
+    [self refreshLikes];
+    
+    if (self.clip.thumbnail) {
+        self.clipThumnailImageView.file = self.clip.thumbnail;
+        [self.clipThumnailImageView loadInBackground];
+    } else {
+        self.clipThumnailImageView.image = [UIImage imageNamed:@"stream_thumbnail_placeholder.gif"];
+    }
+    [self.clipThumnailImageView setClipsToBounds:YES];
+    self.clipThumnailImageView.layer.cornerRadius = 5.0;
+    self.clipThumnailImageView.layer.masksToBounds = YES;
 
     self.youTubeLabel.text = self.clip.videoTitle;
 
+    self.profileThumbnailView.alpha = 0.0;
     if ([self.clip.user isDataAvailable]) {
         [self refreshUserThumbnail:self.clip.user];
     } else {
@@ -100,6 +121,9 @@ static CGFloat lineHeight = 24.f;
             }
         }];
     }
+    
+    self.likeButtonState = [self.clip isLikedByUser:[User currentUser]];
+    
 }
 
 - (void)refreshUserThumbnail:(User *)user
@@ -134,11 +158,18 @@ static CGFloat lineHeight = 24.f;
     }
 }
 
-- (void)onThumbnailTap:(id)sender{
+- (void)onUserThumbnailTap:(id)sender
+{
     [self.delegate didClickUsername:self.clip.username];
 }
 
-- (IBAction)onLikeButton:(id)sender {
+- (void)onClipThumbnailTap:(id)sender
+{
+    
+}
+
+- (IBAction)onLikeButton:(id)sender
+{
     // toggle it instantly before making the query to parse
     self.likeButtonState = !self.likeButtonState;
     [self refreshLikes];
@@ -151,7 +182,8 @@ static CGFloat lineHeight = 24.f;
     [self refreshLikes];
 }
 
-+ (CGFloat)heightForClip:(Clip *)clip prototype:(ClipCell *)prototype{
++ (CGFloat)heightForClip:(Clip *)clip prototype:(ClipCell *)prototype
+{
     if (clip.text == nil || clip.text.length == 0){
         return 320;
     }

@@ -17,7 +17,7 @@
 @property (nonatomic, assign) BOOL isLooping;
 
 // TODO: (nhan) think about which queue the blocks should run on and whether we need a queue argument
-- (void)loadVideoWithURLString:(NSString *)urlString ready:(void (^)(void))readyBlock;
+- (void)loadVideoWithURL:(NSURL *)url ready:(void (^)(void))readyBlock;
 // use the returned handle to remove block
 - (id)addTimeObserverWithBlock:(void (^)(float time))block;
 - (void)removeTimeObserver:(id)observerId;
