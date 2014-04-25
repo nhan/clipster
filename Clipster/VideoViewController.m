@@ -332,9 +332,13 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
             [alert show];
         } else {
             NSLog(@"video url: %@", videoURL);
+            // TODO: come up with a better way to call addAllClipsToHistogram without blocking the hud from disappearing
+            // it has to wait three things to finish: clips to load, the video url parsing to finish, and the video to load
+            [self pendingNetworkRequest];
             [self.playerController loadVideoWithURLString:videoURL ready:^{
                 [self updatePlayerToActiveClip];
                 [self setupCustomVideoControl];
+                [self pendingNetworkRequestDone];
                 self.isVideoPlaying = TRUE;
             }];
 
