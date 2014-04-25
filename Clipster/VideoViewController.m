@@ -160,12 +160,10 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     
     UIPanGestureRecognizer *panScrub = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panScrubber:)];
     [self.scrubView addGestureRecognizer:panScrub];
-    
     UITapGestureRecognizer *tapScrub = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapScrubber:)];
     [self.scrubView addGestureRecognizer:tapScrub];
     
     [self.videoControlView addSubview:self.scrubView];
-    
     
     
     // Setting the current playback position will set playback time and progress
@@ -256,8 +254,12 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // If we have not interacted with the video in a while lets minimize
     int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
     
-    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction++ > maxNumberIntervalsBeforeMinimize) {
+    NSLog(@"numberTimerEvents: %d", self.numberTimerEventsSinceVideoInteraction);
+    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction > maxNumberIntervalsBeforeMinimize) {
         self.isVideoControlMinimized = YES;
+    } else {
+        // Increment number of fires since video interaction
+        self.numberTimerEventsSinceVideoInteraction++;
     }
 }
 
