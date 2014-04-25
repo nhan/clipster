@@ -15,6 +15,8 @@
 @interface SmallClipCell ()
 @property (weak, nonatomic) IBOutlet UILabel *clipTimesLabel;
 @property (weak, nonatomic) IBOutlet UIButton *usernameButton;
+@property (nonatomic, assign) BOOL isShowingTimeline;
+@property (nonatomic, strong) UIView *timelineView;
 @end
 
 @implementation SmallClipCell
@@ -40,10 +42,28 @@
     return height;
 }
 
--(void)setClip:(Clip *)clip
+- (void)setClip:(Clip *)clip
 {
     _clip = clip;
     [self refreshUI];
+}
+
+- (void)setTimelineRect:(CGRect)timelineRect
+{
+    // simply show the timeline if someone sets this property
+    self.isShowingTimeline = YES;
+    _timelineRect = timelineRect;
+    [self refreshUI];
+}
+
+- (UIView *)timelineView
+{
+    if (!_timelineView) {
+        _timelineView = [[UIView alloc] init];
+        _timelineView.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.8];
+        [self addSubview:_timelineView];
+    }
+    return _timelineView;
 }
 
 - (void)refreshUI
@@ -65,7 +85,6 @@
         tapToPublishView.frame = CGRectMake(self.contentView.frame.size.width - 118,15, 108, 36);
         [tapToPublishView setTag:TAP_TO_PUBLISH_TAG];
         [self.contentView addSubview:tapToPublishView];
-        
     }
     
     self.clipTimesLabel.text = clip.formattedTimestamp;
@@ -86,6 +105,10 @@
 //    durationView.tag = DURATION_TAG;
 //    [self.contentView insertSubview:durationView belowSubview:[self.contentView.subviews objectAtIndex:0]];
     
+    if (self.isShowingTimeline) {
+        self.timelineView.frame = self.timelineRect;
+    }
+    
     self.thumbnail.file = clip.thumbnail;
     [self.thumbnail loadInBackground];
     [self refreshThumbnail];
@@ -99,18 +122,6 @@
 
 - (IBAction)onUsernameClick:(id)sender {
     [self.delegate didClickUsername:self.clip.username];
-}
-
-- (void)awakeFromNib
-{
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 @end

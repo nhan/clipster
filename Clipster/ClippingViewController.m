@@ -23,13 +23,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *startTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *endTimeLabel;
 @property (nonatomic, assign) CGFloat translation;
-
-
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) Clip *clip;
-@property (nonatomic, strong) MPMoviePlayerController *player;
 @property (weak, nonatomic) IBOutlet RPFloatingPlaceholderTextView *annotationTextView;
+@property (nonatomic, strong) VideoPlayerViewController *playerController;
 @end
 
 @implementation ClippingViewController
@@ -41,18 +39,18 @@ static CGFloat   endSliderHomePos = 240;
 {
     self = [super init];
     if (self) {
-        // Custom initialization
         self.title = @"Clipping";
     }
     return self;
 }
 
-- (id)initWithClip:(Clip*)clip moviePlayer:(MPMoviePlayerController*)player
+- (id)initWithClip:(Clip*)clip playerController:(VideoPlayerViewController*)playerController
 {
     self = [self init];
     if (self) {
         _clip = clip;
-        _player = player;
+        _playerController = playerController;
+        _playerController.isLooping = YES;
     }
     return self;
 }
@@ -65,7 +63,7 @@ static CGFloat   endSliderHomePos = 240;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction:)];
     
     self.annotationTextView.delegate = self;
-    self.annotationTextView.placeholder = @"Enter description";
+    self.annotationTextView.placeholder = @"Enter Description";
 
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -86,14 +84,11 @@ static CGFloat   endSliderHomePos = 240;
     [self updateRulerData:ruler];
 
     // add the player to ourself
-    [self.player pause];
-    [self.player.view setFrame: self.videoPlayerContainer.frame];
-    [self.videoPlayerContainer addSubview: self.player.view];
-    [self.view bringSubviewToFront:self.videoPlayerContainer];
-    self.player.fullscreen = NO;
+    [self.playerController.view setFrame: self.videoPlayerContainer.frame];
+    [self.videoPlayerContainer addSubview: self.playerController.view];
 }
 
-#pragma mark - UITextViewDelegate
+#pragma mark - Keyboard / Description Text
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     [self.scrollView setContentOffset:self.rulerContainer.frame.origin animated:YES];
@@ -106,54 +101,58 @@ static CGFloat   endSliderHomePos = 240;
     [self.scrollView setContentOffset:self.videoPlayerContainer.frame.origin animated:YES];
 }
 
+#pragma mark - Call delegate
 - (void)doneAction:(id)sender {
     self.clip.text = self.annotationTextView.text;
     self.clip.timeStart = self.startTime * 1000;
     self.clip.timeEnd = self.endTime * 1000;
+    
+    self.playerController.isLooping = NO;
     [self.delegate creationDone:self.clip];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)cancelAction
 {
+    self.playerController.isLooping = NO;
     [self.delegate creationCanceled];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)updateUI:(BOOL)isEndChanged
+- (void)updateUI
 {
-    if (isEndChanged) {
-        self.player.currentPlaybackTime = self.endTimeIntermediate;
-    } else {
-        self.player.currentPlaybackTime = self.startTimeIntermediate;
-    }
-    
     self.startTimeLabel.text = [Clip formatTimeWithSeconds:self.startTimeIntermediate];
     self.endTimeLabel.text = [Clip formatTimeWithSeconds:self.endTimeIntermediate];
+    self.playerController.startTime = self.startTime;
+    self.playerController.endTime = self.endTime;
 }
 
 - (void)setStartTimeIntermediate:(CGFloat)startTimeIntermediate
 {
     _startTimeIntermediate = startTimeIntermediate;
-    [self updateUI:NO];
+    [self updateUI];
+    [self.playerController seekToTime:startTimeIntermediate done:nil];
 }
 
 - (void)setEndTimeIntermediate:(CGFloat)endTimeIntermediate
 {
     _endTimeIntermediate = endTimeIntermediate;
-    [self updateUI:YES];
+    [self updateUI];
+    [self.playerController seekToTime:endTimeIntermediate done:nil];
 }
 
 - (void)setStartTime:(CGFloat)startTime
 {
     _startTime = startTime;
     self.startTimeIntermediate = startTime;
+    self.playerController.startTime = startTime;
 }
 
 - (void)setEndTime:(CGFloat)endTime
 {
     _endTime = endTime;
     self.endTimeIntermediate = endTime;
+    self.playerController.endTime = endTime;
 }
 
 - (void)updateRulerData:(RulerView *)ruler{
@@ -162,8 +161,6 @@ static CGFloat   endSliderHomePos = 240;
     ruler.endPos = endSliderHomePos;
     ruler.endTime = self.endTime;
     ruler.sliderOffset = self.startSlider.frame.size.width/2;
-    NSLog(@"START %f END %f", self.startTime, self.endTime);
-    
     [ruler setNeedsDisplay];
 }
 
@@ -207,7 +204,6 @@ static CGFloat   endSliderHomePos = 240;
             self.startSlider.frame = CGRectMake( startSliderHomePos, self.startSlider.frame.origin.y, self.startSlider.frame.size.width, self.startSlider.frame.size.height);
             rulerView.transform = transform;
         } completion:^(BOOL finished) {
-            NSLog(@"returned start slider to home position");
             [rulerView removeFromSuperview];
             RulerView *newRulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
             [self.rulerContainer addSubview:newRulerView];
@@ -240,7 +236,6 @@ static CGFloat   endSliderHomePos = 240;
         CGFloat originalTimeDiff = self.endTime - self.startTime;
         CGFloat newTimeDiff = ((self.endSlider.frame.origin.x - startSliderHomePos)/(endSliderHomePos - startSliderHomePos))*originalTimeDiff;
         self.endTime = self.startTime+newTimeDiff;
-        NSLog(@"%f", self.endTime);
         
         CGFloat newScale = (((originalTimeDiff/newTimeDiff)*self.rulerContainer.frame.size.width)-self.rulerContainer.frame.size.width)/2;
         self.translation = newScale*(((self.rulerContainer.frame.size.width/2)-(startSliderHomePos+(self.startSlider.frame.size.width/2)))/(self.rulerContainer.frame.size.width/2));
@@ -254,7 +249,6 @@ static CGFloat   endSliderHomePos = 240;
             self.endSlider.frame = CGRectMake( endSliderHomePos, self.endSlider.frame.origin.y, self.endSlider.frame.size.width, self.endSlider.frame.size.height);
             rulerView.transform = transform;
         } completion:^(BOOL finished) {
-            NSLog(@"returned end slider to home position");
             [rulerView removeFromSuperview];
             RulerView *newRulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
             [self.rulerContainer addSubview:newRulerView];

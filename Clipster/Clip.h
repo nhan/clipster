@@ -24,6 +24,7 @@
 @property (retain) NSString *videoTitle;
 @property (retain) NSMutableArray *likers;
 
+// TODO: (nhan) consider changing the type for these to float / Float64
 @property NSInteger timeStart;
 @property NSInteger timeEnd;
 @property (retain) PFFile *thumbnail;

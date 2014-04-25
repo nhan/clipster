@@ -10,8 +10,10 @@
 #import "Clip.h"
 #import "SmallClipCell.h"
 #import "ProfileViewController.h"
+#import "VideoPlayerViewController.h"
+#import "ClippingViewController.h"
 #import "YouTubeVideo.h"
-#import <MediaPlayer/MediaPlayer.h>
+#import "VideoControlView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <HCYoutubeParser.h>
 
@@ -21,7 +23,6 @@
 @end
 
 @implementation HCYoutubeParser (Async)
-
 + (void)h264videosWithYoutubeID:(NSString *)youtubeID
                    completeBlock:(void(^)(NSDictionary *videoDictionary, NSError *error))completeBlock {
     if (youtubeID) {
@@ -38,13 +39,13 @@
         completeBlock(nil, [NSError errorWithDomain:@"me.hiddencode.yt-parser" code:1001 userInfo:@{ NSLocalizedDescriptionKey: @"Invalid YouTube URL" }]);
     }
 }
-
 @end
 
 @interface VideoViewController ()
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) MPMoviePlayerController *player;
+@property (weak, nonatomic) IBOutlet UIView *clippingPanel;
+
 @property (nonatomic, assign) CGPoint panStartPosition;
 @property (nonatomic, strong) NSMutableArray *clips;
 @property (nonatomic, strong) Clip *activeClip;
@@ -53,10 +54,27 @@
 
 @property (nonatomic, strong) NSString *videoId;
 @property (nonatomic, strong) NSString *videoTitle;
-@property (weak, nonatomic) IBOutlet UIView *clippingPanel;
 @property (nonatomic, assign) CGFloat clippingPanelPos;
 @property (nonatomic, assign) CGFloat tableViewScrollPos;
 
+@property (nonatomic, strong) VideoPlayerViewController *playerController;
+@property (nonatomic, assign) NSInteger hudCounter;
+
+@property (nonatomic, strong) UIView *videoControlView;
+@property (nonatomic, strong) UIButton *playButton;
+@property (nonatomic, assign) BOOL isVideoPlaying;
+@property (nonatomic, strong) VideoControlView *scrubView;
+@property (nonatomic, assign) CGFloat currentPlaybackPosition;
+@property (nonatomic, assign) NSTimeInterval currentPlaybackTime;
+@property (nonatomic, strong) NSTimer *playbackMonitorTimer;
+@property (nonatomic, assign) BOOL isScrubbing;
+@property (nonatomic, assign) BOOL wasVideoPlayingBeforeScrub;
+@property (nonatomic, assign) BOOL isVideoControlMinimized;
+@property (nonatomic, assign) NSInteger numberTimerEventsSinceVideoInteraction;
+@property (nonatomic, assign) CGFloat videoControlHeight;
+@property (nonatomic, assign) CGFloat videoControlYOffset;
+@property (nonatomic, strong) NSMutableArray *popularityHistogram;
+@property (nonatomic, strong) id timeObserverHandle;
 @end
 
 @implementation VideoViewController
@@ -80,18 +98,326 @@
 
 - (id)initWithVideoId:(NSString *)videoId andTitle:(NSString *)videoTitle
 {
-    self = [super self];
+    self = [super init];
     if (self) {
+        _hudCounter = 0;
         _videoId = videoId;
         _videoTitle = videoTitle;
+        _playerController = [[VideoPlayerViewController alloc] init];
     }
     return self;
 }
 
+- (void)setActiveClip:(Clip *)activeClip
+{
+    _activeClip = activeClip;
+    [self updatePlayerToActiveClip];
+}
+
+# pragma mark - UI updating
+
+static const float VIDEO_MONITOR_INTERVAL = .1;
+static const float VIDEO_CONTROL_MINIMIZE_INTERVAL = 3.;
+static const int VIDEO_CONTROL_HEIGHT = 20;
+static const int VIDEO_CONTROL_HEIGHT_MIN = 5;
+static const int PLAY_BUTTON_WIDTH = 70;
+static const int NUMBER_HISTOGRAM_BINS = 100;
+
+- (CGFloat)videoControlHeight
+{
+    return self.isVideoControlMinimized ? VIDEO_CONTROL_HEIGHT_MIN : VIDEO_CONTROL_HEIGHT;
+}
+
+#pragma mark - Custom Video Control
+- (void)setupCustomVideoControl
+{
+    UIView *movieView = self.playerController.view;
+    
+    UITapGestureRecognizer *tapVideoGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapVideo:)];
+    tapVideoGesture.delegate = self;
+    [movieView addGestureRecognizer:tapVideoGesture];
+    
+    self.videoControlView = [[UIView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight)];
+    self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
+    
+    // play/pause region
+    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,PLAY_BUTTON_WIDTH,self.videoControlHeight)];
+    [self.playButton setTitle:@"P" forState:UIControlStateNormal];
+    self.playButton.alpha = 0.3;
+    [self.playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControlView addSubview:self.playButton];
+    
+    // scrubbing/vis region
+    self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
+    self.scrubView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.4];
+    self.scrubView.color = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:1.0];
+    // Initialize popularity histogram
+    self.popularityHistogram = [[NSMutableArray alloc] init];
+    for (int i=0; i<NUMBER_HISTOGRAM_BINS; i++) {
+        [self.popularityHistogram addObject:@0.0];
+    }
+    self.scrubView.popularityHistogram = self.popularityHistogram;
+    
+    UIPanGestureRecognizer *panScrub = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panScrubber:)];
+    [self.scrubView addGestureRecognizer:panScrub];
+    UITapGestureRecognizer *tapScrub = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapScrubber:)];
+    [self.scrubView addGestureRecognizer:tapScrub];
+    
+    [self.videoControlView addSubview:self.scrubView];
+    
+    
+    // Setting the current playback position will set playback time and progress
+    self.currentPlaybackPosition = 0;
+    
+    [movieView addSubview:self.videoControlView];
+    [movieView bringSubviewToFront:self.videoControlView];
+}
+
+- (void)addAllClipsToHistogram
+{
+    for (int i=0; i<self.popularityHistogram.count; i++) {
+        self.popularityHistogram[i] = @0;
+    }
+    for (Clip *clip in self.clips) {
+        [self addClipToHistogram:clip];
+    }
+    
+    // reload table simply because this is called once we have the timeline for clips
+    [self.tableView reloadData];
+}
+
+- (void)addClipToHistogram:(Clip *)clip
+{
+    NSArray *timeBins = [self timeBinsForClip:clip];
+    int startBin = [timeBins[0] integerValue];
+    int endBin = [timeBins[1] integerValue];
+    for (int i=startBin; i<endBin; i++) {
+        self.popularityHistogram[i] = @([self.popularityHistogram[i] floatValue] + 0.2);
+    }
+    [self.videoControlView setNeedsDisplay];
+}
+
+- (NSArray *)timeBinsForClip:(Clip *)clip
+{
+    float durationMS = self.playerController.duration * 1000.0f;
+    int startBin = floor(clip.timeStart*NUMBER_HISTOGRAM_BINS/durationMS);
+    int endBin = ceil(clip.timeEnd*NUMBER_HISTOGRAM_BINS/durationMS);
+    startBin = startBin < 0 ? 0 : startBin;
+    endBin = endBin > (NUMBER_HISTOGRAM_BINS-1) ? (NUMBER_HISTOGRAM_BINS-1) : endBin;
+    return @[@(startBin), @(endBin)];
+}
+
+- (CGRect)rectForClip:(Clip *)clip cell:(SmallClipCell *)cell
+{
+    NSArray *timeBins = [self timeBinsForClip:clip];
+    float startBin = [timeBins[0] floatValue];
+    float endBin = [timeBins[1] floatValue];
+    float sizeBin = (cell.frame.size.width - PLAY_BUTTON_WIDTH) / NUMBER_HISTOGRAM_BINS;
+    float width = (endBin - startBin) * sizeBin;
+    float x = startBin * sizeBin + PLAY_BUTTON_WIDTH;
+    return CGRectMake(x, 0, width, cell.frame.size.height);
+}
+
+- (void)setIsVideoControlMinimized:(BOOL)isVideoControlMinimized
+{
+    _isVideoControlMinimized = isVideoControlMinimized;
+    
+    // hid the play button
+    UIView *movieView = self.playerController.view;
+    self.playButton.hidden = isVideoControlMinimized;
+    self.videoControlView.frame = CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight);
+    self.scrubView.frame = CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight);
+    // set past frame resizes automatically
+    self.currentPlaybackPosition = self.currentPlaybackPosition;
+}
+
+- (void)setIsVideoPlaying:(BOOL)isVideoPlaying
+{
+    if (isVideoPlaying) {
+        self.playButton.alpha = 0.3;
+        [self.playerController play];
+        [self startMonitorPlaybackTimer];
+    } else if (!isVideoPlaying) {
+        self.playButton.alpha = 1.;
+        [self.playerController pause];
+        [self stopMonitorPlaybackTimer];
+    }
+    self.numberTimerEventsSinceVideoInteraction = 0;
+    _isVideoPlaying = isVideoPlaying;
+}
+
+- (void)startMonitorPlaybackTimer
+{
+    __weak typeof(self) weakSelf = self;
+    self.timeObserverHandle = [self.playerController addTimeObserverWithBlock:^(float time) {
+        [weakSelf monitorPlayback:time];
+    }];
+}
+
+- (void)stopMonitorPlaybackTimer
+{
+    [self.playerController removeTimeObserver:self.timeObserverHandle];
+}
+
+- (void)setCurrentPlaybackPosition:(CGFloat)currentPlaybackPosition
+{
+    // Change width of scrub depending on new playback position
+    self.scrubView.currentPlaybackPosition = currentPlaybackPosition;
+    [self.scrubView setNeedsDisplay];
+    _currentPlaybackPosition = currentPlaybackPosition;
+}
+
+- (void)monitorPlayback:(float)currentPlaybackTime
+{
+    // Set the playback position feedback
+    CGFloat percentPlayed = currentPlaybackTime / self.playerController.duration;
+    self.currentPlaybackPosition = self.scrubView.frame.size.width * percentPlayed;
+    
+    // If we have not interacted with the video in a while lets minimize
+    int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
+    
+    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction > maxNumberIntervalsBeforeMinimize) {
+        self.isVideoControlMinimized = YES;
+    } else {
+        // Increment number of fires since video interaction
+        self.numberTimerEventsSinceVideoInteraction++;
+    }
+}
+
+- (void)tapVideo:(UITapGestureRecognizer *)tapGesture
+{
+    // unminimize video controls
+    self.numberTimerEventsSinceVideoInteraction = 0;
+    self.isVideoControlMinimized = NO;
+}
+
+- (void)tapScrubber:(UITapGestureRecognizer *)tapGesture
+{
+    CGPoint point = [tapGesture locationInView:self.scrubView];
+    self.currentPlaybackPosition = point.x;
+    CGFloat percentPlayed = self.currentPlaybackPosition / self.scrubView.bounds.size.width;
+    [self.playerController seekToTime:(self.playerController.duration * percentPlayed) done:nil];
+    self.numberTimerEventsSinceVideoInteraction = 0;
+}
+
+- (void)panScrubber:(UIPanGestureRecognizer *)panGesture
+{
+    if (panGesture.state == UIGestureRecognizerStateBegan) {
+        // might want to only start scrubbing if we are close to the current playback position
+        self.isScrubbing = YES;
+        self.numberTimerEventsSinceVideoInteraction = 0;
+    } else if (panGesture.state == UIGestureRecognizerStateChanged && self.isScrubbing) {
+        // change current playback time based on position
+        CGPoint point = [panGesture locationInView:self.scrubView];
+        self.currentPlaybackPosition = point.x;
+        CGFloat percentPlayed = self.currentPlaybackPosition / self.scrubView.bounds.size.width;
+        [self.playerController seekToTime:(self.playerController.duration * percentPlayed) done:nil];
+        self.numberTimerEventsSinceVideoInteraction = 0;
+    } else if (panGesture.state == UIGestureRecognizerStateEnded) {
+        self.isScrubbing = NO;
+    } else if (panGesture.state == UIGestureRecognizerStateFailed) {
+        self.isScrubbing = NO;
+    }
+}
+
+- (void)setIsScrubbing:(BOOL)isScrubbing
+{
+    if (!_isScrubbing && isScrubbing) {
+        // Going from not scrubbing to scrubbing capture video play state
+        self.wasVideoPlayingBeforeScrub = self.isVideoPlaying;
+        self.isVideoPlaying = NO;
+    } else if (_isScrubbing && !isScrubbing) {
+        // Going from scrubbing to not scrubbing
+        self.isVideoPlaying = self.wasVideoPlayingBeforeScrub;
+    }
+    _isScrubbing = isScrubbing;
+}
+
+- (void)onPlayButtonClicked
+{
+    self.isVideoPlaying = !self.isVideoPlaying;
+}
+
+#pragma mark - UIView
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+
+    [self setupClippingPanel];
+    [self addPlayerViewToContainer];
+    
+    [self pendingNetworkRequest];
+    [HCYoutubeParser h264videosWithYoutubeID:self.videoId completeBlock:^(NSDictionary *videoDictionary, NSError *error) {
+        
+        // TODO: We need to consider what our video quality strategy should be
+        // not all qualities will be available at all time and what our connectivity is
+        NSString *videoURL = nil;
+        
+        if (videoDictionary && videoDictionary.count > 0) {
+            videoURL = videoDictionary[@"medium"];
+            if (!videoURL) {
+                videoURL = [videoDictionary allValues][0];
+            }
+        }
+        
+        if (!videoURL) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cannot view this video on mobile" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [alert show];
+        } else {
+            NSLog(@"video url: %@", videoURL);
+            // TODO: come up with a better way to call addAllClipsToHistogram without blocking the hud from disappearing
+            // it has to wait three things to finish: clips to load, the video url parsing to finish, and the video to load
+            [self pendingNetworkRequest];
+            [self.playerController loadVideoWithURLString:videoURL ready:^{
+                [self updatePlayerToActiveClip];
+                [self setupCustomVideoControl];
+                [self pendingNetworkRequestDone];
+                self.isVideoPlaying = TRUE;
+            }];
+
+        }
+        
+        [self pendingNetworkRequestDone];
+    }];
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
+    UINib *clipCellNib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
+    self.prototype = [clipCellNib instantiateWithOwner:self options:nil][0];
+    [self.tableView registerNib:clipCellNib forCellReuseIdentifier:@"ClipCell"];
+    [self fetchClips];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self stopMonitorPlaybackTimer];
+    [super viewWillDisappear:animated];
+}
+
+- (void)updatePlayerToActiveClip
+{
+    [self.playerController seekToTime:self.activeClip.timeStart/1000.0f done:nil];
+}
+
+- (void)addPlayerViewToContainer
+{
+    if (![self.playerController.view isDescendantOfView:self.videoPlayerContainer]) {
+        [self.playerController.view setFrame: self.videoPlayerContainer.frame];
+        [self.videoPlayerContainer addSubview: self.playerController.view];
+    }
+}
+
+#pragma mark - Network fetching
+
 - (void)fetchClips
 {
-    [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
-    
+    [self pendingNetworkRequest];
     PFQuery *query = [PFQuery queryWithClassName:@"Clip"];
     [query whereKey:@"videoId" equalTo:self.videoId];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -113,114 +439,8 @@
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
-        [MBProgressHUD hideHUDForView:self.tableView animated:YES];
-                          
+        [self pendingNetworkRequestDone];
     }];
-}
-
-- (IBAction)clipAction:(id)sender
-{
-    self.aNewClip = [[Clip alloc] init];
-    int currentTime = self.player.currentPlaybackTime * 1000;
-    self.aNewClip.timeStart = currentTime;
-    self.aNewClip.timeEnd = currentTime + 10000;
-    self.aNewClip.videoId = self.videoId;
-    self.aNewClip.videoTitle = self.videoTitle;
-    self.aNewClip.user = (User *)[PFUser currentUser];
-    
-    [self.clips addObject:self.aNewClip];
-    
-    // animate to new cell
-    [self.tableView reloadData];
-    
-    NSNumber *thumnailTime = [NSNumber numberWithFloat:(currentTime/1000.0f)];
-    [self.player requestThumbnailImagesAtTimes:@[thumnailTime] timeOption:MPMovieTimeOptionExact];
-}
-
-- (void)setActiveClip:(Clip *)activeClip
-{
-    _activeClip = activeClip;
-    self.player.currentPlaybackTime = self.activeClip.timeStart / 1000.0f;
-}
-
-- (void)thumnailRequestDone:(NSNotification *)notification
-{
-    if (notification.userInfo[MPMoviePlayerThumbnailImageKey]) {
-        UIImage *thumbnail = notification.userInfo[MPMoviePlayerThumbnailImageKey];
-        self.aNewClip.thumbnail = [PFFile fileWithData:UIImageJPEGRepresentation(thumbnail, 0.05f)];
-        [self.aNewClip saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            [self.tableView reloadData];
-        }];
-    }
-    // Create even if thumbnail creation fails
-//    [self creationDone:self.aNewClip];
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    
-    [self setupClippingPanel];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(thumnailRequestDone:) name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
-
-    
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [HCYoutubeParser h264videosWithYoutubeID:self.videoId completeBlock:^(NSDictionary *videoDictionary, NSError *error) {
-        
-        // We need to consider what our video quality strategy should be
-        // not all qualities will be available at all time and what our connectivity is
-        NSString *videoURL = nil;
-        
-        if (videoDictionary && videoDictionary.count > 0) {
-            videoURL = videoDictionary[@"medium"];
-            if (!videoURL) {
-                videoURL = [videoDictionary allValues][0];
-            }
-        }
-        
-        if (!videoURL) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cannot view this video on mobile" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [alert show];
-        } else {
-            self.player = [[MPMoviePlayerController alloc] initWithContentURL: [NSURL URLWithString:videoURL]];
-            [self.player prepareToPlay];
-
-            self.player.initialPlaybackTime = self.activeClip.timeStart / 1000.0f;
-            [self updatePlayer];
-            [self.player play];
-        }
-        
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    }];
-    
-    
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    
-    UINib *clipCellNib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
-    self.prototype = [clipCellNib instantiateWithOwner:self options:nil][0];
-    [self.tableView registerNib:clipCellNib forCellReuseIdentifier:@"ClipCell"];
-    
-    [self fetchClips];
-}
-
-- (void)updatePlayer
-{
-    [self.player.view setFrame: self.videoPlayerContainer.frame];
-    [self.videoPlayerContainer addSubview: self.player.view];
-    [self.view bringSubviewToFront:self.videoPlayerContainer];
-    self.player.fullscreen = NO;
-    self.player.currentPlaybackTime = self.activeClip.timeStart / 1000.0f;
 }
 
 #pragma mark - ClipCreationDelegate
@@ -230,45 +450,25 @@
     [clip saveInBackground];
     NSInteger row = [self.clips indexOfObject:clip];
     
-    // When we finish adding clip we need to sort correctly
+    // We need to add the clip to the histogram
+    [self addClipToHistogram:clip];
+
+    // TODO: When we finish adding clip we need to sort correctly
     [self.tableView reloadData];
     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self addPlayerViewToContainer];
+    [self updatePlayerToActiveClip];
+    [self.playerController play];
     
-    [self updatePlayer];
-    [self.player play];
     // Dirty the stream when we've created a new clip
     [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
 }
 
 - (void)creationCanceled
 {
-    [self updatePlayer];
-    [self.player play];
-}
-
-- (void)setupClippingPanel{
-    self.clippingPanelPos = self.clippingPanel.frame.origin.y;
-    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(scrollClippingPanel:)];
-    panGestureRecognizer.delegate = self;
-    [self.tableView addGestureRecognizer:panGestureRecognizer];
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
-}
-
-- (void)scrollClippingPanel:(UIPanGestureRecognizer *)panGestureRecognizer{    
-    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        self.clippingPanelPos = self.clippingPanel.frame.origin.y;
-        self.tableViewScrollPos = self.tableView.contentOffset.y;
-    }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self addPlayerViewToContainer];
+    [self updatePlayerToActiveClip];
+    [self.playerController play];
 }
 
 #pragma mark - ClipCellDelegate
@@ -286,6 +486,9 @@
     SmallClipCell *cell = (SmallClipCell *)[self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
     Clip *clip = (Clip *)self.clips[indexPath.row];
     cell.clip = clip;
+    if (self.playerController.duration > 0) {
+        cell.timelineRect = [self rectForClip:clip cell:cell];
+    }
     cell.delegate = self;
     return cell;
 }
@@ -297,9 +500,8 @@
     if ([clip isPublished]) {
         self.activeClip = clip;
     } else {
-        ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:clip moviePlayer:self.player];
+        ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:clip playerController:self.playerController];
         clippingVC.delegate = self;
-        [self.player pause];
         [self.navigationController pushViewController:clippingVC animated:YES];
     }
 }
@@ -313,7 +515,49 @@
     return [SmallClipCell heightForClip:[self.clips objectAtIndex:indexPath.row] cell:self.prototype];
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
+# pragma mark - Clip Button
+    
+- (IBAction)clipAction:(id)sender
+{
+    int currentTime = self.playerController.currentTimeInSeconds * 1000;
+    
+    self.aNewClip = [[Clip alloc] init];
+    self.aNewClip.timeStart = currentTime;
+    self.aNewClip.timeEnd = currentTime + 10000;
+    self.aNewClip.videoId = self.videoId;
+    self.aNewClip.videoTitle = self.videoTitle;
+    self.aNewClip.user = (User *)[PFUser currentUser];
+    
+    [self.clips addObject:self.aNewClip];
+    
+    // TODO: animate to new cell
+    [self.tableView reloadData];
+    
+    [self.playerController frameAtTimeWithSeconds:self.playerController.currentTimeInSeconds done:^(NSError *error, CGImageRef imageRef) {
+        UIImage *image = [UIImage imageWithCGImage:imageRef];
+        self.aNewClip.thumbnail = [PFFile fileWithData:UIImageJPEGRepresentation(image, 0.05f)];
+        [self.aNewClip saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [self.tableView reloadData];
+        }];
+    }];
+}
+
+- (void)setupClippingPanel{
+    self.clippingPanelPos = self.clippingPanel.frame.origin.y;
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(scrollClippingPanel:)];
+    panGestureRecognizer.delegate = self;
+    [self.tableView addGestureRecognizer:panGestureRecognizer];
+    [self.view bringSubviewToFront:self.videoPlayerContainer];
+}
+
+- (void)scrollClippingPanel:(UIPanGestureRecognizer *)panGestureRecognizer{
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        self.clippingPanelPos = self.clippingPanel.frame.origin.y;
+        self.tableViewScrollPos = self.tableView.contentOffset.y;
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (self.tableView.contentOffset.y <= 0) {
         self.clippingPanel.frame = CGRectMake(0, self.tableView.frame.origin.y, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
@@ -327,4 +571,38 @@
         self.clippingPanel.frame = CGRectMake(0, newPos, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
     }
 }
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
+# pragma mark - MBProgressHUD helpers
+- (void)pendingNetworkRequest
+{
+    @synchronized(self) {
+        if (self.hudCounter == 0) {
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        }
+        self.hudCounter++;
+    }
+}
+
+- (void)pendingNetworkRequestDone
+{
+    @synchronized(self) {
+        self.hudCounter--;
+        if (self.hudCounter == 0) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [self updateAfterAllNetworkRequests];
+        }
+    }
+}
+
+- (void) updateAfterAllNetworkRequests
+{
+    // update histogram with clips
+    [self addAllClipsToHistogram];
+}
+
 @end
