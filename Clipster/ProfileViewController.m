@@ -138,19 +138,21 @@
     self.profileCell.numberFollowers = self.followers.count;
     self.profileCell.numberFollowing = self.following.count;
     
+    [self.tableView reloadData];
+    
     if (self.user.thumbnail) {
         [self.user.thumbnail getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
             if (!error) {
                 UIImage *image = [UIImage imageWithData:data];
+                self.bannerImage.layer.masksToBounds = YES;
+                [self.bannerImage setClipsToBounds:YES];
                 self.bannerImage.image = [image applyDarkEffect];
             }
         }];
     } else {
         self.bannerImage.image = [UIImage imageNamed:@"carbon_fibre.png"];
     }
-    self.tableView.backgroundColor = [UIColor clearColor];
     
-    [self.tableView reloadData];
 }
 
 - (void)fetchUser
