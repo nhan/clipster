@@ -20,7 +20,7 @@
 - (void)loadVideoWithURLString:(NSString *)urlString ready:(void (^)(void))readyBlock;
 // use the returned handle to remove block
 - (id)addTimeObserverWithBlock:(void (^)(float time))block;
-- (void)removeTimeObserver:(id)observer;
+- (void)removeTimeObserver:(id)observerId;
 
 // indicates whether the video is ready for playback
 @property (nonatomic, assign, readonly) BOOL isReady;

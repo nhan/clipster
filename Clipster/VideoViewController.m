@@ -276,7 +276,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // If we have not interacted with the video in a while lets minimize
     int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
     
-    NSLog(@"numberTimerEvents: %d", self.numberTimerEventsSinceVideoInteraction);
     if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction > maxNumberIntervalsBeforeMinimize) {
         self.isVideoControlMinimized = YES;
     } else {

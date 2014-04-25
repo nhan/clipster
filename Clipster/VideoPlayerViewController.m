@@ -23,7 +23,7 @@ typedef void (^TimeObserverBlock)(float);
 @property (copy) void (^readyBlock)(void);
 @property (assign, nonatomic) BOOL isObservingStatus;
 
-@property (strong, nonatomic) NSMutableArray *timeObservers;
+@property (strong, nonatomic) NSMutableDictionary *timeObservers;
 @property (strong, nonatomic) id timeObserverHandle;
 
 @property (strong, nonatomic) id endTimeObserverHandle;
@@ -41,7 +41,7 @@ typedef void (^TimeObserverBlock)(float);
         _readyBlock = nil;
         _isObservingStatus = NO;
         
-        _timeObservers = [NSMutableArray array];
+        _timeObservers = [NSMutableDictionary dictionary];
         
         // call timeObserverCallback ever 100 miliseconds of playblack
         __weak typeof(self) weakSelf = self;
@@ -117,23 +117,32 @@ typedef void (^TimeObserverBlock)(float);
 {
     self.currentTimeLabel.text = [NSString stringWithFormat:@"%f", CMTimeGetSeconds(time)];
     // TODO: (nhan) this is happening on the same queue that timeObserverCallback is being called on (right now main queue).  Should allow for custom queue
-    for (TimeObserverBlock block in self.timeObservers) {
+    for (TimeObserverBlock block in self.timeObservers.allValues) {
         block(CMTimeGetSeconds(time));
     }
+}
+
+- (NSString *)uuidString {
+    CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuid);
+    CFRelease(uuid);
+    return uuidString;
 }
 
 - (id)addTimeObserverWithBlock:(void (^)(float))block
 {
     if (block) {
-        [self.timeObservers addObject:block];
+        NSString *uuid = [self uuidString];
+        [self.timeObservers setObject:block forKey:uuid];
+        return uuid;
     }
-    return block;
+    return nil;
 }
 
-- (void)removeTimeObserver:(id)observer
+- (void)removeTimeObserver:(id)observerId
 {
-    if (observer) {
-        [self.timeObservers removeObject:observer];
+    if (observerId) {
+        [self.timeObservers removeObjectForKey:observerId];
     }
 }
 
