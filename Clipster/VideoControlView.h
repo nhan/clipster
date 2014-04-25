@@ -11,4 +11,5 @@
 @interface VideoControlView : UIView
 @property (nonatomic, strong) UIColor *color;
 @property (nonatomic, assign) CGFloat currentPlaybackPosition;
+@property (nonatomic, strong) NSArray *popularityHistogram;
 @end

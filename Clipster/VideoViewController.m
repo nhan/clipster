@@ -71,6 +71,7 @@
 @property (nonatomic, assign) NSInteger numberTimerEventsSinceVideoInteraction;
 @property (nonatomic, assign) CGFloat videoControlHeight;
 @property (nonatomic, assign) CGFloat videoControlYOffset;
+@property (nonatomic, strong) NSMutableArray *popularityHistogram;
 @end
 
 @implementation VideoViewController
@@ -113,6 +114,9 @@
             // The find succeeded.
             NSLog(@"Successfully retrieved %d clips.", objects.count);
             self.clips = [objects mutableCopy];
+            
+            // update histogram with clips
+            [self addAllClipsToHistogram];
             
             NSInteger row = [self.clips indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
                 return [self.activeClip.objectId isEqualToString:((Clip *)obj).objectId];
@@ -216,6 +220,12 @@ static const int PLAY_BUTTON_WIDTH = 70;
     self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
     self.scrubView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.4];
     self.scrubView.color = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:1.0];
+    // Initialize popularity histogram
+    self.popularityHistogram = [[NSMutableArray alloc] init];
+    for (int i=0; i<NUMBER_HISTOGRAM_BINS; i++) {
+        [self.popularityHistogram addObject:@0.0];
+    }
+    self.scrubView.popularityHistogram = self.popularityHistogram;
     
     UIPanGestureRecognizer *panScrub = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panScrubber:)];
     [self.scrubView addGestureRecognizer:panScrub];
@@ -226,6 +236,35 @@ static const int PLAY_BUTTON_WIDTH = 70;
     
     [movieView addSubview:self.videoControlView];
     [movieView bringSubviewToFront:self.videoControlView];
+}
+
+static const int NUMBER_HISTOGRAM_BINS = 100;
+- (void)addAllClipsToHistogram
+{
+    NSTimeInterval duration = self.player.duration;
+    if (duration == 0) {
+        NSTimer *timer = [NSTimer timerWithTimeInterval:VIDEO_MONITOR_INTERVAL target:self selector:@selector(addAllClipsToHistogram) userInfo:nil repeats:NO];
+        [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+        return;
+    }
+    
+    for (int i=0; i<self.popularityHistogram.count; i++) {
+        self.popularityHistogram[i] = @0;
+    }
+    for (Clip *clip in self.clips) {
+        [self addClipToHistogram:clip];
+    }
+}
+
+- (void)addClipToHistogram:(Clip *)clip
+{
+    float durationMS = self.player.duration * 1000.0f;
+    int startBin = floor(clip.timeStart*NUMBER_HISTOGRAM_BINS/durationMS);
+    int endBin = ceil(clip.timeEnd*NUMBER_HISTOGRAM_BINS/durationMS);
+    for (int i=startBin; i<endBin; i++) {
+        self.popularityHistogram[i] = @([self.popularityHistogram[i] floatValue] + 0.2);
+    }
+    [self.videoControlView setNeedsDisplay];
 }
 
 - (void)setIsVideoControlMinimized:(BOOL)isVideoControlMinimized
@@ -410,6 +449,9 @@ static const int PLAY_BUTTON_WIDTH = 70;
     [clip saveInBackground];
     NSInteger row = [self.clips indexOfObject:clip];
     
+    // We need to add the clip to the histogram
+    [self addClipToHistogram:clip];
+    
     // When we finish adding clip we need to sort correctly
     [self.tableView reloadData];
     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
@@ -425,7 +467,8 @@ static const int PLAY_BUTTON_WIDTH = 70;
     [self updatePlayer];
 }
 
-- (void)setupClippingPanel{
+- (void)setupClippingPanel
+{
     self.clippingPanelPos = self.clippingPanel.frame.origin.y;
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(scrollClippingPanel:)];
     panGestureRecognizer.delegate = self;

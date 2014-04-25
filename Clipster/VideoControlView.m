@@ -9,7 +9,6 @@
 #import "VideoControlView.h"
 
 @interface VideoControlView ()
-@property (nonatomic, strong) NSMutableArray *histogram;
 @end
 
 @implementation VideoControlView
@@ -18,14 +17,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.histogram = [[NSMutableArray alloc] init];
-        for (int i=0; i<100; i++) {
-            if (i>50 && i<80) {
-                [self.histogram addObject:@1.0];
-            } else {
-                [self.histogram addObject:@0.0];
-            }
-        }
     }
     return self;
 }
@@ -35,16 +26,14 @@
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
     [self drawHistogramWithContext:context];
-    
 }
 
 - (void)drawHistogramWithContext:(CGContextRef)context
 {
-    CGFloat histogramDelta = self.bounds.size.width / self.histogram.count;
-    for (int i=0; i<100; i++) {
-        CGFloat popularity = [self.histogram[i] floatValue];
+    CGFloat histogramDelta = self.bounds.size.width / self.popularityHistogram.count;
+    for (int i=0; i<self.popularityHistogram.count; i++) {
+        CGFloat popularity = [self.popularityHistogram[i] floatValue];
         CGFloat position = i*histogramDelta;
         
         // before current playback position we are pretty much opaque, after translucent
