@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *numberClipsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberFollowingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberFollowersLabel;
+@property (weak, nonatomic) IBOutlet UIView *profileThumbnailViewContainer;
+
 @end
 
 @implementation ProfileCell
@@ -73,11 +75,15 @@
         self.profileThumbnailView.file = self.user.thumbnail;
         [self.profileThumbnailView loadInBackground];
     } else {
-        self.profileThumbnailView.image = [UIImage imageNamed:@"tim.png"];
+        self.profileThumbnailView.image = [UIImage imageNamed:@"profile-thumbnail-placeholder.png"];
     }
     [self.profileThumbnailView setClipsToBounds:YES];
     self.profileThumbnailView.layer.cornerRadius = self.profileThumbnailView.frame.size.width/2;
     self.profileThumbnailView.layer.masksToBounds = YES;
+    
+    self.profileThumbnailViewContainer.layer.cornerRadius = self.profileThumbnailViewContainer.frame.size.width/2;
+    self.profileThumbnailViewContainer.layer.masksToBounds = YES;
+    self.profileThumbnailViewContainer.backgroundColor = [UIColor whiteColor];
 }
 
 - (IBAction)followButtonClicked:(id)sender

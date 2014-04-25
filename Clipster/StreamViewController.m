@@ -28,7 +28,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.title = @"Stream";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setStreamDirty) name:@"SetStreamDirty" object:nil];
     }
     return self;

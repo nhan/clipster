@@ -67,6 +67,7 @@
                     <constraint firstItem="YcP-3x-Jvf" firstAttribute="top" secondItem="Mle-kt-paG" secondAttribute="bottom" constant="2" id="yP4-Yn-sop"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="clipTextLabel" destination="YcP-3x-Jvf" id="uwR-vI-d2G"/>
                 <outlet property="clipTimesLabel" destination="AFy-xE-CtB" id="pJS-kO-Bk8"/>

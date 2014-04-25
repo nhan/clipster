@@ -108,7 +108,7 @@ static CGFloat lineHeight = 24.f;
         self.profileThumbnailView.file = user.thumbnail;
         [self.profileThumbnailView loadInBackground];
     } else {
-        self.profileThumbnailView.image = [UIImage imageNamed:@"tim.png"];
+        self.profileThumbnailView.image = [UIImage imageNamed:@"profile-thumbnail-placeholder.png"];
     }
     [self.profileThumbnailView setClipsToBounds:YES];
     self.profileThumbnailView.layer.cornerRadius = self.profileThumbnailView.frame.size.width/2;

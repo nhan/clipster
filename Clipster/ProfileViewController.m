@@ -13,7 +13,7 @@
 #import "VideoViewController.h"
 #import "EditProfileViewController.h"
 #import "LoginManager.h"
-
+#import "UIImage+ImageEffects.h"
 #import <MBProgressHud/MBProgressHUD.h>
 
 @interface ProfileViewController ()
@@ -26,6 +26,7 @@
 @property (nonatomic, assign) BOOL isCurrentUserFollowing;
 @property (nonatomic, strong) NSArray *following;
 @property (nonatomic, strong) NSArray *followers;
+@property (weak, nonatomic) IBOutlet UIImageView *bannerImage;
 @end
 
 @implementation ProfileViewController
@@ -67,16 +68,17 @@
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
-    UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutButton:)];
-    self.navigationItem.rightBarButtonItem = logoutButton;
-
+    if ([self.username isEqualToString:[User currentUser].username]) {
+        UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutButton:)];
+        self.navigationItem.rightBarButtonItem = logoutButton;
+    }
+    
     self.tableView.tableHeaderView = self.profileCell;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     UINib *clipNib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
     self.prototype = [clipNib instantiateWithOwner:self options:nil][0];
     [self.tableView registerNib:clipNib forCellReuseIdentifier:@"ClipCell"];
-    
     [self refreshUI];
 }
 
@@ -135,6 +137,19 @@
     self.profileCell.numberClips = self.clips.count;
     self.profileCell.numberFollowers = self.followers.count;
     self.profileCell.numberFollowing = self.following.count;
+    
+    if (self.user.thumbnail) {
+        [self.user.thumbnail getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+            if (!error) {
+                UIImage *image = [UIImage imageWithData:data];
+                self.bannerImage.image = [image applyDarkEffect];
+            }
+        }];
+    } else {
+        self.bannerImage.image = [UIImage imageNamed:@"carbon_fibre.png"];
+    }
+    self.tableView.backgroundColor = [UIColor clearColor];
+    
     [self.tableView reloadData];
 }
 
@@ -252,6 +267,20 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [SmallClipCell heightForClip:[self.clips objectAtIndex:indexPath.row] cell:self.prototype];
+}
+
+#pragma mark - ScrollView
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.tableView.contentOffset.y > 0) {
+        //move it up at proper size
+        CGRect newFrame = CGRectMake(0,-self.tableView.contentOffset.y, 320, 200);
+        self.bannerImage.frame = newFrame;
+    } else {
+        //grow
+        CGRect newFrame = CGRectMake(0,0, 320, 200-self.tableView.contentOffset.y);
+        self.bannerImage.frame = newFrame;
+    }
 }
 
 @end
