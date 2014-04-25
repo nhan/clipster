@@ -258,6 +258,8 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     float durationMS = self.player.duration * 1000.0f;
     int startBin = floor(clip.timeStart*NUMBER_HISTOGRAM_BINS/durationMS);
     int endBin = ceil(clip.timeEnd*NUMBER_HISTOGRAM_BINS/durationMS);
+    startBin = startBin < 0 ? 0 : startBin;
+    endBin = endBin > 99 ? 99 : endBin;
     for (int i=startBin; i<endBin; i++) {
         self.popularityHistogram[i] = @([self.popularityHistogram[i] floatValue] + 0.2);
     }
