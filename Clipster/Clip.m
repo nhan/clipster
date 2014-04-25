@@ -38,6 +38,12 @@
     return [NSString stringWithFormat:@"%@ - %@", [Clip formatTimeWithSeconds:self.timeStart/1000], [Clip formatTimeWithSeconds:self.timeEnd/1000]];
 }
 
+- (NSString *)duration
+{
+    int secondsAgo = (int) ((self.timeEnd - self.timeStart)/1000);
+    return [NSString stringWithFormat:@"%ds", secondsAgo];
+}
+
 - (NSString *)timeAgo
 {
     int secondsAgo = (int) [[NSDate date] timeIntervalSinceDate:self.createdAt];

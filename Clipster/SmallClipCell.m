@@ -87,7 +87,7 @@
         [self.contentView addSubview:tapToPublishView];
     }
     
-    self.clipTimesLabel.text = clip.formattedTimestamp;
+    self.clipTimesLabel.text = clip.duration;
     [[self.contentView viewWithTag:DURATION_TAG] removeFromSuperview];
     
     [self.usernameButton setTitle:clip.username forState:UIControlStateNormal];
