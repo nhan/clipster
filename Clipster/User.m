@@ -34,4 +34,18 @@
     }];
 }
 
+- (NSString *)timeAgo
+{
+    int secondsAgo = (int) [[NSDate date] timeIntervalSinceDate:self.createdAt];
+    if (secondsAgo < 60){ //seconds
+        return [NSString stringWithFormat:@"%d seconds", secondsAgo];
+    } else if (secondsAgo < (60*60)){ //minutes
+        return [NSString stringWithFormat:@"%d minutes", secondsAgo/60];
+    } else if(secondsAgo < (60*60*24)) { // hours
+        return [NSString stringWithFormat:@"%d hours", secondsAgo/(60*60)];
+    } else { // days
+        return [NSString stringWithFormat:@"%d days", secondsAgo/(60*60*24)];
+    }
+}
+
 @end

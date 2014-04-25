@@ -18,6 +18,10 @@
 		7E3A27D41909DFA800D96503 /* profile-thumbnail-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27D31909DFA800D96503 /* profile-thumbnail-placeholder.png */; };
 		7E3A27D61909E27A00D96503 /* carbon_fibre.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27D51909E27A00D96503 /* carbon_fibre.png */; };
 		7E3A27E21909FA9300D96503 /* clipster@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27E11909FA9300D96503 /* clipster@2x.png */; };
+		7E3A27E61909FB8F00D96503 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3A27E41909FB8F00D96503 /* UserCell.m */; };
+		7E3A27E71909FB8F00D96503 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27E51909FB8F00D96503 /* UserCell.xib */; };
+		7E3A27EB190B115F00D96503 /* YouTubeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3A27E9190B115E00D96503 /* YouTubeCell.m */; };
+		7E3A27EC190B115F00D96503 /* YouTubeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27EA190B115F00D96503 /* YouTubeCell.xib */; };
 		7E6A917A190877E200865E7E /* liked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9178190877E200865E7E /* liked.png */; };
 		7E6A917B190877E200865E7E /* liked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9179190877E200865E7E /* liked@2x.png */; };
 		7E6A917E1909C93600865E7E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6A917D1909C93600865E7E /* UIImage+ImageEffects.m */; };
@@ -94,6 +98,12 @@
 		7E3A27D31909DFA800D96503 /* profile-thumbnail-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-thumbnail-placeholder.png"; sourceTree = "<group>"; };
 		7E3A27D51909E27A00D96503 /* carbon_fibre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = carbon_fibre.png; sourceTree = "<group>"; };
 		7E3A27E11909FA9300D96503 /* clipster@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clipster@2x.png"; sourceTree = "<group>"; };
+		7E3A27E31909FB8F00D96503 /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
+		7E3A27E41909FB8F00D96503 /* UserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
+		7E3A27E51909FB8F00D96503 /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
+		7E3A27E8190B115E00D96503 /* YouTubeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YouTubeCell.h; sourceTree = "<group>"; };
+		7E3A27E9190B115E00D96503 /* YouTubeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YouTubeCell.m; sourceTree = "<group>"; };
+		7E3A27EA190B115F00D96503 /* YouTubeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YouTubeCell.xib; sourceTree = "<group>"; };
 		7E6A9178190877E200865E7E /* liked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liked.png; sourceTree = "<group>"; };
 		7E6A9179190877E200865E7E /* liked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "liked@2x.png"; sourceTree = "<group>"; };
 		7E6A917C1909C93600865E7E /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -365,6 +375,12 @@
 				7E970D5A18F1F2DC00517A1F /* ClipCell.h */,
 				7E970D5B18F1F2DC00517A1F /* ClipCell.m */,
 				7E970D5C18F1F2DC00517A1F /* ClipCell.xib */,
+				7E3A27E31909FB8F00D96503 /* UserCell.h */,
+				7E3A27E41909FB8F00D96503 /* UserCell.m */,
+				7E3A27E51909FB8F00D96503 /* UserCell.xib */,
+				7E3A27E8190B115E00D96503 /* YouTubeCell.h */,
+				7E3A27E9190B115E00D96503 /* YouTubeCell.m */,
+				7E3A27EA190B115F00D96503 /* YouTubeCell.xib */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -458,6 +474,7 @@
 				7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */,
 				6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */,
 				7E6A917A190877E200865E7E /* liked.png in Resources */,
+				7E3A27EC190B115F00D96503 /* YouTubeCell.xib in Resources */,
 				7E9B20761901CA1A008C3E01 /* drag_red.png in Resources */,
 				7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */,
 				7E9B20B9190780A9008C3E01 /* like.png in Resources */,
@@ -466,6 +483,7 @@
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,
 				7E9B20B6190744D3008C3E01 /* prof5@2x.png in Resources */,
 				7E970D3218F1E5DF00517A1F /* Images.xcassets in Resources */,
+				7E3A27E71909FB8F00D96503 /* UserCell.xib in Resources */,
 				7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */,
 				6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */,
 				7E9B20961905D96E008C3E01 /* tapToPublish.png in Resources */,
@@ -533,11 +551,13 @@
 				7E9B20791901D509008C3E01 /* RulerView.m in Sources */,
 				7E970D5818F1F06400517A1F /* StreamViewController.m in Sources */,
 				7E6A917E1909C93600865E7E /* UIImage+ImageEffects.m in Sources */,
+				7E3A27EB190B115F00D96503 /* YouTubeCell.m in Sources */,
 				BBAAD84C18F364490079995E /* Clip.m in Sources */,
 				7EF9A4BF18F884580058FE1C /* VideoViewController.m in Sources */,
 				6B2C4A6B18FB111E00D9A011 /* SearchResultsViewController.m in Sources */,
 				7EE5B3151900921C000F3816 /* ProfileViewController.m in Sources */,
 				6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */,
+				7E3A27E61909FB8F00D96503 /* UserCell.m in Sources */,
 				BBEAC47E1905BA3000FB732B /* EditProfileViewController.m in Sources */,
 				BBAAD84918F3642B0079995E /* User.m in Sources */,
 				7E9B20711901C596008C3E01 /* ClippingViewController.m in Sources */,

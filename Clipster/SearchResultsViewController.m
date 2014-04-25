@@ -15,7 +15,9 @@
 #import "SmallClipCell.h"
 #import "VideoViewController.h"
 #import "YouTubeVideo.h"
+#import "YouTubeCell.h"
 #import "ProfileViewController.h"
+#import "UserCell.h"
 
 #define CLIP_SEARCH 0
 #define USER_SEARCH 1
@@ -27,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *searchTypeControl;
+@property (nonatomic, strong) SmallClipCell *smallClipCellPrototype;
+@property (nonatomic, strong) YouTubeCell *youTubeCellPrototype;
 @end
 
 @implementation SearchResultsViewController
@@ -52,7 +56,15 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     
     UINib *nib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
+    self.smallClipCellPrototype = [nib instantiateWithOwner:self options:nil][0];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"ClipCell"];
+    
+    UINib *userNib = [UINib nibWithNibName:@"UserCell" bundle:nil];
+    [self.tableView registerNib:userNib forCellReuseIdentifier:@"UserCell"];
+    
+    UINib *youTubeNib = [UINib nibWithNibName:@"YouTubeCell" bundle:nil];
+    self.youTubeCellPrototype = [youTubeNib instantiateWithOwner:self options:nil][0];
+    [self.tableView registerNib:youTubeNib forCellReuseIdentifier:@"YouTubeCell"];
     
     self.searchBar.delegate = self;
     
@@ -137,11 +149,9 @@
 
 - (UITableViewCell *) cellForVideoRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SmallClipCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
+    YouTubeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"YouTubeCell" forIndexPath:indexPath];
     YouTubeVideo *video = self.searchResults[indexPath.row];
-    cell.clipTextLabel.text = video.title;
-    [cell.thumbnail setImageWithURL:[NSURL URLWithString:video.thumbnailURL]];
-    [cell refreshThumbnail];
+    [cell setVideo:video];
     return cell;
 }
 
@@ -155,9 +165,9 @@
 
 - (UITableViewCell *) cellForUserRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SmallClipCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
+    UserCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     User *user = self.searchResults[indexPath.row];
-    cell.clipTextLabel.text = user.username;
+    [cell setUser:user];
     return cell;
 }
 
@@ -179,6 +189,16 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.searchTypeControl.selectedSegmentIndex == CLIP_SEARCH) {
+        CGFloat estimatedHeight = [SmallClipCell heightForClip:self.searchResults[indexPath.row] cell:self.smallClipCellPrototype];
+        return estimatedHeight;
+    } else if (self.searchTypeControl.selectedSegmentIndex == USER_SEARCH) {
+        return 74;
+    } else if (self.searchTypeControl.selectedSegmentIndex == YOUTUBE_SEARCH) {
+        CGFloat estimatedHeight = [YouTubeCell heightForVideo:self.searchResults[indexPath.row] cell:self.youTubeCellPrototype];
+        return estimatedHeight;
+        return 100;
+    }
     return 100;
 }
 
