@@ -123,7 +123,6 @@
             }];
             
             [self.tableView reloadData];
-            
             [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
             [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES];
             
@@ -132,7 +131,6 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
         [MBProgressHUD hideHUDForView:self.tableView animated:YES];
-                          
     }];
 }
 
@@ -184,6 +182,7 @@ static const float VIDEO_CONTROL_MINIMIZE_INTERVAL = 3.;
 static const int VIDEO_CONTROL_HEIGHT = 20;
 static const int VIDEO_CONTROL_HEIGHT_MIN = 5;
 static const int PLAY_BUTTON_WIDTH = 70;
+static const int NUMBER_HISTOGRAM_BINS = 100;
 
 - (CGFloat)videoControlHeight
 {
@@ -238,7 +237,6 @@ static const int PLAY_BUTTON_WIDTH = 70;
     [movieView bringSubviewToFront:self.videoControlView];
 }
 
-static const int NUMBER_HISTOGRAM_BINS = 100;
 - (void)addAllClipsToHistogram
 {
     NSTimeInterval duration = self.player.duration;
@@ -247,7 +245,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
         [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
         return;
     }
-    
     for (int i=0; i<self.popularityHistogram.count; i++) {
         self.popularityHistogram[i] = @0;
     }
@@ -374,6 +371,8 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 {
     self.isVideoPlaying = !self.isVideoPlaying;
 }
+
+#pragma mark - UIView
 
 - (void)viewDidLoad
 {
