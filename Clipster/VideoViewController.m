@@ -181,19 +181,41 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     for (Clip *clip in self.clips) {
         [self addClipToHistogram:clip];
     }
+    
+    // reload table simply because this is called once we have the timeline for clips
+    [self.tableView reloadData];
 }
 
 - (void)addClipToHistogram:(Clip *)clip
+{
+    NSArray *timeBins = [self timeBinsForClip:clip];
+    int startBin = [timeBins[0] integerValue];
+    int endBin = [timeBins[1] integerValue];
+    for (int i=startBin; i<endBin; i++) {
+        self.popularityHistogram[i] = @([self.popularityHistogram[i] floatValue] + 0.2);
+    }
+    [self.videoControlView setNeedsDisplay];
+}
+
+- (NSArray *)timeBinsForClip:(Clip *)clip
 {
     float durationMS = self.playerController.duration * 1000.0f;
     int startBin = floor(clip.timeStart*NUMBER_HISTOGRAM_BINS/durationMS);
     int endBin = ceil(clip.timeEnd*NUMBER_HISTOGRAM_BINS/durationMS);
     startBin = startBin < 0 ? 0 : startBin;
-    endBin = endBin > 99 ? 99 : endBin;
-    for (int i=startBin; i<endBin; i++) {
-        self.popularityHistogram[i] = @([self.popularityHistogram[i] floatValue] + 0.2);
-    }
-    [self.videoControlView setNeedsDisplay];
+    endBin = endBin > (NUMBER_HISTOGRAM_BINS-1) ? (NUMBER_HISTOGRAM_BINS-1) : endBin;
+    return @[@(startBin), @(endBin)];
+}
+
+- (CGRect)rectForClip:(Clip *)clip cell:(SmallClipCell *)cell
+{
+    NSArray *timeBins = [self timeBinsForClip:clip];
+    float startBin = [timeBins[0] floatValue];
+    float endBin = [timeBins[1] floatValue];
+    float sizeBin = (cell.frame.size.width - PLAY_BUTTON_WIDTH) / NUMBER_HISTOGRAM_BINS;
+    float width = (endBin - startBin) * sizeBin;
+    float x = startBin * sizeBin + PLAY_BUTTON_WIDTH;
+    return CGRectMake(x, 0, width, cell.frame.size.height);
 }
 
 - (void)setIsVideoControlMinimized:(BOOL)isVideoControlMinimized
@@ -429,8 +451,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [clip saveInBackground];
     NSInteger row = [self.clips indexOfObject:clip];
     
-
-
     // We need to add the clip to the histogram
     [self addClipToHistogram:clip];
 
@@ -467,6 +487,9 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     SmallClipCell *cell = (SmallClipCell *)[self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
     Clip *clip = (Clip *)self.clips[indexPath.row];
     cell.clip = clip;
+    if (self.playerController.duration > 0) {
+        cell.timelineRect = [self rectForClip:clip cell:cell];
+    }
     cell.delegate = self;
     return cell;
 }

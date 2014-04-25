@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
 @property (nonatomic, strong) Clip *clip;
 @property (nonatomic, weak) id<ClipCellDelegate> delegate;
+@property (nonatomic, assign) CGRect timelineRect;
 
 + (CGFloat)heightForClip:(Clip *)clip cell:(SmallClipCell *)prototype;
 - (void)setClip:(Clip *)clip;
