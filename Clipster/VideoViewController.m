@@ -214,7 +214,7 @@ static const int PLAY_BUTTON_WIDTH = 70;
     
     // scrubbing/vis region
     self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
-    self.scrubView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.4];
+    self.scrubView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.4];
     self.scrubView.color = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:1.0];
     
     UIPanGestureRecognizer *panScrub = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panScrubber:)];
