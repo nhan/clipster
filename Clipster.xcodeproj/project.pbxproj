@@ -17,6 +17,7 @@
 		7E3A27D21909DF0E00D96503 /* profile-placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27D11909DF0E00D96503 /* profile-placeholder.jpg */; };
 		7E3A27D41909DFA800D96503 /* profile-thumbnail-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27D31909DFA800D96503 /* profile-thumbnail-placeholder.png */; };
 		7E3A27D61909E27A00D96503 /* carbon_fibre.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27D51909E27A00D96503 /* carbon_fibre.png */; };
+		7E3A27E21909FA9300D96503 /* clipster@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27E11909FA9300D96503 /* clipster@2x.png */; };
 		7E6A917A190877E200865E7E /* liked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9178190877E200865E7E /* liked.png */; };
 		7E6A917B190877E200865E7E /* liked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9179190877E200865E7E /* liked@2x.png */; };
 		7E6A917E1909C93600865E7E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6A917D1909C93600865E7E /* UIImage+ImageEffects.m */; };
@@ -92,6 +93,7 @@
 		7E3A27D11909DF0E00D96503 /* profile-placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "profile-placeholder.jpg"; sourceTree = "<group>"; };
 		7E3A27D31909DFA800D96503 /* profile-thumbnail-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-thumbnail-placeholder.png"; sourceTree = "<group>"; };
 		7E3A27D51909E27A00D96503 /* carbon_fibre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = carbon_fibre.png; sourceTree = "<group>"; };
+		7E3A27E11909FA9300D96503 /* clipster@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clipster@2x.png"; sourceTree = "<group>"; };
 		7E6A9178190877E200865E7E /* liked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liked.png; sourceTree = "<group>"; };
 		7E6A9179190877E200865E7E /* liked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "liked@2x.png"; sourceTree = "<group>"; };
 		7E6A917C1909C93600865E7E /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 		7EE5B31119008638000F3816 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7E3A27E11909FA9300D96503 /* clipster@2x.png */,
 				7E3A27D51909E27A00D96503 /* carbon_fibre.png */,
 				7E3A27D31909DFA800D96503 /* profile-thumbnail-placeholder.png */,
 				7E3A27D11909DF0E00D96503 /* profile-placeholder.jpg */,
@@ -458,6 +461,7 @@
 				7E9B20761901CA1A008C3E01 /* drag_red.png in Resources */,
 				7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */,
 				7E9B20B9190780A9008C3E01 /* like.png in Resources */,
+				7E3A27E21909FA9300D96503 /* clipster@2x.png in Resources */,
 				7E9B20841904A59A008C3E01 /* tim.png in Resources */,
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,
 				7E9B20B6190744D3008C3E01 /* prof5@2x.png in Resources */,

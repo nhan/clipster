@@ -50,6 +50,9 @@
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"search-2"] style:UIBarButtonItemStylePlain target:self action:@selector(onSearchButton:)];
     self.navigationItem.rightBarButtonItem = searchButton;
     
+    UIImage *clipsterImage = [UIImage imageNamed:@"clipster"];
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:clipsterImage];
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchClips) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
