@@ -36,6 +36,8 @@
 @property (nonatomic, strong) VideoPlayerViewController *playerController;
 @property (nonatomic, assign) NSInteger hudCounter;
 
+@property (nonatomic, strong) UIButton *backButton;
+
 @property (nonatomic, strong) UIView *videoControlView;
 @property (nonatomic, strong) UIButton *playButton;
 @property (nonatomic, assign) BOOL isVideoPlaying;
@@ -73,7 +75,8 @@
     return self;
 }
 
-- (IBAction)onBackButton:(id)sender {
+- (void)onBackButton:(id)sender
+{
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -212,11 +215,15 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 {
     _isVideoControlMinimized = isVideoControlMinimized;
     
-    // hid the play button
+    // hide the play button
     UIView *movieView = self.playerController.view;
     self.playButton.hidden = isVideoControlMinimized;
     self.videoControlView.frame = CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight);
     self.scrubView.frame = CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight);
+    
+    // show/hide the back button
+    self.backButton.hidden = isVideoControlMinimized;
+    
     // set past frame resizes automatically
     self.currentPlaybackPosition = self.currentPlaybackPosition;
 }
@@ -344,6 +351,14 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 
     [self setupClippingPanel];
     [self addPlayerViewToContainer];
+    
+    self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    self.backButton.alpha = 0.5;
+    self.backButton.frame = CGRectMake(5, 5, 50, 50);
+    [self.backButton addTarget:self action:@selector(onBackButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.playerController.view addSubview:self.backButton];
+    [self.playerController.view bringSubviewToFront:self.backButton];
     
     [self pendingNetworkRequest];
     
