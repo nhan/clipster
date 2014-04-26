@@ -140,8 +140,8 @@
     
     [self.tableView reloadData];
     
-    if (self.user.thumbnail) {
-        [self.user.thumbnail getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+    if (self.user.cover) {
+        [self.user.cover getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
             if (!error) {
                 UIImage *image = [UIImage imageWithData:data];
                 self.bannerImage.layer.masksToBounds = YES;
