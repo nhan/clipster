@@ -25,6 +25,7 @@
 		7E3A27E71909FB8F00D96503 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27E51909FB8F00D96503 /* UserCell.xib */; };
 		7E3A27EB190B115F00D96503 /* YouTubeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3A27E9190B115E00D96503 /* YouTubeCell.m */; };
 		7E3A27EC190B115F00D96503 /* YouTubeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27EA190B115F00D96503 /* YouTubeCell.xib */; };
+		7E3A27EE190B2DF900D96503 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27ED190B2DF900D96503 /* back@2x.png */; };
 		7E6A917A190877E200865E7E /* liked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9178190877E200865E7E /* liked.png */; };
 		7E6A917B190877E200865E7E /* liked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9179190877E200865E7E /* liked@2x.png */; };
 		7E6A917E1909C93600865E7E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6A917D1909C93600865E7E /* UIImage+ImageEffects.m */; };
@@ -113,6 +114,7 @@
 		7E3A27E8190B115E00D96503 /* YouTubeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YouTubeCell.h; sourceTree = "<group>"; };
 		7E3A27E9190B115E00D96503 /* YouTubeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YouTubeCell.m; sourceTree = "<group>"; };
 		7E3A27EA190B115F00D96503 /* YouTubeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YouTubeCell.xib; sourceTree = "<group>"; };
+		7E3A27ED190B2DF900D96503 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		7E6A9178190877E200865E7E /* liked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liked.png; sourceTree = "<group>"; };
 		7E6A9179190877E200865E7E /* liked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "liked@2x.png"; sourceTree = "<group>"; };
 		7E6A917C1909C93600865E7E /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 		7EE5B31119008638000F3816 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7E3A27ED190B2DF900D96503 /* back@2x.png */,
 				7E3A27E11909FA9300D96503 /* clipster@2x.png */,
 				7E3A27D51909E27A00D96503 /* carbon_fibre.png */,
 				7E3A27D31909DFA800D96503 /* profile-thumbnail-placeholder.png */,
@@ -492,6 +495,7 @@
 				7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */,
 				6BAACCFA19085148003B5084 /* VideoPlayerViewController.xib in Resources */,
 				7E9B209C1905EAD3008C3E01 /* clip-it-2.png in Resources */,
+				7E3A27EE190B2DF900D96503 /* back@2x.png in Resources */,
 				7EF9A4C018F884580058FE1C /* VideoViewController.xib in Resources */,
 				7E970D4F18F1E69D00517A1F /* Podfile in Resources */,
 				7E3A27D21909DF0E00D96503 /* profile-placeholder.jpg in Resources */,

@@ -97,6 +97,10 @@
     return self;
 }
 
+- (IBAction)onBackButton:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (id)initWithVideoId:(NSString *)videoId andTitle:(NSString *)videoTitle
 {
     self = [super init];
@@ -408,10 +412,23 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self fetchClips];
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [[self navigationController] setNavigationBarHidden:YES animated:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES
+                                            withAnimation:UIStatusBarAnimationFade];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self stopMonitorPlaybackTimer];
     [super viewWillDisappear:animated];
+    [[self navigationController] setNavigationBarHidden:NO animated:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO
+                                            withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)updatePlayerToActiveClip
