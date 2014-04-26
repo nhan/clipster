@@ -14,32 +14,8 @@
 #import "ClippingViewController.h"
 #import "YouTubeVideo.h"
 #import "VideoControlView.h"
+#import "YouTubeParser.h"
 #import <MBProgressHUD/MBProgressHUD.h>
-#import <HCYoutubeParser.h>
-
-@interface HCYoutubeParser (Async)
-+ (void)h264videosWithYoutubeID:(NSString *)youtubeID
-                  completeBlock:(void(^)(NSDictionary *videoDictionary, NSError *error))completeBlock;
-@end
-
-@implementation HCYoutubeParser (Async)
-+ (void)h264videosWithYoutubeID:(NSString *)youtubeID
-                   completeBlock:(void(^)(NSDictionary *videoDictionary, NSError *error))completeBlock {
-    if (youtubeID) {
-        // change this queue name, what is it for anyways??
-        dispatch_queue_t queue = dispatch_queue_create("me.hiddencode.yt.backgroundqueue", 0);
-        dispatch_async(queue, ^{
-            NSDictionary *dict = [HCYoutubeParser h264videosWithYoutubeID:youtubeID];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completeBlock(dict, nil);
-            });
-        });
-    }
-    else {
-        completeBlock(nil, [NSError errorWithDomain:@"me.hiddencode.yt-parser" code:1001 userInfo:@{ NSLocalizedDescriptionKey: @"Invalid YouTube URL" }]);
-    }
-}
-@end
 
 @interface VideoViewController ()
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
@@ -370,34 +346,23 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self addPlayerViewToContainer];
     
     [self pendingNetworkRequest];
-    [HCYoutubeParser h264videosWithYoutubeID:self.videoId completeBlock:^(NSDictionary *videoDictionary, NSError *error) {
-        
-        // TODO: We need to consider what our video quality strategy should be
-        // not all qualities will be available at all time and what our connectivity is
-        NSString *videoURL = nil;
-        
-        if (videoDictionary && videoDictionary.count > 0) {
-            videoURL = videoDictionary[@"medium"];
-            if (!videoURL) {
-                videoURL = [videoDictionary allValues][0];
-            }
-        }
-        
-        if (!videoURL) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cannot view this video on mobile" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    
+    
+    [YouTubeParser videoURLWithYoutubeID:self.videoId done:^(NSURL *videoURL, NSError *error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             [alert show];
         } else {
-            NSLog(@"video url: %@", videoURL);
             // TODO: come up with a better way to call addAllClipsToHistogram without blocking the hud from disappearing
             // it has to wait three things to finish: clips to load, the video url parsing to finish, and the video to load
             [self pendingNetworkRequest];
-            [self.playerController loadVideoWithURLString:videoURL ready:^{
+            [self.playerController loadVideoWithURL:videoURL ready:^{
                 [self updatePlayerToActiveClip];
                 [self setupCustomVideoControl];
                 [self pendingNetworkRequestDone];
                 self.isVideoPlaying = TRUE;
             }];
-
+            
         }
         
         [self pendingNetworkRequestDone];

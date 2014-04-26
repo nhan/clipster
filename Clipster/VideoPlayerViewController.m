@@ -85,10 +85,8 @@ typedef void (^TimeObserverBlock)(float);
     }
 }
 
-- (void)loadVideoWithURLString:(NSString *)urlString ready:(void (^)(void))readyBlock
+- (void)loadVideoWithURL:(NSURL *)url ready:(void (^)(void))readyBlock
 {
-    NSURL *url = [NSURL URLWithString:urlString];
-    
     // remove observer on old playerItem before creating a new one in case the old one has not finished loading
     [self removeStatusObserverForPlayerItem:self.playerItem];
     
