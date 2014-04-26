@@ -95,7 +95,6 @@ static CGFloat lineHeight = 24.f;
     
     self.usernameLabel.text = self.clip.username;
     self.timeAgoLabel.text = [self.clip timeAgo];
-    [self refreshLikes];
     
     if (self.clip.thumbnail) {
         self.clipThumnailImageView.file = self.clip.thumbnail;
@@ -123,6 +122,7 @@ static CGFloat lineHeight = 24.f;
     }
     
     self.likeButtonState = [self.clip isLikedByUser:[User currentUser]];
+    [self refreshLikes];
     
 }
 
