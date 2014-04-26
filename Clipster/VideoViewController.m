@@ -26,7 +26,6 @@
 @property (nonatomic, strong) NSMutableArray *clips;
 @property (nonatomic, strong) Clip *activeClip;
 @property (nonatomic, strong) SmallClipCell *prototype;
-@property (nonatomic, strong) Clip *aNewClip;
 
 @property (nonatomic, strong) NSString *videoId;
 @property (nonatomic, strong) NSString *videoTitle;
@@ -463,8 +462,8 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     
     [self.playerController frameAtTimeWithSeconds:self.playerController.currentTimeInSeconds done:^(NSError *error, CGImageRef imageRef) {
         UIImage *image = [UIImage imageWithCGImage:imageRef];
-        self.aNewClip.thumbnail = [PFFile fileWithData:UIImageJPEGRepresentation(image, 0.05f)];
-        [self.aNewClip saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        clip.thumbnail = [PFFile fileWithData:UIImageJPEGRepresentation(image, 0.05f)];
+        [clip saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             [self.tableView reloadData];
         }];
     }];
@@ -519,13 +518,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     Clip *clip = self.clips[indexPath.row];
-    if ([clip isPublished]) {
-        self.activeClip = clip;
-    } else {
-        ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:clip playerController:self.playerController];
-        clippingVC.delegate = self;
-        [self.navigationController pushViewController:clippingVC animated:YES];
-    }
+    self.activeClip = clip;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -543,15 +536,14 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 {
     int currentTime = self.playerController.currentTimeInSeconds * 1000;
     
-    self.aNewClip = [[Clip alloc] init];
-    self.aNewClip.timeStart = currentTime;
-    self.aNewClip.timeEnd = currentTime + 10000;
-    self.aNewClip.videoId = self.videoId;
-    self.aNewClip.videoTitle = self.videoTitle;
-    self.aNewClip.user = (User *)[PFUser currentUser];
+    Clip *clip = [[Clip alloc] init];
+    clip.timeStart = currentTime;
+    clip.timeEnd = currentTime + 10000;
+    clip.videoId = self.videoId;
+    clip.videoTitle = self.videoTitle;
+    clip.user = (User *)[PFUser currentUser];
     
-    
-    ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:self.aNewClip playerController:self.playerController];
+    ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:clip playerController:self.playerController];
     clippingVC.delegate = self;
     [self.navigationController pushViewController:clippingVC animated:YES];
 
