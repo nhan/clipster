@@ -458,18 +458,29 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 
 - (void)creationDone:(Clip *)clip
 {
+    // Do we need this save if we are already saving after thumbnail?
     [clip saveInBackground];
-    NSInteger row = [self.clips indexOfObject:clip];
+    
+    [self.playerController frameAtTimeWithSeconds:self.playerController.currentTimeInSeconds done:^(NSError *error, CGImageRef imageRef) {
+        UIImage *image = [UIImage imageWithCGImage:imageRef];
+        self.aNewClip.thumbnail = [PFFile fileWithData:UIImageJPEGRepresentation(image, 0.05f)];
+        [self.aNewClip saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [self.tableView reloadData];
+        }];
+    }];
     
     // We need to add the clip to the histogram
     [self addClipToHistogram:clip];
-
-    // TODO: When we finish adding clip we need to sort correctly
+    
+    [self.clips addObject:clip];
     [self.tableView reloadData];
+    
+    // TODO: When we finish adding clip we need to sort correctly
+    NSInteger row = [self.clips indexOfObject:clip];
     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
     [self addPlayerViewToContainer];
     [self updatePlayerToActiveClip];
-    [self.playerController play];
+    self.isVideoPlaying = YES;
     
     // Dirty the stream when we've created a new clip
     [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
@@ -479,7 +490,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 {
     [self addPlayerViewToContainer];
     [self updatePlayerToActiveClip];
-    [self.playerController play];
+    self.isVideoPlaying = YES;
 }
 
 #pragma mark - ClipCellDelegate
@@ -539,18 +550,11 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     self.aNewClip.videoTitle = self.videoTitle;
     self.aNewClip.user = (User *)[PFUser currentUser];
     
-    [self.clips addObject:self.aNewClip];
     
-    // TODO: animate to new cell
-    [self.tableView reloadData];
-    
-    [self.playerController frameAtTimeWithSeconds:self.playerController.currentTimeInSeconds done:^(NSError *error, CGImageRef imageRef) {
-        UIImage *image = [UIImage imageWithCGImage:imageRef];
-        self.aNewClip.thumbnail = [PFFile fileWithData:UIImageJPEGRepresentation(image, 0.05f)];
-        [self.aNewClip saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            [self.tableView reloadData];
-        }];
-    }];
+    ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:self.aNewClip playerController:self.playerController];
+    clippingVC.delegate = self;
+    [self.navigationController pushViewController:clippingVC animated:YES];
+
 }
 
 - (void)setupClippingPanel{
