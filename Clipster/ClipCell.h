@@ -10,9 +10,19 @@
 #import "Clip.h"
 #import "SmallClipCell.h"
 
+@class ClipCell;
+
+@protocol StreamCellDelegate<NSObject>
+- (void)didClickUsername:(NSString *)username;
+- (void)willStartPlaying:(ClipCell *)cell;
+@end
+
 @interface ClipCell : UITableViewCell
 @property (nonatomic, strong) Clip *clip;
-@property (nonatomic, weak) id<ClipCellDelegate> delegate;
+@property (nonatomic, weak) id<StreamCellDelegate> delegate;
+
+- (void) playClip;
+- (void) pauseClip;
 
 + (CGFloat)heightForClip:(Clip *)clip prototype:(ClipCell *)prototype;
 @end

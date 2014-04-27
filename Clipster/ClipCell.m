@@ -179,7 +179,7 @@ static CGFloat lineHeight = 24.f;
     [self.clipThumnailImageView addSubview:self.videoPlayer.view];
 }
 
--(void)readyVideo
+- (void)readyVideoAndPlay
 {
     [YouTubeParser videoURLWithYoutubeID:self.clip.videoId done:^(NSURL *videoURL, NSError *error) {
         if (!error) {
@@ -187,27 +187,45 @@ static CGFloat lineHeight = 24.f;
             [self.videoPlayer loadVideoWithURL:videoURL ready:^{
                 weakSelf.videoPlayer.endTime = weakSelf.clip.timeEnd / 1000.0f;
                 weakSelf.videoPlayer.startTime = weakSelf.clip.timeStart / 1000.0f;
-                [weakSelf.videoPlayer play];
+                self.isVideoReady = YES;
+                [self playIfReady];
                 [weakSelf addPlayer];
             }];
         }
     }];
 }
 
+- (void) playIfReady
+{
+    if (self.isVideoReady && !self.isVideoPlaying) {
+        [self.videoPlayer play];
+        self.isVideoPlaying = YES;
+        [self.delegate willStartPlaying:self];
+    }
+}
+
 - (void)onClipThumbnailTap:(id)sender
 {
-    if (!self.isVideoReady) {
-        [self readyVideo];
-        self.isVideoReady = YES;
+    if (self.isVideoPlaying) {
+        [self pauseClip];
     } else {
-        if (self.isVideoPlaying) {
-            [self.videoPlayer pause];
-            self.isVideoPlaying = NO;
-        } else {
-            [self.videoPlayer play];
-            self.isVideoPlaying = YES;
-        }
+        [self playClip];
     }
+}
+
+- (void) playClip
+{
+    if (!self.isVideoReady) {
+        [self readyVideoAndPlay];
+    } else {
+        [self playIfReady];
+    }
+}
+
+- (void) pauseClip
+{
+    [self.videoPlayer pause];
+    self.isVideoPlaying = NO;
 }
 
 - (IBAction)onLikeButton:(id)sender

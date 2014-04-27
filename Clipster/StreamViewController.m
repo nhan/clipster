@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, assign) BOOL isDirty;
 @property (nonatomic, strong) ClipCell *prototype;
+@property (nonatomic, strong) ClipCell *currentPlayingCell;
 @end
 
 @implementation StreamViewController
@@ -139,12 +140,21 @@
     return [ClipCell heightForClip:self.clips[indexPath.row] prototype:self.prototype];
 }
 
-#pragma mark - ClipCellDelegate
+#pragma mark - StreamCellDelegate
 
 - (void)didClickUsername:(NSString *)username
 {
     ProfileViewController *profileVC = [[ProfileViewController alloc] initWithUsername:username];
     [self.navigationController pushViewController:profileVC animated:YES];
+}
+
+- (void)willStartPlaying:(ClipCell *)cell
+{
+    if (self.currentPlayingCell && self.currentPlayingCell != cell) {
+        [self.currentPlayingCell pauseClip];
+    }
+    
+    self.currentPlayingCell = cell;
 }
 
 
