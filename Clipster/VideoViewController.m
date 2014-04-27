@@ -18,6 +18,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @interface VideoViewController ()
+@property (weak, nonatomic) IBOutlet PFImageView *thumbnailImage;
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *clippingPanel;
@@ -359,8 +360,13 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.playerController.view addSubview:self.backButton];
     [self.playerController.view bringSubviewToFront:self.backButton];
     
-    [self pendingNetworkRequest];
+    if (self.activeClip && self.activeClip.thumbnail) {
+        self.thumbnailImage.file = self.activeClip.thumbnail;
+        [self.thumbnailImage loadInBackground];
+    }
     
+    
+    [self pendingNetworkRequest];
     
     [YouTubeParser videoURLWithYoutubeID:self.videoId done:^(NSURL *videoURL, NSError *error) {
         if (error) {
