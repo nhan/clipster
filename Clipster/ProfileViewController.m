@@ -25,6 +25,7 @@
 @property (nonatomic, strong) SmallClipCell *prototype;
 @property (nonatomic, assign) BOOL isCurrentUserFollowing;
 @property (nonatomic, strong) NSArray *following;
+@property (weak, nonatomic) IBOutlet UIImageView *blurredBannerImage;
 @property (nonatomic, strong) NSArray *followers;
 @property (weak, nonatomic) IBOutlet UIImageView *bannerImage;
 @end
@@ -72,6 +73,8 @@
         UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutButton:)];
         self.navigationItem.rightBarButtonItem = logoutButton;
     }
+    
+//    self.blurredBannerImage.alpha = 0;
     
     self.tableView.tableHeaderView = self.profileCell;
     self.tableView.delegate = self;
@@ -146,11 +149,17 @@
                 UIImage *image = [UIImage imageWithData:data];
                 self.bannerImage.layer.masksToBounds = YES;
                 [self.bannerImage setClipsToBounds:YES];
-                self.bannerImage.image = [image applyDarkEffect];
+                
+                self.blurredBannerImage.layer.masksToBounds = YES;
+                [self.blurredBannerImage setClipsToBounds:YES];
+                
+                self.blurredBannerImage.image = [image applyDarkEffect];
+                self.bannerImage.image = image;
             }
         }];
     } else {
         self.bannerImage.image = [UIImage imageNamed:@"carbon_fibre.png"];
+        self.blurredBannerImage.image = [UIImage imageNamed:@"carbon_fibre.png"];
     }
     
 }
@@ -278,10 +287,13 @@
         //move it up at proper size
         CGRect newFrame = CGRectMake(0,-self.tableView.contentOffset.y, 320, 200);
         self.bannerImage.frame = newFrame;
+        self.blurredBannerImage.frame = newFrame;
     } else {
         //grow
         CGRect newFrame = CGRectMake(0,0, 320, 200-self.tableView.contentOffset.y);
         self.bannerImage.frame = newFrame;
+        self.blurredBannerImage.frame = newFrame;
+        self.blurredBannerImage.alpha = 1+self.tableView.contentOffset.y/100.0;
     }
 }
 
