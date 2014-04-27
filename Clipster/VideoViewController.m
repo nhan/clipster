@@ -352,7 +352,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self addPlayerViewToContainer];
     
     self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [self.backButton setImage:[UIImage imageNamed:@"back_btn.png"] forState:UIControlStateNormal];
     self.backButton.alpha = 0.5;
     self.backButton.frame = CGRectMake(5, 5, 50, 50);
     [self.backButton addTarget:self action:@selector(onBackButton:) forControlEvents:UIControlEventTouchUpInside];

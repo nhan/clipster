@@ -27,6 +27,7 @@
 		7E3A27EB190B115F00D96503 /* YouTubeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3A27E9190B115E00D96503 /* YouTubeCell.m */; };
 		7E3A27EC190B115F00D96503 /* YouTubeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27EA190B115F00D96503 /* YouTubeCell.xib */; };
 		7E3A27EE190B2DF900D96503 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27ED190B2DF900D96503 /* back@2x.png */; };
+		7E519E3B190DB2B800873495 /* back_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E519E3A190DB2B800873495 /* back_btn@2x.png */; };
 		7E6A917A190877E200865E7E /* liked.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9178190877E200865E7E /* liked.png */; };
 		7E6A917B190877E200865E7E /* liked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E6A9179190877E200865E7E /* liked@2x.png */; };
 		7E6A917E1909C93600865E7E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6A917D1909C93600865E7E /* UIImage+ImageEffects.m */; };
@@ -120,6 +121,7 @@
 		7E3A27E9190B115E00D96503 /* YouTubeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YouTubeCell.m; sourceTree = "<group>"; };
 		7E3A27EA190B115F00D96503 /* YouTubeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YouTubeCell.xib; sourceTree = "<group>"; };
 		7E3A27ED190B2DF900D96503 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
+		7E519E3A190DB2B800873495 /* back_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_btn@2x.png"; sourceTree = "<group>"; };
 		7E6A9178190877E200865E7E /* liked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liked.png; sourceTree = "<group>"; };
 		7E6A9179190877E200865E7E /* liked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "liked@2x.png"; sourceTree = "<group>"; };
 		7E6A917C1909C93600865E7E /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 		7EE5B31119008638000F3816 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7E519E3A190DB2B800873495 /* back_btn@2x.png */,
 				7E3A27ED190B2DF900D96503 /* back@2x.png */,
 				7E3A27E11909FA9300D96503 /* clipster@2x.png */,
 				7E3A27D51909E27A00D96503 /* carbon_fibre.png */,
@@ -526,6 +529,7 @@
 				7E9B20841904A59A008C3E01 /* tim.png in Resources */,
 				7E970D2A18F1E5DF00517A1F /* InfoPlist.strings in Resources */,
 				7E9B20B6190744D3008C3E01 /* prof5@2x.png in Resources */,
+				7E519E3B190DB2B800873495 /* back_btn@2x.png in Resources */,
 				7E970D3218F1E5DF00517A1F /* Images.xcassets in Resources */,
 				7E3A27E71909FB8F00D96503 /* UserCell.xib in Resources */,
 				7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */,
