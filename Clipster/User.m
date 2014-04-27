@@ -16,6 +16,7 @@
 @implementation User
 @dynamic friends;
 @dynamic thumbnail;
+@dynamic cover;
 
 + (void)searchUsersWithQuery:(NSString *)queryString completionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {

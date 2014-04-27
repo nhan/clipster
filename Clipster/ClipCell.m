@@ -8,6 +8,7 @@
 
 #import "ClipCell.h"
 #import "YouTubeVideo.h"
+#import "YouTubeParser.h"
 #import "ProfileViewController.h"
 #import "VideoPlayerViewController.h"
 //#import <QuartzCore/QuartzCore.h>
@@ -28,6 +29,8 @@
 
 @property (nonatomic, strong) VideoPlayerViewController *videoPlayer;
 @property (nonatomic, assign) BOOL likeButtonState;
+@property (nonatomic, assign) BOOL isVideoPlaying;
+@property (nonatomic, assign) BOOL isVideoReady;
 @property NSDictionary *titleLabelTextAttributes;
 @end
 
@@ -38,6 +41,7 @@ static CGFloat lineHeight = 24.f;
 - (void)awakeFromNib
 {
     self.videoPlayer = [[VideoPlayerViewController alloc] init];
+    self.videoPlayer.isLooping = YES;
     
     NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
     style.minimumLineHeight = lineHeight;
@@ -55,12 +59,7 @@ static CGFloat lineHeight = 24.f;
     
     [self.card setClipsToBounds:YES];
     self.card.layer.cornerRadius = 5.0;
-    //    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.card.bounds];
-    //    self.card.layer.masksToBounds = NO;
-    //    self.card.layer.shadowColor = [UIColor blackColor].CGColor;
-    //    self.card.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
-    //    self.card.layer.shadowOpacity = 0.1f;
-    //    self.card.layer.shadowPath = shadowPath.CGPath;
+    
     self.card.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.28].CGColor;
     self.card.layer.borderWidth = 1;
 }
@@ -68,6 +67,7 @@ static CGFloat lineHeight = 24.f;
 - (void)addGestureRecognizers
 {
     UITapGestureRecognizer *clipTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClipThumbnailTap:)];
+    self.clipThumnailImageView.userInteractionEnabled = YES;
     [self.clipThumnailImageView addGestureRecognizer:clipTapGestureRecognizer];
     
     UITapGestureRecognizer *userTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onUserThumbnailTap:)];
@@ -82,11 +82,15 @@ static CGFloat lineHeight = 24.f;
 - (void)setClip:(Clip *)clip
 {
     _clip = clip;
+    self.isVideoReady = NO;
+    self.isVideoPlaying = NO;
+    [self removePlayer];
     [self refreshUI];
 }
 
 - (void)refreshUI
 {
+    
     if (self.clip.text == nil) {
         self.clip.text = @"";
     }
@@ -123,7 +127,6 @@ static CGFloat lineHeight = 24.f;
     
     self.likeButtonState = [self.clip isLikedByUser:[User currentUser]];
     [self refreshLikes];
-    
 }
 
 - (void)refreshUserThumbnail:(User *)user
@@ -163,9 +166,48 @@ static CGFloat lineHeight = 24.f;
     [self.delegate didClickUsername:self.clip.username];
 }
 
+- (void)removePlayer
+{
+    [self.videoPlayer pause];
+    [self.videoPlayer.view removeFromSuperview];
+    self.isVideoPlaying = NO;
+}
+
+- (void)addPlayer
+{
+    [self.videoPlayer.view setFrame:self.clipThumnailImageView.frame];
+    [self.clipThumnailImageView addSubview:self.videoPlayer.view];
+}
+
+-(void)readyVideo
+{
+    [YouTubeParser videoURLWithYoutubeID:self.clip.videoId done:^(NSURL *videoURL, NSError *error) {
+        if (!error) {
+            __weak typeof(self) weakSelf = self;
+            [self.videoPlayer loadVideoWithURL:videoURL ready:^{
+                weakSelf.videoPlayer.endTime = weakSelf.clip.timeEnd / 1000.0f;
+                weakSelf.videoPlayer.startTime = weakSelf.clip.timeStart / 1000.0f;
+                [weakSelf.videoPlayer play];
+                [weakSelf addPlayer];
+            }];
+        }
+    }];
+}
+
 - (void)onClipThumbnailTap:(id)sender
 {
-    
+    if (!self.isVideoReady) {
+        [self readyVideo];
+        self.isVideoReady = YES;
+    } else {
+        if (self.isVideoPlaying) {
+            [self.videoPlayer pause];
+            self.isVideoPlaying = NO;
+        } else {
+            [self.videoPlayer play];
+            self.isVideoPlaying = YES;
+        }
+    }
 }
 
 - (IBAction)onLikeButton:(id)sender

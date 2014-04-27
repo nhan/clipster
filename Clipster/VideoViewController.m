@@ -125,8 +125,8 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     
     // play/pause region
     self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,PLAY_BUTTON_WIDTH,self.videoControlHeight)];
-    [self.playButton setTitle:@"P" forState:UIControlStateNormal];
-    self.playButton.alpha = 0.3;
+    self.playButton.alpha = 0.8;
+    self.playButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControlView addSubview:self.playButton];
     
@@ -230,11 +230,11 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 - (void)setIsVideoPlaying:(BOOL)isVideoPlaying
 {
     if (isVideoPlaying) {
-        self.playButton.alpha = 0.3;
+        [self.playButton setImage:[UIImage imageNamed:@"pause.png"] forState:UIControlStateNormal];
         [self.playerController play];
         [self startMonitorPlaybackTimer];
     } else if (!isVideoPlaying) {
-        self.playButton.alpha = 1.;
+        [self.playButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
         [self.playerController pause];
         [self stopMonitorPlaybackTimer];
     }

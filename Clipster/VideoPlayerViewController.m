@@ -29,6 +29,9 @@ typedef void (^TimeObserverBlock)(float);
 @property (strong, nonatomic) id endTimeObserverHandle;
 
 @property (nonatomic, assign) BOOL isReady;
+@property (nonatomic, assign) BOOL shouldPlayWhenReady;
+
+@property (nonatomic, strong) NSOperation *seekDoneOperation;
 @end
 
 @implementation VideoPlayerViewController
@@ -51,6 +54,7 @@ typedef void (^TimeObserverBlock)(float);
         
         _endTimeObserverHandle = nil;
         _isReady = NO;
+        _shouldPlayWhenReady = NO;
     }
     return self;
 }
@@ -71,14 +75,30 @@ typedef void (^TimeObserverBlock)(float);
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == &PlayerItemStatusContext) {
         if (self.playerItem.status == AVPlayerItemStatusReadyToPlay) {
-            // TODO: (nhan) should probably allow user to specify queue here, but we'd have to store it
-            if (self.readyBlock) {
-                [[NSOperationQueue mainQueue] addOperationWithBlock:self.readyBlock];
-            }
-            self.readyBlock = nil;
+            self.isReady = YES;
             // no longer need this observer once it's ready
             [self removeStatusObserverForPlayerItem:self.playerItem];
-            self.isReady = YES;
+
+            // TODO: (nhan) should probably allow user to specify queue here, but we'd have to store it
+            __weak typeof(self) weakSelf = self;
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                if (weakSelf.readyBlock) {
+                    weakSelf.readyBlock();
+                }
+
+                NSOperation *playOperation = [NSBlockOperation blockOperationWithBlock:^{
+                    if (weakSelf.shouldPlayWhenReady) {
+                        [weakSelf.player play];
+                        weakSelf.shouldPlayWhenReady = NO;
+                    }
+                    weakSelf.readyBlock = nil;
+                }];
+                
+                if (self.seekDoneOperation) {
+                    [playOperation addDependency:self.seekDoneOperation];
+                }
+                [[NSOperationQueue mainQueue] addOperation:playOperation];
+            }];
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -158,7 +178,11 @@ typedef void (^TimeObserverBlock)(float);
 
 - (void)play
 {
-    [self.player play];
+    if (self.isReady) {
+        [self.player play];
+    } else {
+        self.shouldPlayWhenReady = YES;
+    }
 }
 
 - (void)pause
@@ -186,19 +210,23 @@ typedef void (^TimeObserverBlock)(float);
 
 - (void)seekToTime:(float)time done:(void (^)())done
 {
+    __weak typeof(self) weakSelf = self;
+    self.seekDoneOperation = [NSBlockOperation blockOperationWithBlock:^{
+        if (done) {
+            done();
+        }
+        weakSelf.seekDoneOperation = nil;
+    }];
+    
     if (self.isReady) {
         CMTime cmTime = CMTimeMakeWithSeconds(time, BaseTimeScale);
         [self.playerItem seekToTime:cmTime completionHandler:^(BOOL finished) {
             NSLog(@"Seek to time: %f", time);
-            if (done) {
-                done();
-            }
+            [[NSOperationQueue mainQueue] addOperation:self.seekDoneOperation];
         }];
     } else {
         NSLog(@"Warning: failed to seek because player was not ready");
-        if (done) {
-            done();
-        }
+        [[NSOperationQueue mainQueue] addOperation:self.seekDoneOperation];
     }
 }
 
@@ -239,7 +267,11 @@ typedef void (^TimeObserverBlock)(float);
 - (void)setIsLooping:(BOOL)isLooping
 {
     _isLooping = isLooping;
-    [self addEndTimeObserver];
+    if (isLooping) {
+        [self addEndTimeObserver];
+    } else {
+        [self removeEndTimeObserver];
+    }
 }
 
 - (void)didReceiveMemoryWarning
