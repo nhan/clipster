@@ -133,6 +133,8 @@
             if (succeeded) {
                 // facebook link succeeded
                 [self updateUserFromFacebook];
+            } else {
+                NSLog(@"Failed Facebook Authentication because %@", error);
             }
         }];
     } else {
