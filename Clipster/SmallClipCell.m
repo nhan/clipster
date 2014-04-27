@@ -80,11 +80,11 @@
         self.clipTextLabel.alpha = 0.5;
         self.clipTimesLabel.alpha = 0.0;
         
-        UIImage *tapToPublish = [UIImage imageNamed:@"tapToPublish.png"];
-        UIImageView *tapToPublishView = [[UIImageView alloc] initWithImage:tapToPublish];
-        tapToPublishView.frame = CGRectMake(self.contentView.frame.size.width - 118,15, 108, 36);
-        [tapToPublishView setTag:TAP_TO_PUBLISH_TAG];
-        [self.contentView addSubview:tapToPublishView];
+//        UIImage *tapToPublish = [UIImage imageNamed:@"tapToPublish.png"];
+//        UIImageView *tapToPublishView = [[UIImageView alloc] initWithImage:tapToPublish];
+//        tapToPublishView.frame = CGRectMake(self.contentView.frame.size.width - 118,15, 108, 36);
+//        [tapToPublishView setTag:TAP_TO_PUBLISH_TAG];
+//        [self.contentView addSubview:tapToPublishView];
     }
     
     self.clipTimesLabel.text = clip.duration;
