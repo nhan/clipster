@@ -228,7 +228,11 @@ static CGFloat lineHeight = 24.f;
     [self.profileThumbnailView setClipsToBounds:YES];
     self.profileThumbnailView.layer.cornerRadius = self.profileThumbnailView.frame.size.width/2;
     self.profileThumbnailView.layer.masksToBounds = YES;
-    self.profileThumbnailView.alpha = 1.0;
+    [UIView animateWithDuration:0.5 animations:^{
+        // Set the end state
+        self.profileThumbnailView.alpha = 1.0;
+    }];
+
 }
 
 - (void)refreshLikes{

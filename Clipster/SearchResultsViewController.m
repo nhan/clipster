@@ -59,7 +59,6 @@
     
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-5.0, 0.0, 320.0, 44.0)];
     self.searchBar.tintColor = [UIColor whiteColor];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     self.searchBar.barTintColor = [UIColor whiteColor];
     
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
@@ -69,6 +68,8 @@
     self.searchBar.delegate = self;
     [searchBarView addSubview:self.searchBar];
     self.navigationItem.titleView = searchBarView;
+    
+    [self.searchBar becomeFirstResponder];
     
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
