@@ -101,20 +101,14 @@
     [self updatePlayerToActiveClip];
 }
 
-# pragma mark - UI updating
-
-static const float VIDEO_MONITOR_INTERVAL = .1;
-static const float VIDEO_CONTROL_MINIMIZE_INTERVAL = 3.;
-static const int VIDEO_CONTROL_HEIGHT = 35;
-static const int VIDEO_CONTROL_HEIGHT_MIN = 5;
+#pragma mark - Custom Video Control
+//static const float VIDEO_MONITOR_INTERVAL = .1;
+//static const float VIDEO_CONTROL_MINIMIZE_INTERVAL = 3.;
+//static const int VIDEO_CONTROL_HEIGHT = 35;
+//static const int VIDEO_CONTROL_HEIGHT_MIN = 5;
 static const int NUMBER_HISTOGRAM_BINS = 100;
 
-- (CGFloat)videoControlHeight
-{
-    return self.isVideoControlMinimized ? VIDEO_CONTROL_HEIGHT_MIN : VIDEO_CONTROL_HEIGHT;
-}
 
-#pragma mark - Custom Video Control
 - (void)setupCustomVideoControl
 {
     UIView *movieView = self.playerController.view;
@@ -124,18 +118,18 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [movieView addGestureRecognizer:tapVideoGesture];
     
     // play/pause button
-    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(10,movieView.frame.size.height-10,50,50)];
+    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(20,movieView.frame.size.height-30,50,50)];
     self.playButton.alpha = 0.8;
     self.playButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.playButton];
     
     // clip button
-    self.clipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-60,movieView.frame.size.height-10,50,50)];
+    self.clipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-60,movieView.frame.size.height-30,50,50)];
     self.clipButton.alpha = 0.8;
     self.clipButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.clipButton setImage:[UIImage imageNamed:@"clip_btn.png"] forState:UIControlStateNormal];
-    [self.clipButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.clipButton addTarget:self action:@selector(clipAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.clipButton];
     
     // TODO: this is just the scrub view now so this can go away
@@ -215,7 +209,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // Let's respect the bins for position
     CGFloat width = self.view.frame.size.width;
     CGFloat binnedPosition = (ceil(position*NUMBER_HISTOGRAM_BINS/width)-0.5) * width/NUMBER_HISTOGRAM_BINS;
-    
     CGRect frame = self.currentPlaybackLineView.frame;
     self.currentPlaybackLineView.frame = CGRectMake(binnedPosition, frame.origin.y, frame.size.width, frame.size.height);
 }
@@ -227,10 +220,10 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 //    self.videoControlView.frame = CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight);
 //    self.scrubView.frame = CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight);
     
-    // hide the play button
+    // show/hide buttons
     self.playButton.hidden = isVideoControlMinimized;
-    // show/hide the back button
     self.backButton.hidden = isVideoControlMinimized;
+    self.clipButton.hidden = isVideoControlMinimized;
     // set past frame resizes automatically
     self.currentPlaybackPosition = self.currentPlaybackPosition;
 }
@@ -281,22 +274,22 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     CGFloat percentPlayed = currentPlaybackTime / self.playerController.duration;
     self.currentPlaybackPosition = self.scrubView.frame.size.width * percentPlayed;
     
-    // If we have not interacted with the video in a while lets minimize
-    int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
-    
-    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction > maxNumberIntervalsBeforeMinimize) {
-        self.isVideoControlMinimized = YES;
-    } else {
-        // Increment number of fires since video interaction
-        self.numberTimerEventsSinceVideoInteraction++;
-    }
+//    // If we have not interacted with the video in a while lets minimize
+//    int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
+//    
+//    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction > maxNumberIntervalsBeforeMinimize) {
+//        self.isVideoControlMinimized = YES;
+//    } else {
+//        // Increment number of fires since video interaction
+//        self.numberTimerEventsSinceVideoInteraction++;
+//    }
 }
 
 - (void)tapVideo:(UITapGestureRecognizer *)tapGesture
 {
-    // unminimize video controls
+    // toggle video controls minimize
     self.numberTimerEventsSinceVideoInteraction = 0;
-    self.isVideoControlMinimized = NO;
+    self.isVideoControlMinimized = !self.isVideoControlMinimized;
 }
 
 - (void)tapScrubber:(UITapGestureRecognizer *)tapGesture

@@ -49,7 +49,6 @@
         
         // get color based on popularity
         if (popularity > 0) {
-            NSLog(@"popularity: %f", popularity);
             // linearly interpolate the alpha based on popularity 0-1 --> 0.2-0.8
             CGFloat alpha = 0.6 * popularity + 0.2;
             
