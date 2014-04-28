@@ -521,11 +521,14 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     }
     cell.clipCellDelegate = self;
     
-    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-    [rightUtilityButtons sw_addUtilityButtonWithColor: [ClipsterColors red]
-                                                title:@"Delete"];
-    cell.rightUtilityButtons = rightUtilityButtons;
-    cell.delegate = self;
+    // be able to delete my clips
+    if ([clip.user.objectId isEqualToString:[User currentUser].objectId]) {
+        NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+        [rightUtilityButtons sw_addUtilityButtonWithColor: [ClipsterColors red]
+                                                    title:@"Delete"];
+        cell.rightUtilityButtons = rightUtilityButtons;
+        cell.delegate = self;
+    }
 
     return cell;
 }
