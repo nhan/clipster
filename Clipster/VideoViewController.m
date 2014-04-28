@@ -210,19 +210,13 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 
 - (void)updateCurrentPlaybackLineViewWithPosition:(CGFloat)position
 {
-    // Let's respect the bins for position
-    CGFloat width = self.view.frame.size.width;
-    CGFloat binnedPosition = (ceil(position*NUMBER_HISTOGRAM_BINS/width)-0.5) * width/NUMBER_HISTOGRAM_BINS;
     CGRect frame = self.currentPlaybackLineView.frame;
-    self.currentPlaybackLineView.frame = CGRectMake(binnedPosition, frame.origin.y, frame.size.width, frame.size.height);
+    self.currentPlaybackLineView.frame = CGRectMake(self.currentPlaybackPosition, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void)setIsVideoControlMinimized:(BOOL)isVideoControlMinimized
 {
     _isVideoControlMinimized = isVideoControlMinimized;
-    
-//    self.videoControlView.frame = CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight);
-//    self.scrubView.frame = CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight);
     
     // show/hide buttons
     self.playButton.hidden = isVideoControlMinimized;
