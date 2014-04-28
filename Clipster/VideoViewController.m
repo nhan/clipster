@@ -585,7 +585,8 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.navigationController pushViewController:clippingVC animated:YES];
 }
 
-- (void)setupClippingPanel{
+- (void)setupClippingPanel
+{
     self.clippingPanelPos = self.clippingPanel.frame.origin.y;
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(scrollClippingPanel:)];
     panGestureRecognizer.delegate = self;
@@ -593,7 +594,8 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.view bringSubviewToFront:self.videoPlayerContainer];
 }
 
-- (void)scrollClippingPanel:(UIPanGestureRecognizer *)panGestureRecognizer{
+- (void)scrollClippingPanel:(UIPanGestureRecognizer *)panGestureRecognizer
+{
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
         self.clippingPanelPos = self.clippingPanel.frame.origin.y;
         self.tableViewScrollPos = self.tableView.contentOffset.y;
@@ -602,17 +604,16 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (self.tableView.contentOffset.y <= 0) {
-        self.clippingPanel.frame = CGRectMake(0, self.tableView.frame.origin.y, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
-    } else {
-        CGFloat newPos = self.clippingPanelPos+ (self.tableViewScrollPos - self.tableView.contentOffset.y);
-        if (newPos < (self.tableView.frame.origin.y-self.clippingPanel.frame.size.height)) {
-            newPos = self.tableView.frame.origin.y-self.clippingPanel.frame.size.height;
-        } else if (newPos > self.tableView.frame.origin.y){
-            newPos = self.tableView.frame.origin.y;
-        }
-        self.clippingPanel.frame = CGRectMake(0, newPos, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
+    static const CGFloat minPanelSize = 5;
+    CGFloat newPos = self.clippingPanelPos + (self.tableViewScrollPos - self.tableView.contentOffset.y);
+
+    if (newPos < (self.tableView.frame.origin.y-self.clippingPanel.frame.size.height) + minPanelSize) {
+        newPos = self.tableView.frame.origin.y-self.clippingPanel.frame.size.height + minPanelSize;
+    } else if (newPos > self.tableView.frame.origin.y){
+        // don't bring the size of the video control any bigger than the original
+        newPos = self.tableView.frame.origin.y;
     }
+    self.clippingPanel.frame = CGRectMake(0, newPos, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
