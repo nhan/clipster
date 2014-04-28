@@ -42,6 +42,7 @@
 
 @property (nonatomic, strong) UIView *videoControlView;
 @property (nonatomic, strong) UIButton *playButton;
+@property (nonatomic, strong) UIButton *clipButton;
 @property (nonatomic, assign) BOOL isVideoPlaying;
 @property (nonatomic, strong) VideoControlView *scrubView;
 @property (nonatomic, assign) CGFloat currentPlaybackPosition;
@@ -100,21 +101,14 @@
     [self updatePlayerToActiveClip];
 }
 
-# pragma mark - UI updating
-
-static const float VIDEO_MONITOR_INTERVAL = .1;
-static const float VIDEO_CONTROL_MINIMIZE_INTERVAL = 3.;
-static const int VIDEO_CONTROL_HEIGHT = 35;
-static const int VIDEO_CONTROL_HEIGHT_MIN = 5;
-static const int PLAY_BUTTON_WIDTH = 70;
+#pragma mark - Custom Video Control
+//static const float VIDEO_MONITOR_INTERVAL = .1;
+//static const float VIDEO_CONTROL_MINIMIZE_INTERVAL = 3.;
+//static const int VIDEO_CONTROL_HEIGHT = 35;
+//static const int VIDEO_CONTROL_HEIGHT_MIN = 5;
 static const int NUMBER_HISTOGRAM_BINS = 100;
 
-- (CGFloat)videoControlHeight
-{
-    return self.isVideoControlMinimized ? VIDEO_CONTROL_HEIGHT_MIN : VIDEO_CONTROL_HEIGHT;
-}
 
-#pragma mark - Custom Video Control
 - (void)setupCustomVideoControl
 {
     UIView *movieView = self.playerController.view;
@@ -123,18 +117,28 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     tapVideoGesture.delegate = self;
     [movieView addGestureRecognizer:tapVideoGesture];
     
-    self.videoControlView = [[UIView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight)];
-    self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
-    
-    // play/pause region
-    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,PLAY_BUTTON_WIDTH,self.videoControlHeight)];
+    // play/pause button
+    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(20,movieView.frame.size.height-30,50,50)];
     self.playButton.alpha = 0.8;
     self.playButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoControlView addSubview:self.playButton];
+    [self.view addSubview:self.playButton];
+    
+    // clip button
+    self.clipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-60,movieView.frame.size.height-30,50,50)];
+    self.clipButton.alpha = 0.8;
+    self.clipButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.clipButton setImage:[UIImage imageNamed:@"clip_btn.png"] forState:UIControlStateNormal];
+    [self.clipButton addTarget:self action:@selector(clipAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.clipButton];
+    
+    // TODO: this is just the scrub view now so this can go away
+    self.videoControlView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height)];
+    self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
+    [self.clippingPanel addSubview:self.videoControlView];
     
     // scrubbing/vis region
-    self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
+    self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(0, 0, self.videoControlView.frame.size.width, self.videoControlView.frame.size.height)];
     self.scrubView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.4];
     self.scrubView.color = [ClipsterColors green];
     // Initialize popularity histogram
@@ -153,9 +157,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // Setting the current playback position will set playback time and progress
     self.currentPlaybackPosition = 0;
     [self updateCurrentPlaybackLineViewWithPosition:self.currentPlaybackPosition];
-
-    [movieView addSubview:self.videoControlView];
-    [movieView bringSubviewToFront:self.videoControlView];
 }
 
 - (void)addAllClipsToHistogram
@@ -178,7 +179,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     for (int i=startBin; i<endBin; i++) {
         self.popularityHistogram[i] = @([self.popularityHistogram[i] floatValue] + 0.2);
     }
-    [self.videoControlView setNeedsDisplay];
+    [self.scrubView setNeedsDisplay];
 }
 
 - (NSArray *)timeBinsForClip:(Clip *)clip
@@ -197,35 +198,32 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // offset to midpoint of bins
     float startBin = [timeBins[0] floatValue];
     float endBin = [timeBins[1] floatValue];
-    float sizeBin = (cell.frame.size.width - PLAY_BUTTON_WIDTH) / NUMBER_HISTOGRAM_BINS;
+    float sizeBin = cell.frame.size.width / NUMBER_HISTOGRAM_BINS;
     float width = (endBin - startBin) * sizeBin;
-    float x = startBin * sizeBin + PLAY_BUTTON_WIDTH;
+    float x = startBin * sizeBin;
     return CGRectMake(x, 0, width, cell.frame.size.height);
 }
 
 - (void)updateCurrentPlaybackLineViewWithPosition:(CGFloat)position
 {
     // Let's respect the bins for position
-    CGFloat width = self.view.frame.size.width - PLAY_BUTTON_WIDTH;
+    CGFloat width = self.view.frame.size.width;
     CGFloat binnedPosition = (ceil(position*NUMBER_HISTOGRAM_BINS/width)-0.5) * width/NUMBER_HISTOGRAM_BINS;
-    
     CGRect frame = self.currentPlaybackLineView.frame;
-    self.currentPlaybackLineView.frame = CGRectMake(binnedPosition + PLAY_BUTTON_WIDTH, frame.origin.y, frame.size.width, frame.size.height);
+    self.currentPlaybackLineView.frame = CGRectMake(binnedPosition, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void)setIsVideoControlMinimized:(BOOL)isVideoControlMinimized
 {
     _isVideoControlMinimized = isVideoControlMinimized;
     
-    // hide the play button
-    UIView *movieView = self.playerController.view;
+//    self.videoControlView.frame = CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight);
+//    self.scrubView.frame = CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight);
+    
+    // show/hide buttons
     self.playButton.hidden = isVideoControlMinimized;
-    self.videoControlView.frame = CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight);
-    self.scrubView.frame = CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight);
-    
-    // show/hide the back button
     self.backButton.hidden = isVideoControlMinimized;
-    
+    self.clipButton.hidden = isVideoControlMinimized;
     // set past frame resizes automatically
     self.currentPlaybackPosition = self.currentPlaybackPosition;
 }
@@ -233,11 +231,11 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 - (void)setIsVideoPlaying:(BOOL)isVideoPlaying
 {
     if (isVideoPlaying) {
-        [self.playButton setImage:[UIImage imageNamed:@"pause.png"] forState:UIControlStateNormal];
+        [self.playButton setImage:[UIImage imageNamed:@"pause_btn.png"] forState:UIControlStateNormal];
         [self.playerController play];
         [self startMonitorPlaybackTimer];
     } else if (!isVideoPlaying) {
-        [self.playButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+        [self.playButton setImage:[UIImage imageNamed:@"play_btn.png"] forState:UIControlStateNormal];
         [self.playerController pause];
         [self stopMonitorPlaybackTimer];
     }
@@ -276,22 +274,22 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     CGFloat percentPlayed = currentPlaybackTime / self.playerController.duration;
     self.currentPlaybackPosition = self.scrubView.frame.size.width * percentPlayed;
     
-    // If we have not interacted with the video in a while lets minimize
-    int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
-    
-    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction > maxNumberIntervalsBeforeMinimize) {
-        self.isVideoControlMinimized = YES;
-    } else {
-        // Increment number of fires since video interaction
-        self.numberTimerEventsSinceVideoInteraction++;
-    }
+//    // If we have not interacted with the video in a while lets minimize
+//    int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
+//    
+//    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction > maxNumberIntervalsBeforeMinimize) {
+//        self.isVideoControlMinimized = YES;
+//    } else {
+//        // Increment number of fires since video interaction
+//        self.numberTimerEventsSinceVideoInteraction++;
+//    }
 }
 
 - (void)tapVideo:(UITapGestureRecognizer *)tapGesture
 {
-    // unminimize video controls
+    // toggle video controls minimize
     self.numberTimerEventsSinceVideoInteraction = 0;
-    self.isVideoControlMinimized = NO;
+    self.isVideoControlMinimized = !self.isVideoControlMinimized;
 }
 
 - (void)tapScrubber:(UITapGestureRecognizer *)tapGesture

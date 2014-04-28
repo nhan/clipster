@@ -7,6 +7,7 @@
 //
 
 #import "VideoControlView.h"
+#import "ClipsterColors.h"
 
 @interface VideoControlView ()
 @end
@@ -27,26 +28,34 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     [self drawHistogramWithContext:context];
+    [self drawVideoProgress:context];
 }
+
+- (void)drawVideoProgress:(CGContextRef)context
+{
+    CGFloat alpha = 0.3;
+    UIColor *color = self.color;
+    CGContextSetFillColorWithColor(context, [color colorWithAlphaComponent:alpha].CGColor);
+    CGContextFillRect(context, CGRectMake(0, 0, self.currentPlaybackPosition, self.bounds.size.height));
+}
+
+// current progress should just be a rect with green color drawn over everything with alpha higher
 
 - (void)drawHistogramWithContext:(CGContextRef)context
 {
     CGFloat histogramDelta = self.bounds.size.width / self.popularityHistogram.count;
     for (int i=0; i<self.popularityHistogram.count; i++) {
         CGFloat popularity = [self.popularityHistogram[i] floatValue];
-        CGFloat position = i*histogramDelta;
         
-        // before current playback position we are pretty much opaque, after translucent
-        UIColor *backgroundColor = self.backgroundColor;
-        CGFloat alpha = 0.3;
-        if (position < self.currentPlaybackPosition) {
-            alpha = 1.0;
-            backgroundColor = [UIColor colorWithWhite:0.8 alpha:alpha];
-        }
         // get color based on popularity
-        UIColor *color = popularity > 0 ? self.color : backgroundColor;
-        CGContextSetFillColorWithColor(context, [color colorWithAlphaComponent:alpha].CGColor);
-        CGContextFillRect(context, CGRectMake( i*histogramDelta, 0, histogramDelta, self.bounds.size.height));
+        if (popularity > 0) {
+            // linearly interpolate the alpha based on popularity 0-1 --> 0.2-0.8
+            CGFloat alpha = 0.6 * popularity + 0.2;
+            
+            UIColor *color = [[ClipsterColors timelineGray] colorWithAlphaComponent:alpha];
+            CGContextSetFillColorWithColor(context, color.CGColor);
+            CGContextFillRect(context, CGRectMake( i*histogramDelta, 0, histogramDelta, self.bounds.size.height));
+        }
     }
 }
 
