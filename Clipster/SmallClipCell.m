@@ -7,6 +7,7 @@
 //
 
 #import "SmallClipCell.h"
+#import "ClipsterColors.h"
 #import <Parse/PFImageView.h>
 
 #define DURATION_TAG 9017
@@ -60,7 +61,7 @@
 {
     if (!_timelineView) {
         _timelineView = [[UIView alloc] init];
-        _timelineView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.05];
+        _timelineView.backgroundColor = [ClipsterColors timelineGray];
         [self addSubview:_timelineView];
     }
     return _timelineView;

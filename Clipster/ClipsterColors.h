@@ -11,4 +11,5 @@
 @interface ClipsterColors : NSObject
 + (UIColor *)red;
 + (UIColor *)green;
++ (UIColor *)timelineGray;
 @end
