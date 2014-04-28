@@ -26,11 +26,11 @@
 @interface SearchResultsViewController ()
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) GTLServiceYouTube *youtubeService;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *searchTypeControl;
 @property (nonatomic, strong) SmallClipCell *smallClipCellPrototype;
 @property (nonatomic, strong) YouTubeCell *youTubeCellPrototype;
+@property (nonatomic, strong) UISearchBar *searchBar;
 @end
 
 @implementation SearchResultsViewController
@@ -51,6 +51,24 @@
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.navigationItem.hidesBackButton = YES;
+    
+    // Right cancel button
+    UIBarButtonItem *rightCancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(onCancelButton:)];
+    self.navigationItem.rightBarButtonItem = rightCancel;
+    
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-5.0, 0.0, 320.0, 44.0)];
+    self.searchBar.tintColor = [UIColor whiteColor];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
+    self.searchBar.barTintColor = [UIColor whiteColor];
+    
+    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    UIView *searchBarView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 310.0, 44.0)];
+    searchBarView.autoresizingMask = 0;
+    self.searchBar.delegate = self;
+    [searchBarView addSubview:self.searchBar];
+    self.navigationItem.titleView = searchBarView;
     
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -70,6 +88,11 @@
     
     // Initialize search to clips
     self.searchTypeControl.selectedSegmentIndex = CLIP_SEARCH;
+}
+
+
+- (void)onCancelButton:(id)sender{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 // Dismiss keyboard when we scroll the table
