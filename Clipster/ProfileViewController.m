@@ -7,7 +7,7 @@
 //
 
 #import "ProfileViewController.h"
-#import "SmallClipCell.h"
+#import "ProfileClipCell.h"
 #import "User.h"
 #import "ProfileCell.h"
 #import "VideoViewController.h"
@@ -22,7 +22,7 @@
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) ProfileCell *profileCell;
-@property (nonatomic, strong) SmallClipCell *prototype;
+@property (nonatomic, strong) ProfileClipCell *prototype;
 @property (nonatomic, assign) BOOL isCurrentUserFollowing;
 @property (nonatomic, strong) NSArray *following;
 @property (weak, nonatomic) IBOutlet UIImageView *blurredBannerImage;
@@ -79,9 +79,9 @@
     self.tableView.tableHeaderView = self.profileCell;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    UINib *clipNib = [UINib nibWithNibName:@"SmallClipCell" bundle:nil];
+    UINib *clipNib = [UINib nibWithNibName:@"ProfileClipCell" bundle:nil];
     self.prototype = [clipNib instantiateWithOwner:self options:nil][0];
-    [self.tableView registerNib:clipNib forCellReuseIdentifier:@"ClipCell"];
+    [self.tableView registerNib:clipNib forCellReuseIdentifier:@"ProfileClipCell"];
     [self refreshUI];
 }
 
@@ -260,7 +260,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SmallClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClipCell"];
+    ProfileClipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileClipCell"];
     cell.clip = self.clips[indexPath.row];
     return cell;
 }
@@ -277,7 +277,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [SmallClipCell heightForClip:[self.clips objectAtIndex:indexPath.row] cell:self.prototype];
+    return [ProfileClipCell heightForClip:[self.clips objectAtIndex:indexPath.row] cell:self.prototype];
 }
 
 #pragma mark - ScrollView
