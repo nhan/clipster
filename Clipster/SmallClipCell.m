@@ -67,6 +67,12 @@
     return _timelineView;
 }
 
+- (void)setIsPlaying:(BOOL)isPlaying
+{
+    _isPlaying = isPlaying;
+    [self refreshUI];
+}
+
 - (void)refreshUI
 {
     Clip *clip = self.clip;
@@ -108,6 +114,12 @@
     
     if (self.isShowingTimeline) {
         self.timelineView.frame = self.timelineRect;
+        if (self.isPlaying) {
+            self.timelineView.backgroundColor = [[ClipsterColors green] colorWithAlphaComponent:0.4];
+        } else {
+            self.timelineView.backgroundColor = [ClipsterColors timelineGray];
+        }
+        [self sendSubviewToBack:self.timelineView];
     }
     
     self.thumbnail.file = clip.thumbnail;
