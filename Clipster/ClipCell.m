@@ -7,11 +7,38 @@
 //
 
 #import "ClipCell.h"
+#import "ClipsterColors.h"
 #import "YouTubeVideo.h"
 #import "YouTubeParser.h"
 #import "ProfileViewController.h"
 #import "VideoPlayerViewController.h"
+#import "VideoControlView.h"
 //#import <QuartzCore/QuartzCore.h>
+
+
+@interface ProgressBarView : UIView;
+@property (nonatomic, assign) float progress;
+@end
+
+@implementation ProgressBarView
+
+- (void)setProgress:(float)progress
+{
+    _progress = progress;
+    [self setNeedsDisplay];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextFillRect(context, CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height));
+    UIColor *color = [ClipsterColors green];
+    CGContextSetFillColorWithColor(context, color.CGColor);
+    CGContextFillRect(context, CGRectMake(0, 0, self.bounds.size.width*self.progress, self.bounds.size.height));
+}
+
+@end
 
 @interface ClipCell ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -24,6 +51,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UILabel *timeAgoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
+@property (weak, nonatomic) IBOutlet UIView *progressView;
+@property (strong, nonatomic) ProgressBarView *progressBarView;
 
 - (IBAction)onLikeButton:(id)sender;
 
@@ -34,6 +63,7 @@
 @property NSDictionary *titleLabelTextAttributes;
 @end
 
+
 @implementation ClipCell
 
 static CGFloat lineHeight = 24.f;
@@ -42,6 +72,12 @@ static CGFloat lineHeight = 24.f;
 {
     self.videoPlayer = [[VideoPlayerViewController alloc] init];
     self.videoPlayer.isLooping = YES;
+    __weak typeof(self) weakSelf = self;
+    [self.videoPlayer addTimeObserverWithBlock:^(float time) {
+        [weakSelf updateProgress:time];
+    }];
+    self.progressBarView = [[ProgressBarView alloc] initWithFrame:self.progressView.bounds];
+    [self.progressView addSubview:self.progressBarView];
     
     NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
     style.minimumLineHeight = lineHeight;
@@ -84,8 +120,16 @@ static CGFloat lineHeight = 24.f;
     _clip = clip;
     self.isVideoReady = NO;
     self.isVideoPlaying = NO;
+    self.progressBarView.progress = 0.0f;
     [self removePlayer];
     [self refreshUI];
+}
+
+- (void)updateProgress:(float)time
+{
+    float timeSinceBeginningOfClip = self.videoPlayer.currentTimeInSeconds - self.clip.timeStart/1000.0f;
+    float clipDuration = (self.clip.timeEnd - self.clip.timeStart)/1000.0f;
+    self.progressBarView.progress = timeSinceBeginningOfClip / clipDuration;
 }
 
 - (void)refreshUI

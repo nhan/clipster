@@ -45,7 +45,7 @@
                                     <constraint firstAttribute="height" constant="180" id="QN7-7p-aMH"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSF-ki-mh7">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSF-ki-mh7" userLabel="Progress View">
                                 <rect key="frame" x="0.0" y="175" width="300" height="5"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -165,6 +165,7 @@
                 <outlet property="likeButton" destination="5Mr-a6-0si" id="UIe-u7-SXq"/>
                 <outlet property="likeCountLabel" destination="RUA-qm-dOT" id="2Gn-AV-U9c"/>
                 <outlet property="profileThumbnailView" destination="1Bj-sr-Lnp" id="Kl8-hj-FfJ"/>
+                <outlet property="progressView" destination="OSF-ki-mh7" id="0Og-qN-aBw"/>
                 <outlet property="thumbnailContainer" destination="HKN-T0-deG" id="WBW-RI-Vlk"/>
                 <outlet property="timeAgoLabel" destination="It7-iq-kvT" id="MWH-hg-PdV"/>
                 <outlet property="titleLabel" destination="iW2-YU-1cv" id="0nM-kw-FAu"/>
