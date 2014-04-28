@@ -6,10 +6,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VideoViewController">
             <connections>
+                <outlet property="clipButton" destination="3ka-IR-CRB" id="Rn1-hB-Joe"/>
                 <outlet property="clippingPanel" destination="BmA-Y0-cfA" id="4sl-Rk-ozg"/>
                 <outlet property="currentPlaybackLineView" destination="Mtd-pB-L99" id="DIn-TY-odc"/>
+                <outlet property="playButton" destination="RHB-Jh-rjp" id="c18-WW-Nbh"/>
                 <outlet property="tableView" destination="DhY-HW-wjC" id="XxN-ou-Xjq"/>
                 <outlet property="thumbnailImage" destination="VrE-Mk-Pih" id="Zh4-oP-1ap"/>
+                <outlet property="videoControlVerticalOffsetConstraint" destination="ZbV-XF-Und" id="7Lq-YD-6hj"/>
+                <outlet property="videoHeightConstraint" destination="1zY-93-V3r" id="JbR-VR-c04"/>
                 <outlet property="videoPlayerContainer" destination="gte-Wa-9Uv" id="7Cv-PT-4WM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -59,11 +63,36 @@
                         <constraint firstAttribute="height" constant="44" id="Ddv-r7-nNW"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RHB-Jh-rjp" userLabel="Play Button">
+                    <rect key="frame" x="10" y="160" width="40" height="40"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="FNL-6I-qGJ"/>
+                        <constraint firstAttribute="height" constant="40" id="cmr-DH-HSc"/>
+                    </constraints>
+                    <state key="normal" image="play_btn.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ka-IR-CRB" userLabel="Clip Button">
+                    <rect key="frame" x="243" y="160" width="59" height="40"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="PB5-q9-R8l"/>
+                        <constraint firstAttribute="width" constant="59" id="e0n-ie-sFC"/>
+                    </constraints>
+                    <state key="normal" image="clip_btn.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="3ka-IR-CRB" secondAttribute="trailing" constant="18" id="4jf-u5-Liz"/>
                 <constraint firstItem="BmA-Y0-cfA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5Em-eq-OjG"/>
+                <constraint firstItem="RHB-Jh-rjp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="8gc-Ei-cyU"/>
                 <constraint firstAttribute="trailing" secondItem="DhY-HW-wjC" secondAttribute="trailing" id="AUb-qh-0YX"/>
+                <constraint firstItem="BmA-Y0-cfA" firstAttribute="top" secondItem="RHB-Jh-rjp" secondAttribute="bottom" constant="-20" id="BxF-T5-V8N"/>
                 <constraint firstItem="Mtd-pB-L99" firstAttribute="top" secondItem="gte-Wa-9Uv" secondAttribute="bottom" id="C94-1T-xKZ"/>
                 <constraint firstAttribute="trailing" secondItem="Mtd-pB-L99" secondAttribute="trailing" constant="120" id="Cwh-C2-6Tp"/>
                 <constraint firstAttribute="bottom" secondItem="Mtd-pB-L99" secondAttribute="bottom" id="EdJ-mJ-aJZ"/>
@@ -74,10 +103,15 @@
                 <constraint firstAttribute="trailing" secondItem="gte-Wa-9Uv" secondAttribute="trailing" id="cqa-WL-lpM"/>
                 <constraint firstItem="DhY-HW-wjC" firstAttribute="top" secondItem="gte-Wa-9Uv" secondAttribute="bottom" id="kvO-kO-WLf"/>
                 <constraint firstAttribute="trailing" secondItem="BmA-Y0-cfA" secondAttribute="trailing" id="lXG-Zo-6Bh"/>
+                <constraint firstItem="BmA-Y0-cfA" firstAttribute="top" secondItem="3ka-IR-CRB" secondAttribute="bottom" constant="-20" id="vZ3-s1-egj"/>
                 <constraint firstItem="gte-Wa-9Uv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="zgd-FG-82Z"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="clip_btn.png" width="59" height="40"/>
+        <image name="play_btn.png" width="40" height="40"/>
+    </resources>
 </document>
