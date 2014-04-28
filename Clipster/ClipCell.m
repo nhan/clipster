@@ -15,12 +15,53 @@
 #import "VideoControlView.h"
 //#import <QuartzCore/QuartzCore.h>
 
+@class ProgressBarView;
+
+@interface ProgressBarMaskDelegate : NSObject
+@property (nonatomic, weak) ProgressBarView *progressBarView;
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx;
+@end
 
 @interface ProgressBarView : UIView;
 @property (nonatomic, assign) float progress;
+@property (nonatomic, assign) CGRect profileImageRect;
+@property (nonatomic, strong) ProgressBarMaskDelegate *progressBarMask;
+
+-(void)redrawMask;
+@end
+
+@implementation ProgressBarMaskDelegate
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
+{
+    CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
+    CGContextFillRect(ctx, CGRectMake(0, self.progressBarView.bounds.size.height - 4, self.progressBarView.bounds.size.width, 4));
+    CGContextFillEllipseInRect(ctx, self.progressBarView.profileImageRect);
+}
 @end
 
 @implementation ProgressBarView
+
+-(id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    _progressBarMask = [[ProgressBarMaskDelegate alloc] init];
+    _progressBarMask.progressBarView = self;
+    _profileImageRect = CGRectZero;
+    
+    CALayer *mask = [CALayer layer];
+    mask.delegate = _progressBarMask;
+    mask.frame = self.bounds;
+    mask.bounds = self.bounds;
+    self.layer.mask = mask;
+    [self.layer.mask setNeedsDisplay];
+
+    return self;
+}
+
+-(void)redrawMask
+{
+    [self.layer.mask setNeedsDisplay];
+}
 
 - (void)setProgress:(float)progress
 {
@@ -77,6 +118,8 @@ static CGFloat lineHeight = 24.f;
         [weakSelf updateProgress:time];
     }];
     self.progressBarView = [[ProgressBarView alloc] initWithFrame:self.progressView.bounds];
+    self.progressBarView.profileImageRect = [self.card convertRect:self.thumbnailContainer.frame toView:self.progressView];
+    [self.progressBarView redrawMask];
     [self.progressView addSubview:self.progressBarView];
     
     NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
@@ -88,10 +131,11 @@ static CGFloat lineHeight = 24.f;
     
     [self addGestureRecognizers];
     
-    [self.thumbnailContainer setClipsToBounds:YES];
-    self.thumbnailContainer.layer.cornerRadius = self.thumbnailContainer.frame.size.width/2;
-    self.thumbnailContainer.layer.masksToBounds = YES;
-    self.thumbnailContainer.backgroundColor = [UIColor whiteColor];
+
+//    [self.thumbnailContainer setClipsToBounds:YES];
+//    self.thumbnailContainer.layer.cornerRadius = self.thumbnailContainer.frame.size.width/2;
+//    self.thumbnailContainer.layer.masksToBounds = YES;
+//    self.thumbnailContainer.backgroundColor = [UIColor whiteColor];
     
     [self.card setClipsToBounds:YES];
     self.card.layer.cornerRadius = 5.0;
