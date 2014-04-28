@@ -15,7 +15,9 @@
 #import "YouTubeVideo.h"
 #import "VideoControlView.h"
 #import "YouTubeParser.h"
+#import "ClipsterColors.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+
 
 @interface VideoViewController ()
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnailImage;
@@ -134,7 +136,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // scrubbing/vis region
     self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
     self.scrubView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.4];
-    self.scrubView.color = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:1.0];
+    self.scrubView.color = [ClipsterColors green];
     // Initialize popularity histogram
     self.popularityHistogram = [[NSMutableArray alloc] init];
     for (int i=0; i<NUMBER_HISTOGRAM_BINS; i++) {
@@ -511,12 +513,19 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SmallClipCell *cell = (SmallClipCell *)[self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
+    
     Clip *clip = (Clip *)self.clips[indexPath.row];
     cell.clip = clip;
     if (self.playerController.duration > 0) {
         cell.timelineRect = [self rectForClip:clip cell:cell];
     }
-    cell.delegate = self;
+    cell.clipCellDelegate = self;
+    
+    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    [rightUtilityButtons sw_addUtilityButtonWithColor: [ClipsterColors red]
+                                                title:@"Delete"];
+    cell.rightUtilityButtons = rightUtilityButtons;
+
     return cell;
 }
 
@@ -552,7 +561,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:clip playerController:self.playerController];
     clippingVC.delegate = self;
     [self.navigationController pushViewController:clippingVC animated:YES];
-
 }
 
 - (void)setupClippingPanel{

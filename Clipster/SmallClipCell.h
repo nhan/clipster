@@ -8,17 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "Clip.h"
+#import <SWTableViewCell.h>
 
 @protocol ClipCellDelegate<NSObject>
 - (void)didClickUsername:(NSString *)username;
 @end
 
-@interface SmallClipCell : UITableViewCell
+@interface SmallClipCell : SWTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *clipTextLabel;
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnail;
 @property (nonatomic, strong) Clip *clip;
-@property (nonatomic, weak) id<ClipCellDelegate> delegate;
+@property (nonatomic, weak) id<ClipCellDelegate> clipCellDelegate;
 @property (nonatomic, assign) CGRect timelineRect;
 
 + (CGFloat)heightForClip:(Clip *)clip cell:(SmallClipCell *)prototype;

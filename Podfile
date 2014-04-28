@@ -6,4 +6,4 @@ pod 'MBProgressHUD'
 pod 'Google-API-Client'
 pod 'HCYoutubeParser'
 pod 'RPFloatingPlaceholders'
-
+pod 'SWTableViewCell'

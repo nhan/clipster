@@ -174,6 +174,7 @@ PODS:
   - Parse (1.2.19):
     - Facebook-iOS-SDK (~> 3.11)
   - RPFloatingPlaceholders (0.2.5)
+  - SWTableViewCell (0.2.8)
 
 DEPENDENCIES:
   - AFNetworking
@@ -182,10 +183,11 @@ DEPENDENCIES:
   - MBProgressHUD
   - Parse
   - RPFloatingPlaceholders
+  - SWTableViewCell
 
 SPEC CHECKSUMS:
   AFNetworking: dd8c1868e57451e3d17ebd3516f2a8c16f9646fe
-  Facebook-iOS-SDK: 0d121e16437981fabff9379e07bf646bd5ab245c
+  Facebook-iOS-SDK: 47ae9e54684c84f93d75d4e6ab47cd031abdf406
   Google-API-Client: 1e30a893f3a6303afc04d9785ad3d693653b8588
   gtm-oauth2: ec43e283197a3c2eb14e1f3724a83fe2aeb45791
   GTMHTTPFetcher: 1ec07b08bc1df7bf37ad32b3c2adefa020a4b644
@@ -193,5 +195,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
   Parse: 3739f0b211c49115bad96d6b0969b804d4da2f24
   RPFloatingPlaceholders: f18ef716afa3158e8552053d721d4851a934f3d0
+  SWTableViewCell: 02051329efd34d60e20a0d269f3b19007b1ddba5
 
 COCOAPODS: 0.32.1
