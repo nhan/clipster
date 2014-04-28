@@ -53,8 +53,6 @@
 		7E970D5D18F1F2DC00517A1F /* ClipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E970D5B18F1F2DC00517A1F /* ClipCell.m */; };
 		7E970D5E18F1F2DC00517A1F /* ClipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D5C18F1F2DC00517A1F /* ClipCell.xib */; };
 		7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D5F18F1F9C300517A1F /* menu@2x.png */; };
-		7E970D6518F2165800517A1F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E970D6318F2165800517A1F /* LoginViewController.m */; };
-		7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D6418F2165800517A1F /* LoginViewController.xib */; };
 		7E9B20711901C596008C3E01 /* ClippingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B206F1901C596008C3E01 /* ClippingViewController.m */; };
 		7E9B20721901C596008C3E01 /* ClippingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20701901C596008C3E01 /* ClippingViewController.xib */; };
 		7E9B20741901C92F008C3E01 /* drag_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20731901C92F008C3E01 /* drag_green.png */; };
@@ -156,9 +154,6 @@
 		7E970D5B18F1F2DC00517A1F /* ClipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipCell.m; sourceTree = "<group>"; };
 		7E970D5C18F1F2DC00517A1F /* ClipCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClipCell.xib; sourceTree = "<group>"; };
 		7E970D5F18F1F9C300517A1F /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu@2x.png"; sourceTree = "<group>"; };
-		7E970D6218F2165800517A1F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		7E970D6318F2165800517A1F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		7E970D6418F2165800517A1F /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		7E9B206E1901C596008C3E01 /* ClippingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClippingViewController.h; sourceTree = "<group>"; };
 		7E9B206F1901C596008C3E01 /* ClippingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClippingViewController.m; sourceTree = "<group>"; };
 		7E9B20701901C596008C3E01 /* ClippingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClippingViewController.xib; sourceTree = "<group>"; };
@@ -401,9 +396,6 @@
 				6B2C4A7218FB4CDC00D9A011 /* HamburgerMenuController.h */,
 				6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */,
 				6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */,
-				7E970D6218F2165800517A1F /* LoginViewController.h */,
-				7E970D6318F2165800517A1F /* LoginViewController.m */,
-				7E970D6418F2165800517A1F /* LoginViewController.xib */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -512,7 +504,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E9B20BA190780A9008C3E01 /* like@2x.png in Resources */,
-				7E970D6618F2165800517A1F /* LoginViewController.xib in Resources */,
 				7E2A75CB190DBCAC000E3834 /* pause.png in Resources */,
 				6BAACCFA19085148003B5084 /* VideoPlayerViewController.xib in Resources */,
 				7E9B209C1905EAD3008C3E01 /* clip-it-2.png in Resources */,
@@ -624,7 +615,6 @@
 				6BAACCF919085148003B5084 /* VideoPlayerViewController.m in Sources */,
 				7EF9A4C618F8B2A80058FE1C /* SmallClipCell.m in Sources */,
 				6BAACCFD1908526E003B5084 /* VideoPlayerView.m in Sources */,
-				7E970D6518F2165800517A1F /* LoginViewController.m in Sources */,
 				6BEECC9C1901CDB90055081E /* LoginManager.m in Sources */,
 				BB7DE1B319073D9C00CBA9C0 /* VideoControlView.m in Sources */,
 				7E970D3018F1E5DF00517A1F /* AppDelegate.m in Sources */,

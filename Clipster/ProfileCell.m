@@ -58,7 +58,7 @@
     
     if (self.user == [User currentUser]) {
         // User's profile, follow button becomes button to edit profile
-        [self.followButton setTitle:@"Edit" forState:UIControlStateNormal];
+        [self.followButton setTitle:@"Connect with Facebook" forState:UIControlStateNormal];
     } else {
         // follow/unfollow button
         if (self.currentUserIsFollowing) {
