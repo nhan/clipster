@@ -102,10 +102,6 @@
 }
 
 #pragma mark - Custom Video Control
-//static const float VIDEO_MONITOR_INTERVAL = .1;
-//static const float VIDEO_CONTROL_MINIMIZE_INTERVAL = 3.;
-//static const int VIDEO_CONTROL_HEIGHT = 35;
-//static const int VIDEO_CONTROL_HEIGHT_MIN = 5;
 static const int NUMBER_HISTOGRAM_BINS = 100;
 
 
@@ -116,6 +112,14 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     UITapGestureRecognizer *tapVideoGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapVideo:)];
     tapVideoGesture.delegate = self;
     [movieView addGestureRecognizer:tapVideoGesture];
+    
+    self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.backButton setImage:[UIImage imageNamed:@"back_btn.png"] forState:UIControlStateNormal];
+    self.backButton.alpha = 0.5;
+    self.backButton.frame = CGRectMake(10, 10, 40, 40);
+    [self.backButton addTarget:self action:@selector(onBackButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.backButton];
+    [self.view bringSubviewToFront:self.backButton];
     
     // play/pause button
     self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(10,movieView.frame.size.height-20,40,40)];
@@ -352,14 +356,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self setupClippingPanel];
     [self addPlayerViewToContainer];
     
-    self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.backButton setImage:[UIImage imageNamed:@"back_btn.png"] forState:UIControlStateNormal];
-    self.backButton.alpha = 0.5;
-    self.backButton.frame = CGRectMake(10, 10, 40, 40);
-    [self.backButton addTarget:self action:@selector(onBackButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.playerController.view addSubview:self.backButton];
-    [self.playerController.view bringSubviewToFront:self.backButton];
-    
     if (self.activeClip && self.activeClip.thumbnail) {
         self.thumbnailImage.file = self.activeClip.thumbnail;
         [self.thumbnailImage loadInBackground];
@@ -533,10 +529,9 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 {
     Clip *clip = self.clips[indexPath.row];
     self.activeClip = clip;
+    // show the green flash
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    // Need to refresh active and nonactive clip cells
-//    [tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
