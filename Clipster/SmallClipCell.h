@@ -21,7 +21,6 @@
 @property (nonatomic, strong) Clip *clip;
 @property (nonatomic, weak) id<ClipCellDelegate> clipCellDelegate;
 @property (nonatomic, assign) CGRect timelineRect;
-@property (nonatomic, assign) BOOL isPlaying;
 
 + (CGFloat)heightForClip:(Clip *)clip cell:(SmallClipCell *)prototype;
 - (void)setClip:(Clip *)clip;

@@ -514,7 +514,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     cell.clip = clip;
     if (self.playerController.duration > 0) {
         cell.timelineRect = [self rectForClip:clip cell:cell];
-        cell.isPlaying = clip == self.activeClip;
     }
     cell.clipCellDelegate = self;
     
@@ -534,9 +533,10 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 {
     Clip *clip = self.clips[indexPath.row];
     self.activeClip = clip;
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // Need to refresh active and nonactive clip cells
-    [tableView reloadData];
+//    [tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

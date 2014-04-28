@@ -67,12 +67,6 @@
     return _timelineView;
 }
 
-- (void)setIsPlaying:(BOOL)isPlaying
-{
-    _isPlaying = isPlaying;
-    [self refreshUI];
-}
-
 - (void)refreshUI
 {
     Clip *clip = self.clip;
@@ -96,7 +90,6 @@
     
     self.clipTimesLabel.text = clip.duration;
     [[self.contentView viewWithTag:DURATION_TAG] removeFromSuperview];
-    
     [self.usernameButton setTitle:clip.username forState:UIControlStateNormal];
     
 //    // TODO get real total duration of VIDEO
@@ -114,17 +107,22 @@
     
     if (self.isShowingTimeline) {
         self.timelineView.frame = self.timelineRect;
-        if (self.isPlaying) {
-            self.timelineView.backgroundColor = [[ClipsterColors green] colorWithAlphaComponent:0.4];
-        } else {
-            self.timelineView.backgroundColor = [ClipsterColors timelineGray];
-        }
         [self sendSubviewToBack:self.timelineView];
     }
     
     self.thumbnail.file = clip.thumbnail;
     [self.thumbnail loadInBackground];
     [self refreshThumbnail];
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    if (selected) {
+        self.timelineView.backgroundColor = [[ClipsterColors green] colorWithAlphaComponent:0.4];
+    } else {
+        self.timelineView.backgroundColor = [ClipsterColors timelineGray];
+    }
+    [self refreshUI];
 }
 
 - (void)refreshThumbnail{
