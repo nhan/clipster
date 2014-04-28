@@ -342,6 +342,25 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 
 #pragma mark - UIView
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    UIView *movieView = self.playerController.view;
+    // play/pause button
+//    self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(10,movieView.frame.size.height-20,40,40)];
+
+    self.clipButton.frame = CGRectMake(self.view.frame.size.width-70,movieView.frame.size.height-20,59,40);
+    self.videoControlView.frame = CGRectMake(0, 0, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
+    self.scrubView.frame = CGRectMake(0, 0, self.videoControlView.frame.size.width, self.videoControlView.frame.size.height);
+    
+    if (self.playerController.isReady) {
+        NSTimeInterval time = (NSTimeInterval) self.playerController.currentTimeInSeconds;
+        [self setCurrentPlaybackPositionWithTime:time];
+        [self updateCurrentPlaybackLineViewWithPosition:self.currentPlaybackPosition];
+    } else {
+        [self updateCurrentPlaybackLineViewWithPosition:0];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
