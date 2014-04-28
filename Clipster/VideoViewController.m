@@ -123,9 +123,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     tapVideoGesture.delegate = self;
     [movieView addGestureRecognizer:tapVideoGesture];
     
-    self.videoControlView = [[UIView alloc] initWithFrame:CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight)];
-    self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
-    
     // play/pause button
     self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(10,movieView.frame.size.height-10,50,50)];
     self.playButton.alpha = 0.8;
@@ -141,8 +138,13 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.clipButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.clipButton];
     
+    // TODO: this is just the scrub view now so this can go away
+    self.videoControlView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height)];
+    self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
+    [self.clippingPanel addSubview:self.videoControlView];
+    
     // scrubbing/vis region
-    self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight)];
+    self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(0, 0, self.videoControlView.frame.size.width, self.videoControlView.frame.size.height)];
     self.scrubView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.4];
     self.scrubView.color = [ClipsterColors green];
     // Initialize popularity histogram
@@ -161,9 +163,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // Setting the current playback position will set playback time and progress
     self.currentPlaybackPosition = 0;
     [self updateCurrentPlaybackLineViewWithPosition:self.currentPlaybackPosition];
-
-    [movieView addSubview:self.videoControlView];
-    [movieView bringSubviewToFront:self.videoControlView];
 }
 
 - (void)addAllClipsToHistogram
@@ -186,7 +185,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     for (int i=startBin; i<endBin; i++) {
         self.popularityHistogram[i] = @([self.popularityHistogram[i] floatValue] + 0.2);
     }
-    [self.videoControlView setNeedsDisplay];
+    [self.scrubView setNeedsDisplay];
 }
 
 - (NSArray *)timeBinsForClip:(Clip *)clip
@@ -225,15 +224,13 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 {
     _isVideoControlMinimized = isVideoControlMinimized;
     
-    // hide the play button
-    UIView *movieView = self.playerController.view;
-    self.playButton.hidden = isVideoControlMinimized;
-    self.videoControlView.frame = CGRectMake(movieView.frame.origin.x, movieView.frame.size.height - self.videoControlHeight, movieView.frame.size.width, self.videoControlHeight);
-    self.scrubView.frame = CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight);
+//    self.videoControlView.frame = CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight);
+//    self.scrubView.frame = CGRectMake(0, 0, movieView.frame.size.width, self.videoControlHeight);
     
+    // hide the play button
+    self.playButton.hidden = isVideoControlMinimized;
     // show/hide the back button
     self.backButton.hidden = isVideoControlMinimized;
-    
     // set past frame resizes automatically
     self.currentPlaybackPosition = self.currentPlaybackPosition;
 }
