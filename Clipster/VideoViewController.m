@@ -525,6 +525,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [rightUtilityButtons sw_addUtilityButtonWithColor: [ClipsterColors red]
                                                 title:@"Delete"];
     cell.rightUtilityButtons = rightUtilityButtons;
+    cell.delegate = self;
 
     return cell;
 }
@@ -543,6 +544,26 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [SmallClipCell heightForClip:[self.clips objectAtIndex:indexPath.row] cell:self.prototype];
+}
+
+#pragma mark - SWTableViewCellDelegate
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+        {
+            // Delete button was pressed
+            NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
+            Clip *clip = self.clips[cellIndexPath.row];
+            [clip deleteInBackground];
+            [self.clips removeObjectAtIndex:cellIndexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 # pragma mark - Clip Button
