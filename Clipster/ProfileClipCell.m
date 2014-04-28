@@ -52,7 +52,7 @@
 - (void)refreshUI
 {
     self.clipTextLabel.text = self.clip.text;
-    self.timeAgoLabel.text = @"3 seconds ago";
+    self.timeAgoLabel.text = self.clip.timeAgoExtended;
     
     self.thumbnail.file = self.clip.thumbnail;
     [self.thumbnail loadInBackground];

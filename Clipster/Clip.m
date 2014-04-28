@@ -58,6 +58,20 @@
     }
 }
 
+- (NSString *)timeAgoExtended
+{
+    int secondsAgo = (int) [[NSDate date] timeIntervalSinceDate:self.createdAt];
+    if (secondsAgo < 60){ //seconds
+        return [NSString stringWithFormat:@"%d seconds ago", secondsAgo];
+    } else if (secondsAgo < (60*60)){ //minutes
+        return [NSString stringWithFormat:@"%d minutes ago", secondsAgo/60];
+    } else if(secondsAgo < (60*60*24)) { // hours
+        return [NSString stringWithFormat:@"%d hours ago", secondsAgo/(60*60)];
+    } else { // days
+        return [NSString stringWithFormat:@"%d days ago", secondsAgo/(60*60*24)];
+    }
+}
+
 - (void)setText:(NSString *)text
 {
     self.canonicalText = [text lowercaseString];

@@ -13,6 +13,7 @@
 + (NSString *)parseClassName;
 - (NSString *)formattedTimestamp;
 - (NSString *)timeAgo;
+- (NSString *)timeAgoExtended;
 - (NSString *)duration;
 
 @property (retain) User *user;
