@@ -76,6 +76,7 @@ typedef void (^TimeObserverBlock)(float);
 
     self.loadingOverlay.alpha = 0.4f;
 
+    self.currentTimeLabel.hidden = YES;
     self.spinner.hidesWhenStopped = YES;
     [self.view addSubview:self.spinner];
     [self.view bringSubviewToFront:self.spinner];

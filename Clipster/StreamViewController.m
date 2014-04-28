@@ -128,6 +128,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VideoViewController *clipDetailsVC = [[VideoViewController alloc] initWithClip:self.clips[indexPath.row]];
+    if (self.currentPlayingCell) {
+        [self.currentPlayingCell pauseClip];
+    }
     [self.navigationController pushViewController:clipDetailsVC animated:YES];
 }
 
