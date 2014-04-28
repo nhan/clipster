@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -44,12 +44,12 @@
                                 <constraint firstAttribute="height" constant="50" id="zuu-Lp-v37"/>
                             </constraints>
                         </view>
-                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="drag_red.png" translatesAutoresizingMaskIntoConstraints="NO" id="fEx-QB-dQL">
-                            <rect key="frame" x="240" y="190" width="30" height="30"/>
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="right_clip_handle.png" translatesAutoresizingMaskIntoConstraints="NO" id="fEx-QB-dQL">
+                            <rect key="frame" x="245" y="178" width="20" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="drag_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="xL0-fe-V85">
-                            <rect key="frame" x="50" y="190" width="30" height="30"/>
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="left_clip_handle.png" translatesAutoresizingMaskIntoConstraints="NO" id="xL0-fe-V85">
+                            <rect key="frame" x="55" y="178" width="20" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sqa-ew-XFY">
@@ -104,7 +104,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="drag_green.png" width="60" height="60"/>
-        <image name="drag_red.png" width="60" height="60"/>
+        <image name="left_clip_handle.png" width="20" height="54"/>
+        <image name="right_clip_handle.png" width="20" height="54"/>
     </resources>
 </document>
