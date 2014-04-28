@@ -29,7 +29,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some text about this clip" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="275" translatesAutoresizingMaskIntoConstraints="NO" id="iW2-YU-1cv">
-                                <rect key="frame" x="15" y="209" width="275" height="22"/>
+                                <rect key="frame" x="15" y="211" width="275" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="275" id="9KN-zO-xxm"/>
@@ -46,12 +46,12 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSF-ki-mh7" userLabel="Progress View">
-                                <rect key="frame" x="0.0" y="175" width="300" height="5"/>
+                                <rect key="frame" x="0.0" y="177" width="300" height="3"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HKN-T0-deG">
-                                <rect key="frame" x="229" y="146" width="56" height="56"/>
+                                <rect key="frame" x="229" y="148" width="56" height="56"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tim.png" translatesAutoresizingMaskIntoConstraints="NO" id="1Bj-sr-Lnp" customClass="PFImageView">
@@ -138,11 +138,11 @@
                             <constraint firstAttribute="trailing" secondItem="HKN-T0-deG" secondAttribute="trailing" constant="15" id="EdH-Ve-wtf"/>
                             <constraint firstItem="OSF-ki-mh7" firstAttribute="leading" secondItem="Ts5-ml-AYO" secondAttribute="leading" id="J73-X3-fgC"/>
                             <constraint firstItem="80D-as-GtE" firstAttribute="top" secondItem="5Mr-a6-0si" secondAttribute="bottom" constant="15" id="Jgv-Wl-xXY"/>
-                            <constraint firstItem="HKN-T0-deG" firstAttribute="top" secondItem="zZe-Vp-Bmr" secondAttribute="top" constant="146" id="K67-Rm-Phw"/>
+                            <constraint firstItem="HKN-T0-deG" firstAttribute="top" secondItem="zZe-Vp-Bmr" secondAttribute="top" constant="148" id="K67-Rm-Phw"/>
                             <constraint firstItem="Dh3-qC-ma2" firstAttribute="leading" secondItem="zZe-Vp-Bmr" secondAttribute="leading" constant="15" id="LOS-jO-g6R"/>
                             <constraint firstItem="OSF-ki-mh7" firstAttribute="bottom" secondItem="Ts5-ml-AYO" secondAttribute="bottom" id="MOT-sd-rKO"/>
                             <constraint firstItem="iW2-YU-1cv" firstAttribute="top" secondItem="HKN-T0-deG" secondAttribute="bottom" constant="7" id="Mu4-Ic-Knj"/>
-                            <constraint firstItem="OSF-ki-mh7" firstAttribute="top" secondItem="zZe-Vp-Bmr" secondAttribute="top" constant="175" id="OjR-Zz-B67"/>
+                            <constraint firstItem="OSF-ki-mh7" firstAttribute="top" secondItem="zZe-Vp-Bmr" secondAttribute="top" constant="177" id="OjR-Zz-B67"/>
                             <constraint firstItem="OSF-ki-mh7" firstAttribute="trailing" secondItem="Ts5-ml-AYO" secondAttribute="trailing" id="Unb-zH-SS9"/>
                             <constraint firstAttribute="bottom" secondItem="80D-as-GtE" secondAttribute="bottom" constant="1" id="W7o-20-YRE"/>
                             <constraint firstItem="Ts5-ml-AYO" firstAttribute="top" secondItem="zZe-Vp-Bmr" secondAttribute="top" id="bFx-jp-rSe"/>
