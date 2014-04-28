@@ -175,12 +175,15 @@ static CGFloat lineHeight = 24.f;
 
 - (void)addPlayer
 {
+    // hack to show loading state while we are parsing youtube url
+    [self.videoPlayer showLoadingState];
     [self.videoPlayer.view setFrame:self.clipThumnailImageView.frame];
     [self.clipThumnailImageView addSubview:self.videoPlayer.view];
 }
 
 - (void)readyVideoAndPlay
 {
+    [self addPlayer];
     [YouTubeParser videoURLWithYoutubeID:self.clip.videoId done:^(NSURL *videoURL, NSError *error) {
         if (!error) {
             __weak typeof(self) weakSelf = self;
@@ -189,7 +192,6 @@ static CGFloat lineHeight = 24.f;
                 weakSelf.videoPlayer.startTime = weakSelf.clip.timeStart / 1000.0f;
                 self.isVideoReady = YES;
                 [self playIfReady];
-                [weakSelf addPlayer];
             }];
         }
     }];

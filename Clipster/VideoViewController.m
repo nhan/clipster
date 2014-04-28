@@ -15,9 +15,12 @@
 #import "YouTubeVideo.h"
 #import "VideoControlView.h"
 #import "YouTubeParser.h"
+#import "ClipsterColors.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
+
 @interface VideoViewController ()
+@property (weak, nonatomic) IBOutlet PFImageView *thumbnailImage;
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *clippingPanel;
@@ -133,7 +136,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // scrubbing/vis region
     self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(PLAY_BUTTON_WIDTH, 0, movieView.frame.size.width - PLAY_BUTTON_WIDTH, self.videoControlHeight)];
     self.scrubView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.4];
-    self.scrubView.color = [UIColor colorWithRed:61/255. green:190/255. blue:206/255. alpha:1.0];
+    self.scrubView.color = [ClipsterColors green];
     // Initialize popularity histogram
     self.popularityHistogram = [[NSMutableArray alloc] init];
     for (int i=0; i<NUMBER_HISTOGRAM_BINS; i++) {
@@ -359,8 +362,13 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.playerController.view addSubview:self.backButton];
     [self.playerController.view bringSubviewToFront:self.backButton];
     
-    [self pendingNetworkRequest];
+    if (self.activeClip && self.activeClip.thumbnail) {
+        self.thumbnailImage.file = self.activeClip.thumbnail;
+        [self.thumbnailImage loadInBackground];
+    }
     
+    
+    [self pendingNetworkRequest];
     
     [YouTubeParser videoURLWithYoutubeID:self.videoId done:^(NSURL *videoURL, NSError *error) {
         if (error) {
@@ -505,12 +513,23 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SmallClipCell *cell = (SmallClipCell *)[self.tableView dequeueReusableCellWithIdentifier:@"ClipCell" forIndexPath:indexPath];
+    
     Clip *clip = (Clip *)self.clips[indexPath.row];
     cell.clip = clip;
     if (self.playerController.duration > 0) {
         cell.timelineRect = [self rectForClip:clip cell:cell];
     }
-    cell.delegate = self;
+    cell.clipCellDelegate = self;
+    
+    // be able to delete my clips
+    if ([clip.user.objectId isEqualToString:[User currentUser].objectId]) {
+        NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+        [rightUtilityButtons sw_addUtilityButtonWithColor: [ClipsterColors red]
+                                                    title:@"Delete"];
+        cell.rightUtilityButtons = rightUtilityButtons;
+        cell.delegate = self;
+    }
+
     return cell;
 }
 
@@ -530,6 +549,26 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     return [SmallClipCell heightForClip:[self.clips objectAtIndex:indexPath.row] cell:self.prototype];
 }
 
+#pragma mark - SWTableViewCellDelegate
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+        {
+            // Delete button was pressed
+            NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
+            Clip *clip = self.clips[cellIndexPath.row];
+            [clip deleteInBackground];
+            [self.clips removeObjectAtIndex:cellIndexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 # pragma mark - Clip Button
     
 - (IBAction)clipAction:(id)sender
@@ -546,7 +585,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:clip playerController:self.playerController];
     clippingVC.delegate = self;
     [self.navigationController pushViewController:clippingVC animated:YES];
-
 }
 
 - (void)setupClippingPanel{

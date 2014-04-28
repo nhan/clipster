@@ -14,8 +14,9 @@ typedef void (^TimeObserverBlock)(float);
 
 
 @interface VideoPlayerViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *currentTimeLabel;
 @property (weak, nonatomic) IBOutlet VideoPlayerView *playerView;
+@property (weak, nonatomic) IBOutlet UILabel *currentTimeLabel;
+@property (weak, nonatomic) IBOutlet UIView *loadingOverlay;
 
 @property (strong, nonatomic) AVPlayer *player;
 @property (strong, nonatomic) AVPlayerItem *playerItem;
@@ -32,6 +33,8 @@ typedef void (^TimeObserverBlock)(float);
 @property (nonatomic, assign) BOOL shouldPlayWhenReady;
 
 @property (nonatomic, strong) NSOperation *seekDoneOperation;
+
+@property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @end
 
 @implementation VideoPlayerViewController
@@ -55,6 +58,8 @@ typedef void (^TimeObserverBlock)(float);
         _endTimeObserverHandle = nil;
         _isReady = NO;
         _shouldPlayWhenReady = NO;
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+
     }
     return self;
 }
@@ -68,7 +73,13 @@ typedef void (^TimeObserverBlock)(float);
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // TODO: (nhan) this might have to moved somewhere after loadVideoWithURLString
+
+    self.loadingOverlay.alpha = 0.4f;
+
+    self.spinner.hidesWhenStopped = YES;
+    [self.view addSubview:self.spinner];
+    [self.view bringSubviewToFront:self.spinner];
+    
     [self.playerView setPlayer:self.player];
 }
 
@@ -84,14 +95,15 @@ typedef void (^TimeObserverBlock)(float);
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 if (weakSelf.readyBlock) {
                     weakSelf.readyBlock();
+                    weakSelf.readyBlock = nil;
                 }
 
                 NSOperation *playOperation = [NSBlockOperation blockOperationWithBlock:^{
                     if (weakSelf.shouldPlayWhenReady) {
                         [weakSelf.player play];
+                        [weakSelf hideLoadingState];
                         weakSelf.shouldPlayWhenReady = NO;
                     }
-                    weakSelf.readyBlock = nil;
                 }];
                 
                 if (self.seekDoneOperation) {
@@ -105,8 +117,24 @@ typedef void (^TimeObserverBlock)(float);
     }
 }
 
+- (void)showLoadingState
+{
+    self.spinner.center = self.view.center;
+    self.loadingOverlay.hidden = NO;
+    self.playerView.hidden = YES;
+    [self.spinner startAnimating];
+}
+
+- (void)hideLoadingState
+{
+    [self.spinner stopAnimating];
+    self.loadingOverlay.hidden = YES;
+    self.playerView.hidden = NO;
+}
+
 - (void)loadVideoWithURL:(NSURL *)url ready:(void (^)(void))readyBlock
 {
+    [self showLoadingState];
     // remove observer on old playerItem before creating a new one in case the old one has not finished loading
     [self removeStatusObserverForPlayerItem:self.playerItem];
     
@@ -180,6 +208,7 @@ typedef void (^TimeObserverBlock)(float);
 {
     if (self.isReady) {
         [self.player play];
+        [self hideLoadingState];
     } else {
         self.shouldPlayWhenReady = YES;
     }

@@ -121,7 +121,7 @@
 }
 
 - (IBAction)onUsernameClick:(id)sender {
-    [self.delegate didClickUsername:self.clip.username];
+    [self.clipCellDelegate didClickUsername:self.clip.username];
 }
 
 @end

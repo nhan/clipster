@@ -7,7 +7,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VideoPlayerViewController">
             <connections>
                 <outlet property="currentTimeLabel" destination="Nwn-h4-0qg" id="FGj-69-0Bx"/>
-                <outlet property="playerView" destination="WVr-Gc-miW" id="kuo-V3-VvX"/>
+                <outlet property="loadingOverlay" destination="fV0-9i-Ndd" id="RTY-Gu-5ZQ"/>
+                <outlet property="playerView" destination="EIO-m9-ITj" id="uHp-hb-HVQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -16,27 +17,34 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WVr-Gc-miW" customClass="VideoPlayerView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EIO-m9-ITj" customClass="VideoPlayerView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nwn-h4-0qg">
-                            <rect key="frame" x="20" y="65" width="254" height="112"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fV0-9i-Ndd" userLabel="Loading View">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nwn-h4-0qg">
+                    <rect key="frame" x="33" y="20" width="254" height="112"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="WVr-Gc-miW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="C8O-h5-sRq"/>
-                <constraint firstItem="WVr-Gc-miW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PEb-Ig-9R9"/>
-                <constraint firstAttribute="bottom" secondItem="WVr-Gc-miW" secondAttribute="bottom" id="dsK-Cq-Ho2"/>
-                <constraint firstAttribute="trailing" secondItem="WVr-Gc-miW" secondAttribute="trailing" id="r19-rK-TIm"/>
+                <constraint firstAttribute="bottom" secondItem="fV0-9i-Ndd" secondAttribute="bottom" id="GOr-Vf-LpG"/>
+                <constraint firstItem="EIO-m9-ITj" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="H8A-JW-kyM"/>
+                <constraint firstItem="fV0-9i-Ndd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="KKv-2l-524"/>
+                <constraint firstAttribute="trailing" secondItem="EIO-m9-ITj" secondAttribute="trailing" id="LAn-VC-2xf"/>
+                <constraint firstItem="fV0-9i-Ndd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hSO-Sy-TSw"/>
+                <constraint firstItem="EIO-m9-ITj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="k5G-L1-LR1"/>
+                <constraint firstAttribute="trailing" secondItem="fV0-9i-Ndd" secondAttribute="trailing" id="npC-HU-meM"/>
+                <constraint firstAttribute="bottom" secondItem="EIO-m9-ITj" secondAttribute="bottom" id="tzl-o3-Vqe"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
