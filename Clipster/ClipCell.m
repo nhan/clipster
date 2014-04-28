@@ -34,7 +34,7 @@
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
 {
     CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
-    CGContextFillRect(ctx, CGRectMake(0, self.progressBarView.bounds.size.height - 4, self.progressBarView.bounds.size.width, 4));
+    CGContextFillRect(ctx, CGRectMake(0, self.progressBarView.bounds.size.height - 3, self.progressBarView.bounds.size.width, 3));
     CGContextFillEllipseInRect(ctx, self.progressBarView.profileImageRect);
 }
 @end
