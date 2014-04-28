@@ -17,10 +17,12 @@
 #import "ProfileViewController.h"
 #import "ClippingViewController.h"
 #import "VideoPlayerViewController.h"
+#import "LoginViewController.h"
+#import "SignupViewController.h"
 #import "LoginManager.h"
 
 @interface AppDelegate ()
-@property (nonatomic, strong) PFLogInViewController *loginViewController;
+@property (nonatomic, strong) LoginViewController *loginViewController;
 @property (nonatomic, strong) UITableViewCell *logoutCell;
 @end
 
@@ -67,16 +69,16 @@
     } else {
         LoginManager *loginManager = [LoginManager instance];
         
-        PFLogInViewController *logInViewController = self.loginViewController = [[PFLogInViewController alloc] init];
-        [logInViewController setDelegate:loginManager]; // Set ourselves as the delegate
+        LoginViewController *loginViewController = self.loginViewController = [[LoginViewController alloc] init];
+        [loginViewController setDelegate:loginManager]; // Set ourselves as the delegate
         
         // Create the sign up view controller
-        PFSignUpViewController *signUpViewController = [[PFSignUpViewController alloc] init];
+        SignupViewController *signUpViewController = [[SignupViewController alloc] init];
         [signUpViewController setDelegate:loginManager]; // Set ourselves as the delegate
         
         // Assign our sign up controller to be displayed from the login controller
-        [logInViewController setSignUpController:signUpViewController];
-        self.window.rootViewController = logInViewController;
+        [loginViewController setSignUpController:signUpViewController];
+        self.window.rootViewController = loginViewController;
     }
     
 }

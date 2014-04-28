@@ -29,9 +29,11 @@
 		7E2A75D7190DFEEB000E3834 /* details_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E2A75D6190DFEEB000E3834 /* details_btn@2x.png */; };
 		7E2A75E0190F0D5D000E3834 /* right_clip_handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E2A75DE190F0D5D000E3834 /* right_clip_handle@2x.png */; };
 		7E2A75E1190F0D5D000E3834 /* left_clip_handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E2A75DF190F0D5D000E3834 /* left_clip_handle@2x.png */; };
+		7E2A75E4190F13BC000E3834 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2A75E3190F13BC000E3834 /* LoginViewController.m */; };
+		7E2A75E9190F18FC000E3834 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2A75E8190F18FC000E3834 /* SignupViewController.m */; };
 		7E3A27D21909DF0E00D96503 /* profile-placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27D11909DF0E00D96503 /* profile-placeholder.jpg */; };
 		7E3A27D41909DFA800D96503 /* profile-thumbnail-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27D31909DFA800D96503 /* profile-thumbnail-placeholder.png */; };
-		7E3A27D61909E27A00D96503 /* carbon_fibre.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27D51909E27A00D96503 /* carbon_fibre.png */; };
+		7E3A27D61909E27A00D96503 /* carbon_fibre@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27D51909E27A00D96503 /* carbon_fibre@2x.png */; };
 		7E3A27E21909FA9300D96503 /* clipster@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27E11909FA9300D96503 /* clipster@2x.png */; };
 		7E3A27E61909FB8F00D96503 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3A27E41909FB8F00D96503 /* UserCell.m */; };
 		7E3A27E71909FB8F00D96503 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E3A27E51909FB8F00D96503 /* UserCell.xib */; };
@@ -128,9 +130,13 @@
 		7E2A75D6190DFEEB000E3834 /* details_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "details_btn@2x.png"; sourceTree = "<group>"; };
 		7E2A75DE190F0D5D000E3834 /* right_clip_handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right_clip_handle@2x.png"; sourceTree = "<group>"; };
 		7E2A75DF190F0D5D000E3834 /* left_clip_handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left_clip_handle@2x.png"; sourceTree = "<group>"; };
+		7E2A75E2190F13BC000E3834 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		7E2A75E3190F13BC000E3834 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		7E2A75E7190F18FC000E3834 /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
+		7E2A75E8190F18FC000E3834 /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
 		7E3A27D11909DF0E00D96503 /* profile-placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "profile-placeholder.jpg"; sourceTree = "<group>"; };
 		7E3A27D31909DFA800D96503 /* profile-thumbnail-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-thumbnail-placeholder.png"; sourceTree = "<group>"; };
-		7E3A27D51909E27A00D96503 /* carbon_fibre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = carbon_fibre.png; sourceTree = "<group>"; };
+		7E3A27D51909E27A00D96503 /* carbon_fibre@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "carbon_fibre@2x.png"; sourceTree = "<group>"; };
 		7E3A27E11909FA9300D96503 /* clipster@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clipster@2x.png"; sourceTree = "<group>"; };
 		7E3A27E31909FB8F00D96503 /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		7E3A27E41909FB8F00D96503 /* UserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
@@ -356,7 +362,7 @@
 				7E2A75C5190DBC86000E3834 /* pause_btn@2x.png */,
 				7E2A75C6190DBC86000E3834 /* play_btn@2x.png */,
 				7E3A27E11909FA9300D96503 /* clipster@2x.png */,
-				7E3A27D51909E27A00D96503 /* carbon_fibre.png */,
+				7E3A27D51909E27A00D96503 /* carbon_fibre@2x.png */,
 				7E3A27D31909DFA800D96503 /* profile-thumbnail-placeholder.png */,
 				7E3A27D11909DF0E00D96503 /* profile-placeholder.jpg */,
 				7E6A9178190877E200865E7E /* liked.png */,
@@ -415,6 +421,10 @@
 				6B2C4A7218FB4CDC00D9A011 /* HamburgerMenuController.h */,
 				6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */,
 				6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */,
+				7E2A75E2190F13BC000E3834 /* LoginViewController.h */,
+				7E2A75E3190F13BC000E3834 /* LoginViewController.m */,
+				7E2A75E7190F18FC000E3834 /* SignupViewController.h */,
+				7E2A75E8190F18FC000E3834 /* SignupViewController.m */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -569,7 +579,7 @@
 				7E2A75CC190DBCAC000E3834 /* play.png in Resources */,
 				7E970D5918F1F06400517A1F /* StreamViewController.xib in Resources */,
 				7E2A75C7190DBC86000E3834 /* pause_btn@2x.png in Resources */,
-				7E3A27D61909E27A00D96503 /* carbon_fibre.png in Resources */,
+				7E3A27D61909E27A00D96503 /* carbon_fibre@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +636,7 @@
 				7E6A917E1909C93600865E7E /* UIImage+ImageEffects.m in Sources */,
 				7E3A27EB190B115F00D96503 /* YouTubeCell.m in Sources */,
 				BBAAD84C18F364490079995E /* Clip.m in Sources */,
+				7E2A75E4190F13BC000E3834 /* LoginViewController.m in Sources */,
 				7EF9A4BF18F884580058FE1C /* VideoViewController.m in Sources */,
 				6B9B8DE2190B2A92007F420A /* YouTubeParser.m in Sources */,
 				6B2C4A6B18FB111E00D9A011 /* SearchResultsViewController.m in Sources */,
@@ -646,6 +657,7 @@
 				BB7DE1B319073D9C00CBA9C0 /* VideoControlView.m in Sources */,
 				BB2B750F190DD531003099F3 /* ClipsterColors.m in Sources */,
 				7E970D3018F1E5DF00517A1F /* AppDelegate.m in Sources */,
+				7E2A75E9190F18FC000E3834 /* SignupViewController.m in Sources */,
 				7E970D2C18F1E5DF00517A1F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
