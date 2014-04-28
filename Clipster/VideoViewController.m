@@ -159,8 +159,11 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.videoControlView addSubview:self.scrubView];
     
     // Setting the current playback position will set playback time and progress
-    self.currentPlaybackPosition = 0;
-    [self updateCurrentPlaybackLineViewWithPosition:self.currentPlaybackPosition];
+    self.currentPlaybackLineView.hidden = NO;
+    if (self.activeClip) {
+        [self setCurrentPlaybackPositionWithTime:self.activeClip.timeStart];
+        [self updateCurrentPlaybackLineViewWithPosition:self.currentPlaybackPosition];
+    }
 }
 
 - (void)addAllClipsToHistogram
@@ -346,6 +349,9 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
+    
+    // hide line view until we have the video data
+    self.currentPlaybackLineView.hidden = YES;
 
     [self setupClippingPanel];
     [self addPlayerViewToContainer];
@@ -404,8 +410,18 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
                                             withAnimation:UIStatusBarAnimationFade];
 }
 
+- (void)setCurrentPlaybackPositionWithTime:(NSTimeInterval)time
+{
+    if (self.playerController.duration) {
+        // update the line immediately or we get some lag
+        CGFloat percentPlayed = time / self.playerController.duration;
+        self.currentPlaybackPosition = percentPlayed * self.scrubView.bounds.size.width;
+    }
+}
+
 - (void)updatePlayerToActiveClip
 {
+    [self setCurrentPlaybackPositionWithTime:self.activeClip.timeStart];
     [self.playerController seekToTime:self.activeClip.timeStart/1000.0f done:nil];
 }
 
@@ -436,7 +452,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
             
             [self.tableView reloadData];
             
-            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
             [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:YES];
             
         } else {
