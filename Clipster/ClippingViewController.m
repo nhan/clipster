@@ -13,6 +13,7 @@
 @interface ClippingViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *startSlider;
 @property (weak, nonatomic) IBOutlet UIImageView *endSlider;
+@property (weak, nonatomic) IBOutlet UIImageView *sliderWindow;
 @property (nonatomic, assign) CGPoint startPosition;
 @property (nonatomic, assign) CGPoint   endPosition;
 @property (weak, nonatomic) IBOutlet UIView *rulerContainer;
@@ -178,6 +179,7 @@ static CGFloat   endSliderHomePos = 240;
             xPos = self.endSlider.frame.origin.x - self.startSlider.frame.size.width;
         }
         self.startSlider.frame = CGRectMake( xPos, self.startSlider.frame.origin.y, self.startSlider.frame.size.width, self.startSlider.frame.size.height);
+        [self resizeWindow];
         
         //update the Labels - DELETE
         CGFloat originalTimeDiff = self.endTime - self.startTime;
@@ -202,6 +204,7 @@ static CGFloat   endSliderHomePos = 240;
         
         [UIView animateWithDuration:0.5 animations:^{
             self.startSlider.frame = CGRectMake( startSliderHomePos, self.startSlider.frame.origin.y, self.startSlider.frame.size.width, self.startSlider.frame.size.height);
+            [self resizeWindow];
             rulerView.transform = transform;
         } completion:^(BOOL finished) {
             [rulerView removeFromSuperview];
@@ -225,6 +228,7 @@ static CGFloat   endSliderHomePos = 240;
             xPos = (self.startSlider.frame.origin.x + self.startSlider.frame.size.width);
         }
         self.endSlider.frame = CGRectMake( xPos, self.endSlider.frame.origin.y, self.endSlider.frame.size.width, self.endSlider.frame.size.height);
+        [self resizeWindow];
         
         //update ending time
         CGFloat originalTimeDiff = self.endTime - self.startTime;
@@ -247,6 +251,7 @@ static CGFloat   endSliderHomePos = 240;
         
         [UIView animateWithDuration:0.5 animations:^{
             self.endSlider.frame = CGRectMake( endSliderHomePos, self.endSlider.frame.origin.y, self.endSlider.frame.size.width, self.endSlider.frame.size.height);
+            [self resizeWindow];
             rulerView.transform = transform;
         } completion:^(BOOL finished) {
             [rulerView removeFromSuperview];
@@ -254,9 +259,14 @@ static CGFloat   endSliderHomePos = 240;
             [self.rulerContainer addSubview:newRulerView];
             [self updateRulerData:newRulerView];
         }];
-        
-        
     }
+}
+
+- (void)resizeWindow
+{
+    CGFloat startPos = self.startSlider.frame.origin.x + self.startSlider.frame.size.width;
+    CGFloat endPos = self.endSlider.frame.origin.x;
+    self.sliderWindow.frame = CGRectMake(startPos, self.sliderWindow.frame.origin.y, endPos-startPos, self.sliderWindow.frame.size.height);
 }
 
 - (void)didReceiveMemoryWarning

@@ -11,6 +11,7 @@
                 <outlet property="endTimeLabel" destination="sqa-ew-XFY" id="yeW-SX-WVM"/>
                 <outlet property="rulerContainer" destination="gm3-cZ-3lL" id="1Nt-l0-LaX"/>
                 <outlet property="scrollView" destination="fhe-dt-0Kj" id="ori-yP-id3"/>
+                <outlet property="sliderWindow" destination="Mte-gp-DoR" id="hCC-KV-Bpc"/>
                 <outlet property="startSlider" destination="xL0-fe-V85" id="JiP-Fn-RO3"/>
                 <outlet property="startTimeLabel" destination="n9O-tb-YQF" id="rRn-qw-NqV"/>
                 <outlet property="videoPlayerContainer" destination="umy-2L-R6M" id="FE2-Ju-oo5"/>
@@ -51,6 +52,10 @@
                         <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="left_clip_handle.png" translatesAutoresizingMaskIntoConstraints="NO" id="xL0-fe-V85">
                             <rect key="frame" x="55" y="178" width="20" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="center_clip_window.png" translatesAutoresizingMaskIntoConstraints="NO" id="Mte-gp-DoR">
+                            <rect key="frame" x="75" y="178" width="170" height="54"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sqa-ew-XFY">
                             <rect key="frame" x="210" y="238" width="105" height="21"/>
@@ -104,6 +109,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="center_clip_window.png" width="10" height="108"/>
         <image name="left_clip_handle.png" width="20" height="54"/>
         <image name="right_clip_handle.png" width="20" height="54"/>
     </resources>
