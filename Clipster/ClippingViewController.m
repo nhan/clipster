@@ -17,6 +17,7 @@
 @property (nonatomic, assign) CGPoint startPosition;
 @property (nonatomic, assign) CGPoint   endPosition;
 @property (weak, nonatomic) IBOutlet UIView *rulerContainer;
+@property (strong, nonatomic) RulerView *rulerView;
 @property (nonatomic, assign) CGFloat startTime;
 @property (nonatomic, assign) CGFloat   endTime;
 @property (nonatomic, assign) CGFloat startTimeIntermediate;
@@ -34,7 +35,6 @@
 @property (nonatomic, strong) id timeObserverHandle;
 @property (nonatomic, strong) UIView *playbackProgressView;
 @property (nonatomic, assign) CGFloat currentPlaybackPosition;
-@property (nonatomic, assign) NSTimeInterval currentPlaybackTime;
 
 @end
 
@@ -85,11 +85,11 @@ static CGFloat   endSliderHomePos = 240;
     [self.endSlider addGestureRecognizer:endPanGestureRecognizer];
     
     // Draw the ruler
-    RulerView *ruler = [[RulerView alloc] initWithFrame:CGRectMake(0, 0, self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
-    [self.rulerContainer addSubview:ruler];
+    self.rulerView = [[RulerView alloc] initWithFrame:CGRectMake(0, 0, self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
+    [self.rulerContainer addSubview:self.rulerView];
     self.startTime = self.clip.timeStart / 1000.0f;
     self.endTime = self.clip.timeEnd / 1000.0f;
-    [self updateRulerData:ruler];
+    [self updateRulerData:self.rulerView];
     
     // Draw the playback progress
     self.playbackProgressView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, self.rulerContainer.frame.size.height)];
@@ -174,7 +174,8 @@ static CGFloat   endSliderHomePos = 240;
     self.playerController.endTime = endTime;
 }
 
-- (void)updateRulerData:(RulerView *)ruler{
+- (void)updateRulerData:(RulerView *)ruler
+{
     ruler.startPos = startSliderHomePos;
     ruler.startTime = self.startTime;
     ruler.endPos = endSliderHomePos;
@@ -183,12 +184,11 @@ static CGFloat   endSliderHomePos = 240;
     [ruler setNeedsDisplay];
 }
 
-- (void)onStartSliderDrag:(UIPanGestureRecognizer *)panGestureRecognizer{
+- (void)onStartSliderDrag:(UIPanGestureRecognizer *)panGestureRecognizer
+{
     CGPoint point    = [panGestureRecognizer locationInView:self.view];
     
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        [self.playerController pause];
-        [self stopMonitorPlaybackTimer];
         self.startPosition = CGPointMake(point.x - self.startSlider.frame.origin.x, point.y - self.startSlider.frame.origin.y);
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         float xPos = (point.x - self.startPosition.x);
@@ -219,18 +219,16 @@ static CGFloat   endSliderHomePos = 240;
         CGAffineTransform translate = CGAffineTransformMakeTranslation(self.translation,0);
         CGAffineTransform scale = CGAffineTransformMakeScale(originalTimeDiff/newTimeDiff, 1.0);
         CGAffineTransform transform =  CGAffineTransformConcat(scale, translate);
-        RulerView *rulerView = self.rulerContainer.subviews[0];
+        RulerView *rulerView = self.rulerView;
         
         [UIView animateWithDuration:0.5 animations:^{
             self.startSlider.frame = CGRectMake( startSliderHomePos, self.startSlider.frame.origin.y, self.startSlider.frame.size.width, self.startSlider.frame.size.height);
             rulerView.transform = transform;
         } completion:^(BOOL finished) {
             [rulerView removeFromSuperview];
-            RulerView *newRulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
-            [self.rulerContainer addSubview:newRulerView];
-            [self updateRulerData:newRulerView];
-            [self.playerController play];
-            [self startMonitorPlaybackTimer];
+            self.rulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
+            [self.rulerContainer addSubview:self.rulerView];
+            [self updateRulerData:self.rulerView];
         }];
     }
 }
@@ -238,8 +236,7 @@ static CGFloat   endSliderHomePos = 240;
 - (void)onEndSliderDrag:(UIPanGestureRecognizer *)panGestureRecognizer{
     CGPoint point    = [panGestureRecognizer locationInView:self.view];
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        [self.playerController pause];
-        [self stopMonitorPlaybackTimer];
+        self.playerController.isLooping = NO;
         self.endPosition = CGPointMake(point.x - self.endSlider.frame.origin.x, point.y - self.endSlider.frame.origin.y);
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         float xPos = (point.x - self.endPosition.x);
@@ -257,6 +254,7 @@ static CGFloat   endSliderHomePos = 240;
         
         self.endTimeIntermediate = self.startTime+newTimeDiff;
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        self.playerController.isLooping = YES;
         //update ending time
         CGFloat originalTimeDiff = self.endTime - self.startTime;
         CGFloat newTimeDiff = ((self.endSlider.frame.origin.x - startSliderHomePos)/(endSliderHomePos - startSliderHomePos))*originalTimeDiff;
@@ -268,18 +266,16 @@ static CGFloat   endSliderHomePos = 240;
         CGAffineTransform translate = CGAffineTransformMakeTranslation(self.translation,0);
         CGAffineTransform scale = CGAffineTransformMakeScale(originalTimeDiff/newTimeDiff, 1.0);
         CGAffineTransform transform =  CGAffineTransformConcat(scale, translate);
-        RulerView *rulerView = self.rulerContainer.subviews[0];
+        RulerView *rulerView = self.rulerView;
         
         [UIView animateWithDuration:0.5 animations:^{
             self.endSlider.frame = CGRectMake( endSliderHomePos, self.endSlider.frame.origin.y, self.endSlider.frame.size.width, self.endSlider.frame.size.height);
             rulerView.transform = transform;
         } completion:^(BOOL finished) {
             [rulerView removeFromSuperview];
-            RulerView *newRulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
-            [self.rulerContainer addSubview:newRulerView];
-            [self updateRulerData:newRulerView];
-            [self.playerController play];
-            [self startMonitorPlaybackTimer];
+            self.rulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
+            [self.rulerContainer addSubview:self.rulerView];
+            [self updateRulerData:self.rulerView];
         }];
     }
 }
@@ -302,14 +298,9 @@ static CGFloat   endSliderHomePos = 240;
 {
     CGFloat startPosition = self.startSlider.frame.origin.x + self.startSlider.frame.size.width;
     CGFloat endPosition = self.endSlider.frame.origin.x;
+
     // Get percent of loop played
     CGFloat percentPlayed = (currentPlaybackTime - self.startTime) / (self.endTime - self.startTime);
-    if (percentPlayed >1.1) {
-        // We've gone to the end of the loop seek to the beginning
-        [self.playerController seekToTime:(self.startTime) done:nil];
-        percentPlayed = 1;
-    }
-    NSLog(@"currenttime, percent -- %f, %f", currentPlaybackTime, percentPlayed);
     // Convert percent played to position between handles
     self.currentPlaybackPosition = (endPosition - startPosition) * percentPlayed + startPosition;
 }
