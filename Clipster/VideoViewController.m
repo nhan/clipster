@@ -32,7 +32,6 @@
 
 @property (nonatomic, strong) NSString *videoId;
 @property (nonatomic, strong) NSString *videoTitle;
-@property (nonatomic, assign) CGFloat clippingPanelPos;
 @property (nonatomic, assign) CGFloat tableViewScrollPos;
 
 @property (nonatomic, strong) VideoPlayerViewController *playerController;
@@ -402,7 +401,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // hide line view until we have the video data
     self.currentPlaybackLineView.hidden = YES;
 
-    [self setupClippingPanel];
     [self addPlayerViewToContainer];
     
     if (self.activeClip && self.activeClip.thumbnail) {
@@ -640,34 +638,35 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.navigationController pushViewController:clippingVC animated:YES];
 }
 
-- (void)setupClippingPanel
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    self.clippingPanelPos = self.clippingPanel.frame.origin.y;
-    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(scrollClippingPanel:)];
-    panGestureRecognizer.delegate = self;
-    [self.tableView addGestureRecognizer:panGestureRecognizer];
+    self.tableViewScrollPos = self.tableView.contentOffset.y;
 }
 
-- (void)scrollClippingPanel:(UIPanGestureRecognizer *)panGestureRecognizer
-{
-    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        self.clippingPanelPos = self.clippingPanel.frame.origin.y;
-        self.tableViewScrollPos = self.tableView.contentOffset.y;
-    }
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     static const CGFloat minPanelSize = 5;
-    CGFloat newPos = self.clippingPanelPos + (self.tableViewScrollPos - self.tableView.contentOffset.y);
 
-    if (newPos < (self.tableView.frame.origin.y-self.clippingPanel.frame.size.height) + minPanelSize) {
-        newPos = self.tableView.frame.origin.y-self.clippingPanel.frame.size.height + minPanelSize;
-    } else if (newPos > self.tableView.frame.origin.y){
-        // don't bring the size of the video control any bigger than the original
-        newPos = self.tableView.frame.origin.y;
+//    NSLog(@"isDragging: %d", self.tableView.isDragging);
+    
+    if (self.tableView.isDragging) {
+        CGFloat tableViewScrollDelta = self.tableViewScrollPos - self.tableView.contentOffset.y;
+        
+        CGFloat newOffset = self.videoControlVerticalOffsetConstraint.constant + tableViewScrollDelta;
+        //    NSLog(@"delta: %f", tableViewScrollDelta);
+        //    NSLog(@"old offset: %f", self.videoControlVerticalOffsetConstraint.constant);
+        NSLog(@"new offset: %f", newOffset);
+        
+        if (tableViewScrollDelta < 0) {
+            newOffset = MAX(newOffset, -40 + minPanelSize);
+        } else {
+            newOffset = MIN(newOffset, 0);
+        }
+
+        NSLog(@"new offset after: %f", newOffset);
+        
+        self.videoControlVerticalOffsetConstraint.constant = newOffset;
     }
-    self.clippingPanel.frame = CGRectMake(0, newPos, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
