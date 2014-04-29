@@ -7,12 +7,13 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VideoViewController">
             <connections>
                 <outlet property="clipButton" destination="3ka-IR-CRB" id="Rn1-hB-Joe"/>
-                <outlet property="clippingPanel" destination="BmA-Y0-cfA" id="4sl-Rk-ozg"/>
                 <outlet property="currentPlaybackLineView" destination="Mtd-pB-L99" id="DIn-TY-odc"/>
                 <outlet property="playButton" destination="RHB-Jh-rjp" id="c18-WW-Nbh"/>
                 <outlet property="tableView" destination="DhY-HW-wjC" id="XxN-ou-Xjq"/>
                 <outlet property="thumbnailImage" destination="VrE-Mk-Pih" id="Zh4-oP-1ap"/>
+                <outlet property="videoControlHeightConstraint" destination="Ddv-r7-nNW" id="blt-Df-htl"/>
                 <outlet property="videoControlVerticalOffsetConstraint" destination="ZbV-XF-Und" id="7Lq-YD-6hj"/>
+                <outlet property="videoControlView" destination="BmA-Y0-cfA" id="Mxh-UG-thX"/>
                 <outlet property="videoHeightConstraint" destination="1zY-93-V3r" id="JbR-VR-c04"/>
                 <outlet property="videoPlayerContainer" destination="gte-Wa-9Uv" id="7Cv-PT-4WM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -24,10 +25,15 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-HW-wjC">
-                    <rect key="frame" x="0.0" y="224" width="320" height="344"/>
+                    <rect key="frame" x="0.0" y="180" width="320" height="388"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <view key="tableHeaderView" contentMode="scaleToFill" id="pxK-Ub-R1S" userLabel="Placeholder offset for videocontrol">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mtd-pB-L99" userLabel="Progress Line">
                     <rect key="frame" x="199" y="180" width="1" height="388"/>
@@ -37,7 +43,7 @@
                         <constraint firstAttribute="width" constant="1" id="PPi-Af-WZA"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmA-Y0-cfA" userLabel="VideoControl">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmA-Y0-cfA" userLabel="VideoControl" customClass="VideoControlView">
                     <rect key="frame" x="0.0" y="180" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.94010416666666663" green="0.94010416666666663" blue="0.94010416666666663" alpha="1" colorSpace="calibratedRGB"/>
@@ -101,8 +107,8 @@
                 <constraint firstItem="DhY-HW-wjC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="V8b-rj-929"/>
                 <constraint firstItem="BmA-Y0-cfA" firstAttribute="top" secondItem="gte-Wa-9Uv" secondAttribute="bottom" id="ZbV-XF-Und"/>
                 <constraint firstAttribute="trailing" secondItem="gte-Wa-9Uv" secondAttribute="trailing" id="cqa-WL-lpM"/>
-                <constraint firstItem="DhY-HW-wjC" firstAttribute="top" secondItem="BmA-Y0-cfA" secondAttribute="bottom" id="hQM-Q6-IE1"/>
                 <constraint firstAttribute="trailing" secondItem="BmA-Y0-cfA" secondAttribute="trailing" id="lXG-Zo-6Bh"/>
+                <constraint firstItem="DhY-HW-wjC" firstAttribute="top" secondItem="gte-Wa-9Uv" secondAttribute="bottom" id="nR6-ZO-v9A"/>
                 <constraint firstItem="BmA-Y0-cfA" firstAttribute="top" secondItem="3ka-IR-CRB" secondAttribute="bottom" constant="-20" id="vZ3-s1-egj"/>
                 <constraint firstItem="gte-Wa-9Uv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="zgd-FG-82Z"/>
             </constraints>
