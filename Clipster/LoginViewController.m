@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface LoginViewController ()
 
@@ -29,6 +30,9 @@
     // Do any additional setup after loading the view.
     [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"carbon_fibre.png"]]];
     [self.logInView setLogo:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clipster.png"]]];
+    [self.logInView.usernameField setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
+    [self.logInView.passwordField setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
+    [self.logInView.dismissButton removeFromSuperview];
 }
 
 - (void)didReceiveMemoryWarning

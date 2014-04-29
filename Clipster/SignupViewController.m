@@ -29,6 +29,11 @@
     // Do any additional setup after loading the view.
     [self.signUpView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"carbon_fibre.png"]]];
     [self.signUpView setLogo:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clipster.png"]]];
+    [self.signUpView.usernameField setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
+    
+    [self.signUpView.passwordField setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
+    [self.signUpView.emailField    setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
+
 }
 
 - (void)didReceiveMemoryWarning
