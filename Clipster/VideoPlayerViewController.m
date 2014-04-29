@@ -30,7 +30,7 @@ typedef void (^TimeObserverBlock)(float);
 @property (nonatomic, assign) BOOL isReady;
 @property (nonatomic, assign) BOOL shouldPlayWhenReady;
 
-@property (nonatomic, strong) NSOperation *seekDoneOperation;
+@property (nonatomic, strong) NSOperation *firstSeekOperation;
 
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @end
@@ -103,8 +103,8 @@ typedef void (^TimeObserverBlock)(float);
                     }
                 }];
                 
-                if (self.seekDoneOperation) {
-                    [playOperation addDependency:self.seekDoneOperation];
+                if (self.firstSeekOperation) {
+                    [playOperation addDependency:self.firstSeekOperation];
                 }
                 [[NSOperationQueue mainQueue] addOperation:playOperation];
             }];
@@ -131,6 +131,8 @@ typedef void (^TimeObserverBlock)(float);
 
 - (void)loadVideoWithURL:(NSURL *)url ready:(void (^)(void))readyBlock
 {
+    self.firstSeekOperation = nil;
+    
     [self showLoadingState];
     // remove observer on old playerItem before creating a new one in case the old one has not finished loading
     [self removeStatusObserverForPlayerItem:self.playerItem];
@@ -241,23 +243,24 @@ typedef void (^TimeObserverBlock)(float);
 
 - (void)seekToTime:(float)time done:(void (^)())done
 {
-    __weak typeof(self) weakSelf = self;
-    self.seekDoneOperation = [NSBlockOperation blockOperationWithBlock:^{
+    NSBlockOperation *doneOperation = [NSBlockOperation blockOperationWithBlock:^{
         if (done) {
             done();
         }
-        weakSelf.seekDoneOperation = nil;
     }];
+    if (!self.firstSeekOperation) {
+        self.firstSeekOperation = doneOperation;
+    }
     
     if (self.isReady) {
         CMTime cmTime = CMTimeMakeWithSeconds(time, BaseTimeScale);
         [self.playerItem seekToTime:cmTime completionHandler:^(BOOL finished) {
             NSLog(@"Seek to time: %f", time);
-            [[NSOperationQueue mainQueue] addOperation:self.seekDoneOperation];
+            [[NSOperationQueue mainQueue] addOperation:doneOperation];
         }];
     } else {
         NSLog(@"Warning: failed to seek because player was not ready");
-        [[NSOperationQueue mainQueue] addOperation:self.seekDoneOperation];
+        [[NSOperationQueue mainQueue] addOperation:doneOperation];
     }
 }
 
