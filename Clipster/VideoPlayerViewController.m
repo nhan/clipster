@@ -27,8 +27,6 @@ typedef void (^TimeObserverBlock)(float);
 @property (strong, nonatomic) NSMutableDictionary *timeObservers;
 @property (strong, nonatomic) id timeObserverHandle;
 
-@property (strong, nonatomic) id endTimeObserverHandle;
-
 @property (nonatomic, assign) BOOL isReady;
 @property (nonatomic, assign) BOOL shouldPlayWhenReady;
 
@@ -55,7 +53,6 @@ typedef void (^TimeObserverBlock)(float);
             [weakSelf timeObserverCallback:time];
         }];
         
-        _endTimeObserverHandle = nil;
         _isReady = NO;
         _shouldPlayWhenReady = NO;
         _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -67,7 +64,6 @@ typedef void (^TimeObserverBlock)(float);
 - (void)dealloc
 {
     [self.player removeTimeObserver:self.timeObserverHandle];
-    [self removeEndTimeObserver];
 }
 
 - (void)viewDidLoad
@@ -167,6 +163,11 @@ typedef void (^TimeObserverBlock)(float);
     for (TimeObserverBlock block in self.timeObservers.allValues) {
         block(CMTimeGetSeconds(time));
     }
+    
+    // do looping behavior
+    if (self.isLooping && CMTimeGetSeconds(time) >= self.endTime) {
+        [self.player seekToTime:CMTimeMakeWithSeconds(self.startTime, BaseTimeScale)];
+    }
 }
 
 - (NSString *)uuidString {
@@ -260,54 +261,12 @@ typedef void (^TimeObserverBlock)(float);
     }
 }
 
-- (void)setEndTime:(float)endTime
-{
-    _endTime = endTime;
-    [self removeEndTimeObserver];
-    [self addEndTimeObserver];
-}
-
-- (void)removeEndTimeObserver
-{
-    if (self.endTimeObserverHandle) {
-        [self.player removeTimeObserver:self.endTimeObserverHandle];
-    }
-}
-
-- (void)addEndTimeObserver
-{
-    if (self.isLooping) {
-        __weak typeof(self) weakSelf = self;
-        NSArray *times = @[[NSValue valueWithCMTime:CMTimeMakeWithSeconds(self.endTime, BaseTimeScale)]];
-        // TODO: (nhan) not sure about using the main queue here
-        self.endTimeObserverHandle = [self.player addBoundaryTimeObserverForTimes:times queue:dispatch_get_main_queue() usingBlock:^{
-            [weakSelf.player seekToTime:CMTimeMakeWithSeconds(weakSelf.startTime, BaseTimeScale)];
-        }];
-    }
-}
-
 - (void)setStartTime:(float)startTime
 {
     _startTime = startTime;
     if (self.isReady && self.currentTimeInSeconds < self.startTime) {
         [self seekToTime:startTime done:nil];
     }
-}
-
-- (void)setIsLooping:(BOOL)isLooping
-{
-    _isLooping = isLooping;
-    if (isLooping) {
-        [self addEndTimeObserver];
-    } else {
-        [self removeEndTimeObserver];
-    }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
