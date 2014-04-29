@@ -285,16 +285,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // Set the playback position feedback
     CGFloat percentPlayed = currentPlaybackTime / self.playerController.duration;
     self.currentPlaybackPosition = self.videoControlView.frame.size.width * percentPlayed;
-    
-//    // If we have not interacted with the video in a while lets minimize
-//    int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
-//    
-//    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction > maxNumberIntervalsBeforeMinimize) {
-//        self.isVideoControlMinimized = YES;
-//    } else {
-//        // Increment number of fires since video interaction
-//        self.numberTimerEventsSinceVideoInteraction++;
-//    }
 }
 
 - (void)tapVideo:(UITapGestureRecognizer *)tapGesture
