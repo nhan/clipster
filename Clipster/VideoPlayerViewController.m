@@ -255,7 +255,6 @@ typedef void (^TimeObserverBlock)(float);
     if (self.isReady) {
         CMTime cmTime = CMTimeMakeWithSeconds(time, BaseTimeScale);
         [self.playerItem seekToTime:cmTime completionHandler:^(BOOL finished) {
-            NSLog(@"Seek to time: %f", time);
             [[NSOperationQueue mainQueue] addOperation:doneOperation];
         }];
     } else {
