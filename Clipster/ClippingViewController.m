@@ -267,6 +267,15 @@ static CGFloat   endSliderHomePos = 240;
     CGFloat startPos = self.startSlider.frame.origin.x + self.startSlider.frame.size.width;
     CGFloat endPos = self.endSlider.frame.origin.x;
     self.sliderWindow.frame = CGRectMake(startPos, self.sliderWindow.frame.origin.y, endPos-startPos, self.sliderWindow.frame.size.height);
+    
+    CGFloat startCenterPos = self.startSlider.frame.origin.x + (self.startSlider.frame.size.width/2.0);
+    CGFloat endCenterPos = self.endSlider.frame.origin.x + (self.endSlider.frame.size.width/2.0);
+    CGFloat startLabelPos = startCenterPos - (self.startTimeLabel.frame.size.width/2);
+    CGFloat endLabelPos = endCenterPos - (self.endTimeLabel.frame.size.width/2);
+    
+    self.startTimeLabel.frame = CGRectMake(startLabelPos, self.startTimeLabel.frame.origin.y, self.startTimeLabel.frame.size.width, self.startTimeLabel.frame.size.height);
+    
+    self.endTimeLabel.frame = CGRectMake(endLabelPos, self.endTimeLabel.frame.origin.y, self.endTimeLabel.frame.size.width, self.endTimeLabel.frame.size.height);
 }
 
 - (void)didReceiveMemoryWarning
