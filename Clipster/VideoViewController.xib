@@ -23,24 +23,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gte-Wa-9Uv" userLabel="Video Container">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VrE-Mk-Pih" userLabel="Thumbnail Image" customClass="PFImageView">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        </imageView>
-                    </subviews>
-                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="180" id="1zY-93-V3r"/>
-                        <constraint firstAttribute="trailing" secondItem="VrE-Mk-Pih" secondAttribute="trailing" id="7Rl-5N-YIs"/>
-                        <constraint firstItem="VrE-Mk-Pih" firstAttribute="leading" secondItem="gte-Wa-9Uv" secondAttribute="leading" id="U5W-Ns-DcL"/>
-                        <constraint firstItem="VrE-Mk-Pih" firstAttribute="top" secondItem="gte-Wa-9Uv" secondAttribute="top" id="VNX-yg-rT4"/>
-                        <constraint firstAttribute="bottom" secondItem="VrE-Mk-Pih" secondAttribute="bottom" id="Xmh-jW-bWF"/>
-                    </constraints>
-                </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-HW-wjC">
                     <rect key="frame" x="0.0" y="180" width="320" height="388"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -61,6 +43,24 @@
                     <color key="backgroundColor" red="0.94010416666666663" green="0.94010416666666663" blue="0.94010416666666663" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Ddv-r7-nNW"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gte-Wa-9Uv" userLabel="Video Container">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VrE-Mk-Pih" userLabel="Thumbnail Image" customClass="PFImageView">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="180" id="1zY-93-V3r"/>
+                        <constraint firstAttribute="trailing" secondItem="VrE-Mk-Pih" secondAttribute="trailing" id="7Rl-5N-YIs"/>
+                        <constraint firstItem="VrE-Mk-Pih" firstAttribute="leading" secondItem="gte-Wa-9Uv" secondAttribute="leading" id="U5W-Ns-DcL"/>
+                        <constraint firstItem="VrE-Mk-Pih" firstAttribute="top" secondItem="gte-Wa-9Uv" secondAttribute="top" id="VNX-yg-rT4"/>
+                        <constraint firstAttribute="bottom" secondItem="VrE-Mk-Pih" secondAttribute="bottom" id="Xmh-jW-bWF"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RHB-Jh-rjp" userLabel="Play Button">

@@ -221,6 +221,15 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     self.currentPlaybackLineView.frame = CGRectMake(self.currentPlaybackPosition, frame.origin.y, frame.size.width, frame.size.height);
 }
 
+- (void)setLandscapeVideoControlOffset
+{
+    if (self.isVideoControlMinimized) {
+        self.videoControlVerticalOffsetConstraint.constant = -5;
+    } else {
+        self.videoControlVerticalOffsetConstraint.constant = -40;
+    }
+}
+
 - (void)setIsVideoControlMinimized:(BOOL)isVideoControlMinimized
 {
     _isVideoControlMinimized = isVideoControlMinimized;
@@ -233,11 +242,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     self.currentPlaybackPosition = self.currentPlaybackPosition;
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        if (isVideoControlMinimized) {
-            self.videoControlVerticalOffsetConstraint.constant = -5;
-        } else {
-            self.videoControlVerticalOffsetConstraint.constant = -40;
-        }
+        [self setLandscapeVideoControlOffset];
     }
 }
 
@@ -367,11 +372,17 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         self.videoHeightConstraint.constant = self.view.frame.size.height;
-        self.videoControlVerticalOffsetConstraint.constant = -40;
+        [self setLandscapeVideoControlOffset];
+        [self.view bringSubviewToFront:self.clippingPanel];
     } else {
+        [self.view bringSubviewToFront:self.videoPlayerContainer];
         self.videoHeightConstraint.constant = 180;
         self.videoControlVerticalOffsetConstraint.constant = 0;
     }
+    
+    [self.view bringSubviewToFront:self.clipButton];
+    [self.view bringSubviewToFront:self.playButton];
+    [self.view bringSubviewToFront:self.backButton];
     
     // might have to move this somewhere else or set up more constraints
     // if we need to change based on the constraints we just updated above
@@ -635,7 +646,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(scrollClippingPanel:)];
     panGestureRecognizer.delegate = self;
     [self.tableView addGestureRecognizer:panGestureRecognizer];
-//    [self.view bringSubviewToFront:self.videoPlayerContainer];
 }
 
 - (void)scrollClippingPanel:(UIPanGestureRecognizer *)panGestureRecognizer
