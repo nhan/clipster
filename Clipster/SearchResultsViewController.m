@@ -23,6 +23,30 @@
 #define USER_SEARCH 1
 #define YOUTUBE_SEARCH 2
 
+
+@interface UISearchBar (Textcolor)
+- (void)setTextColor:(UIColor *)color;
+@end
+
+@implementation UISearchBar (TextColor)
+- (void)setTextColor:(UIColor *)color
+{
+    // do a depth first search through the descendants of the search bar for a UITextView and set its color
+    NSMutableArray* stack = [NSMutableArray arrayWithObject:self];
+    while (stack.count > 0) {
+        UIView *subview = [stack lastObject];
+        [stack removeLastObject];
+        
+        if ([subview isKindOfClass:[UITextField class]]) {
+            UITextField* textField = ((UITextField *) subview);
+            textField.textColor = color;
+            break;
+        }
+        [stack addObjectsFromArray:subview.subviews];
+    }
+}
+@end
+
 @interface SearchResultsViewController ()
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) GTLServiceYouTube *youtubeService;
@@ -65,6 +89,8 @@
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-5.0, 0.0, 320.0, 44.0)];
     self.searchBar.tintColor = [UIColor whiteColor];
     self.searchBar.barTintColor = [UIColor whiteColor];
+    [self.searchBar setTextColor:[UIColor whiteColor]];
+//    [self.searchBar setImage:[UIImage imageNamed:@"search-2"] forSearchBagrIcon:UISearchBarIconSearch state:UIControlStateNormal];
     
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -73,7 +99,6 @@
     self.searchBar.delegate = self;
     [searchBarView addSubview:self.searchBar];
     self.navigationItem.titleView = searchBarView;
-    
     [self.searchBar becomeFirstResponder];
     
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
