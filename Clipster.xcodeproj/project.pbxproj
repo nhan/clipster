@@ -94,6 +94,7 @@
 		7EF9A4C718F8B2A80058FE1C /* SmallClipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EF9A4C518F8B2A80058FE1C /* SmallClipCell.xib */; };
 		BB1F17B41900868C0048D9C8 /* YouTubeVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1F17B31900868C0048D9C8 /* YouTubeVideo.m */; };
 		BB2B750F190DD531003099F3 /* ClipsterColors.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2B750E190DD531003099F3 /* ClipsterColors.m */; };
+		BB6D13A219107FD400ADB702 /* ObeyChildOrientationNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6D13A119107FD400ADB702 /* ObeyChildOrientationNavController.m */; };
 		BB7DE1B319073D9C00CBA9C0 /* VideoControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7DE1B219073D9C00CBA9C0 /* VideoControlView.m */; };
 		BBAAD84918F3642B0079995E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84818F3642B0079995E /* User.m */; };
 		BBAAD84C18F364490079995E /* Clip.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84B18F364490079995E /* Clip.m */; };
@@ -225,6 +226,8 @@
 		BB1F17B31900868C0048D9C8 /* YouTubeVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YouTubeVideo.m; sourceTree = "<group>"; };
 		BB2B750D190DD531003099F3 /* ClipsterColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipsterColors.h; sourceTree = "<group>"; };
 		BB2B750E190DD531003099F3 /* ClipsterColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipsterColors.m; sourceTree = "<group>"; };
+		BB6D13A019107FD400ADB702 /* ObeyChildOrientationNavController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObeyChildOrientationNavController.h; sourceTree = "<group>"; };
+		BB6D13A119107FD400ADB702 /* ObeyChildOrientationNavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObeyChildOrientationNavController.m; sourceTree = "<group>"; };
 		BB7DE1B119073D9C00CBA9C0 /* VideoControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoControlView.h; sourceTree = "<group>"; };
 		BB7DE1B219073D9C00CBA9C0 /* VideoControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoControlView.m; sourceTree = "<group>"; };
 		BBAAD84718F3642B0079995E /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -430,6 +433,8 @@
 		BB571AFA1904DC900039BB66 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BB6D13A019107FD400ADB702 /* ObeyChildOrientationNavController.h */,
+				BB6D13A119107FD400ADB702 /* ObeyChildOrientationNavController.m */,
 				BBEAC47B1905BA3000FB732B /* EditProfileViewController.h */,
 				BBEAC47C1905BA3000FB732B /* EditProfileViewController.m */,
 				BBEAC47D1905BA3000FB732B /* EditProfileViewController.xib */,
@@ -676,6 +681,7 @@
 				7E6A917E1909C93600865E7E /* UIImage+ImageEffects.m in Sources */,
 				7E3A27EB190B115F00D96503 /* YouTubeCell.m in Sources */,
 				BBAAD84C18F364490079995E /* Clip.m in Sources */,
+				BB6D13A219107FD400ADB702 /* ObeyChildOrientationNavController.m in Sources */,
 				7E2A75E4190F13BC000E3834 /* LoginViewController.m in Sources */,
 				7EF9A4BF18F884580058FE1C /* VideoViewController.m in Sources */,
 				6B9B8DE2190B2A92007F420A /* YouTubeParser.m in Sources */,
