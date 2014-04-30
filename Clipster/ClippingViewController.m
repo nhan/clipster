@@ -71,9 +71,13 @@ static CGFloat   endSliderHomePos = 240;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction:)];
     
+    // done is only enabled once we have a description
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
     self.annotationTextView.delegate = self;
     self.annotationTextView.placeholder = @"Enter Description";
-
+    
+    
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -110,6 +114,12 @@ static CGFloat   endSliderHomePos = 240;
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     [self.scrollView setContentOffset:self.rulerContainer.frame.origin animated:YES];
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    BOOL enableDone = textView.text && textView.text.length > 0;
+    self.navigationItem.rightBarButtonItem.enabled = enableDone;
 }
 
 - (IBAction)tapAction:(id)sender {
