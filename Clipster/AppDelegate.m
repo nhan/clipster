@@ -20,6 +20,7 @@
 #import "LoginViewController.h"
 #import "SignupViewController.h"
 #import "LoginManager.h"
+#import "ObeyChildOrientationNavController.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) LoginViewController *loginViewController;
@@ -62,7 +63,7 @@
     User *currentUser = (User *)[PFUser currentUser];
     if (currentUser) {
         StreamViewController *streamViewController = [[StreamViewController alloc] init];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:streamViewController];
+        UINavigationController *navigationController = [[ObeyChildOrientationNavController alloc] initWithRootViewController:streamViewController];
         [self styleNavigationController:navigationController];
         self.window.rootViewController = navigationController;
         NSLog(@"====== User name ===== %@", currentUser.username);
