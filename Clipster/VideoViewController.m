@@ -118,14 +118,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     tapVideoGesture.delegate = self;
     [movieView addGestureRecognizer:tapVideoGesture];
     
-    self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.backButton setImage:[UIImage imageNamed:@"back_btn.png"] forState:UIControlStateNormal];
-    self.backButton.alpha = 0.5;
-    self.backButton.frame = CGRectMake(10, 10, 40, 40);
-    [self.backButton addTarget:self action:@selector(onBackButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.backButton];
-    [self.view bringSubviewToFront:self.backButton];
-    
     // play/pause button
     self.playButton.alpha = 0.8;
     self.playButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -377,6 +369,15 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
+    
+    // TODO: move this to nib
+    self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.backButton setImage:[UIImage imageNamed:@"back_btn.png"] forState:UIControlStateNormal];
+    self.backButton.alpha = 0.5;
+    self.backButton.frame = CGRectMake(10, 10, 40, 40);
+    [self.backButton addTarget:self action:@selector(onBackButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.backButton];
+    [self.view bringSubviewToFront:self.backButton];
     
     // hide line view until we have the video data
     self.currentPlaybackLineView.hidden = YES;
