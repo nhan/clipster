@@ -10,7 +10,7 @@
 #import "User.h"
 #import "ProfileCell.h"
 
-@interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ProfileCellDelegate>
+@interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ProfileCellDelegate, NSURLConnectionDelegate>
 - (id)initWithUsername:(NSString *)username;
 - (id)initWithUser:(User *)user;
 @end
