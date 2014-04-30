@@ -90,8 +90,9 @@
     self.searchBar.tintColor = [UIColor whiteColor];
     self.searchBar.barTintColor = [UIColor whiteColor];
     [self.searchBar setTextColor:[UIColor whiteColor]];
-//    [self.searchBar setImage:[UIImage imageNamed:@"search-2"] forSearchBagrIcon:UISearchBarIconSearch state:UIControlStateNormal];
-    
+    [self.searchBar setImage:[UIImage imageNamed:@"search-white"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+    [self.searchBar setImage:[UIImage imageNamed:@"close"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
+
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     UIView *searchBarView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 310.0, 44.0)];
