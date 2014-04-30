@@ -29,9 +29,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"carbon_fibre.png"]]];
-    [self.logInView setLogo:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clipster.png"]]];
+    [self.logInView setLogo:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clipster-logo-5"]]];
     [self.logInView.usernameField setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
     [self.logInView.passwordField setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
+    [self.logInView.signUpButton setBackgroundImage:[UIImage imageNamed:@"red-button-2"] forState:UIControlStateNormal];
+    [self.logInView.logInButton setBackgroundImage:[UIImage imageNamed:@"grey-button"] forState:UIControlStateNormal];
+    [self.logInView.logInButton setBackgroundImage:[UIImage imageNamed:@"grey-button-down"] forState:UIControlStateHighlighted];
+    [self.logInView.signUpButton setBackgroundImage:[UIImage imageNamed:@"red-button-down"] forState:UIControlStateHighlighted];
     [self.logInView.dismissButton removeFromSuperview];
 }
 

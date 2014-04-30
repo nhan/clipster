@@ -28,11 +28,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.signUpView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"carbon_fibre.png"]]];
-    [self.signUpView setLogo:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clipster.png"]]];
+    [self.signUpView setLogo:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clipster-logo-5.png"]]];
     [self.signUpView.usernameField setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
     
     [self.signUpView.passwordField setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
     [self.signUpView.emailField    setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.2]];
+    
+    [self.signUpView.signUpButton setBackgroundImage:[UIImage imageNamed:@"blue-button-2"] forState:UIControlStateNormal];
+    [self.signUpView.signUpButton setBackgroundImage:[UIImage imageNamed:@"blue-button-down"] forState:UIControlStateHighlighted];
 
 }
 
