@@ -27,12 +27,10 @@ typedef void (^TimeObserverBlock)(float);
 @property (strong, nonatomic) NSMutableDictionary *timeObservers;
 @property (strong, nonatomic) id timeObserverHandle;
 
-@property (strong, nonatomic) id endTimeObserverHandle;
-
 @property (nonatomic, assign) BOOL isReady;
 @property (nonatomic, assign) BOOL shouldPlayWhenReady;
 
-@property (nonatomic, strong) NSOperation *seekDoneOperation;
+@property (nonatomic, strong) NSOperation *firstSeekOperation;
 
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @end
@@ -55,7 +53,6 @@ typedef void (^TimeObserverBlock)(float);
             [weakSelf timeObserverCallback:time];
         }];
         
-        _endTimeObserverHandle = nil;
         _isReady = NO;
         _shouldPlayWhenReady = NO;
         _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -67,7 +64,6 @@ typedef void (^TimeObserverBlock)(float);
 - (void)dealloc
 {
     [self.player removeTimeObserver:self.timeObserverHandle];
-    [self removeEndTimeObserver];
 }
 
 - (void)viewDidLoad
@@ -107,8 +103,8 @@ typedef void (^TimeObserverBlock)(float);
                     }
                 }];
                 
-                if (self.seekDoneOperation) {
-                    [playOperation addDependency:self.seekDoneOperation];
+                if (self.firstSeekOperation) {
+                    [playOperation addDependency:self.firstSeekOperation];
                 }
                 [[NSOperationQueue mainQueue] addOperation:playOperation];
             }];
@@ -135,6 +131,8 @@ typedef void (^TimeObserverBlock)(float);
 
 - (void)loadVideoWithURL:(NSURL *)url ready:(void (^)(void))readyBlock
 {
+    self.firstSeekOperation = nil;
+    
     [self showLoadingState];
     // remove observer on old playerItem before creating a new one in case the old one has not finished loading
     [self removeStatusObserverForPlayerItem:self.playerItem];
@@ -166,6 +164,11 @@ typedef void (^TimeObserverBlock)(float);
     // TODO: (nhan) this is happening on the same queue that timeObserverCallback is being called on (right now main queue).  Should allow for custom queue
     for (TimeObserverBlock block in self.timeObservers.allValues) {
         block(CMTimeGetSeconds(time));
+    }
+    
+    // do looping behavior
+    if (self.isLooping && CMTimeGetSeconds(time) >= self.endTime) {
+        [self.player seekToTime:CMTimeMakeWithSeconds(self.startTime, BaseTimeScale)];
     }
 }
 
@@ -240,49 +243,23 @@ typedef void (^TimeObserverBlock)(float);
 
 - (void)seekToTime:(float)time done:(void (^)())done
 {
-    __weak typeof(self) weakSelf = self;
-    self.seekDoneOperation = [NSBlockOperation blockOperationWithBlock:^{
+    NSBlockOperation *doneOperation = [NSBlockOperation blockOperationWithBlock:^{
         if (done) {
             done();
         }
-        weakSelf.seekDoneOperation = nil;
     }];
+    if (!self.firstSeekOperation) {
+        self.firstSeekOperation = doneOperation;
+    }
     
     if (self.isReady) {
         CMTime cmTime = CMTimeMakeWithSeconds(time, BaseTimeScale);
         [self.playerItem seekToTime:cmTime completionHandler:^(BOOL finished) {
-            NSLog(@"Seek to time: %f", time);
-            [[NSOperationQueue mainQueue] addOperation:self.seekDoneOperation];
+            [[NSOperationQueue mainQueue] addOperation:doneOperation];
         }];
     } else {
         NSLog(@"Warning: failed to seek because player was not ready");
-        [[NSOperationQueue mainQueue] addOperation:self.seekDoneOperation];
-    }
-}
-
-- (void)setEndTime:(float)endTime
-{
-    _endTime = endTime;
-    [self removeEndTimeObserver];
-    [self addEndTimeObserver];
-}
-
-- (void)removeEndTimeObserver
-{
-    if (self.endTimeObserverHandle) {
-        [self.player removeTimeObserver:self.endTimeObserverHandle];
-    }
-}
-
-- (void)addEndTimeObserver
-{
-    if (self.isLooping) {
-        __weak typeof(self) weakSelf = self;
-        NSArray *times = @[[NSValue valueWithCMTime:CMTimeMakeWithSeconds(self.endTime, BaseTimeScale)]];
-        // TODO: (nhan) not sure about using the main queue here
-        self.endTimeObserverHandle = [self.player addBoundaryTimeObserverForTimes:times queue:dispatch_get_main_queue() usingBlock:^{
-            [weakSelf.player seekToTime:CMTimeMakeWithSeconds(weakSelf.startTime, BaseTimeScale)];
-        }];
+        [[NSOperationQueue mainQueue] addOperation:doneOperation];
     }
 }
 
@@ -292,22 +269,6 @@ typedef void (^TimeObserverBlock)(float);
     if (self.isReady && self.currentTimeInSeconds < self.startTime) {
         [self seekToTime:startTime done:nil];
     }
-}
-
-- (void)setIsLooping:(BOOL)isLooping
-{
-    _isLooping = isLooping;
-    if (isLooping) {
-        [self addEndTimeObserver];
-    } else {
-        [self removeEndTimeObserver];
-    }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

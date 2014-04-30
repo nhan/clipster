@@ -9,6 +9,7 @@
 #import "ClippingViewController.h"
 #import "RulerView.h"
 #import "RPFloatingPlaceholderTextView.h"
+#import "ClipsterColors.h"
 
 @interface ClippingViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *startSlider;
@@ -17,6 +18,7 @@
 @property (nonatomic, assign) CGPoint startPosition;
 @property (nonatomic, assign) CGPoint   endPosition;
 @property (weak, nonatomic) IBOutlet UIView *rulerContainer;
+@property (strong, nonatomic) RulerView *rulerView;
 @property (nonatomic, assign) CGFloat startTime;
 @property (nonatomic, assign) CGFloat   endTime;
 @property (nonatomic, assign) CGFloat startTimeIntermediate;
@@ -29,6 +31,12 @@
 @property (nonatomic, strong) Clip *clip;
 @property (weak, nonatomic) IBOutlet RPFloatingPlaceholderTextView *annotationTextView;
 @property (nonatomic, strong) VideoPlayerViewController *playerController;
+
+// current playback stuff
+@property (nonatomic, strong) id timeObserverHandle;
+@property (nonatomic, strong) UIView *playbackProgressView;
+@property (nonatomic, assign) CGFloat currentPlaybackPosition;
+
 @end
 
 @implementation ClippingViewController
@@ -78,15 +86,24 @@ static CGFloat   endSliderHomePos = 240;
     [self.endSlider addGestureRecognizer:endPanGestureRecognizer];
     
     // Draw the ruler
-    RulerView *ruler = [[RulerView alloc] initWithFrame:CGRectMake(0, 0, self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
-    [self.rulerContainer addSubview:ruler];
+    self.rulerView = [[RulerView alloc] initWithFrame:CGRectMake(0, 0, self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
+    [self.rulerContainer addSubview:self.rulerView];
     self.startTime = self.clip.timeStart / 1000.0f;
     self.endTime = self.clip.timeEnd / 1000.0f;
-    [self updateRulerData:ruler];
+    [self updateRulerData:self.rulerView];
+    
+    // Draw the playback progress
+    self.playbackProgressView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, self.rulerContainer.frame.size.height)];
+    self.playbackProgressView.backgroundColor = [[ClipsterColors red] colorWithAlphaComponent:0.5];
+    [self.rulerContainer addSubview:self.playbackProgressView];
+    self.currentPlaybackPosition = 0;
 
     // add the player to ourself
     [self.playerController.view setFrame: self.videoPlayerContainer.frame];
     [self.videoPlayerContainer addSubview: self.playerController.view];
+    
+    // start the playback monitor
+    [self startMonitorPlaybackTimer];
 }
 
 #pragma mark - Keyboard / Description Text
@@ -111,6 +128,7 @@ static CGFloat   endSliderHomePos = 240;
     self.playerController.isLooping = NO;
     [self.delegate creationDone:self.clip];
     [self.navigationController popViewControllerAnimated:YES];
+    [self stopMonitorPlaybackTimer];
 }
 
 - (void)cancelAction
@@ -118,6 +136,7 @@ static CGFloat   endSliderHomePos = 240;
     self.playerController.isLooping = NO;
     [self.delegate creationCanceled];
     [self.navigationController popViewControllerAnimated:YES];
+    [self stopMonitorPlaybackTimer];
 }
 
 - (void)updateUI
@@ -156,7 +175,8 @@ static CGFloat   endSliderHomePos = 240;
     self.playerController.endTime = endTime;
 }
 
-- (void)updateRulerData:(RulerView *)ruler{
+- (void)updateRulerData:(RulerView *)ruler
+{
     ruler.startPos = startSliderHomePos;
     ruler.startTime = self.startTime;
     ruler.endPos = endSliderHomePos;
@@ -165,7 +185,8 @@ static CGFloat   endSliderHomePos = 240;
     [ruler setNeedsDisplay];
 }
 
-- (void)onStartSliderDrag:(UIPanGestureRecognizer *)panGestureRecognizer{
+- (void)onStartSliderDrag:(UIPanGestureRecognizer *)panGestureRecognizer
+{
     CGPoint point    = [panGestureRecognizer locationInView:self.view];
     
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
@@ -200,7 +221,7 @@ static CGFloat   endSliderHomePos = 240;
         CGAffineTransform translate = CGAffineTransformMakeTranslation(self.translation,0);
         CGAffineTransform scale = CGAffineTransformMakeScale(originalTimeDiff/newTimeDiff, 1.0);
         CGAffineTransform transform =  CGAffineTransformConcat(scale, translate);
-        RulerView *rulerView = self.rulerContainer.subviews[0];
+        RulerView *rulerView = self.rulerView;
         
         [UIView animateWithDuration:0.5 animations:^{
             self.startSlider.frame = CGRectMake( startSliderHomePos, self.startSlider.frame.origin.y, self.startSlider.frame.size.width, self.startSlider.frame.size.height);
@@ -208,9 +229,9 @@ static CGFloat   endSliderHomePos = 240;
             rulerView.transform = transform;
         } completion:^(BOOL finished) {
             [rulerView removeFromSuperview];
-            RulerView *newRulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
-            [self.rulerContainer addSubview:newRulerView];
-            [self updateRulerData:newRulerView];
+            self.rulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
+            [self.rulerContainer addSubview:self.rulerView];
+            [self updateRulerData:self.rulerView];
         }];
     }
 }
@@ -218,6 +239,7 @@ static CGFloat   endSliderHomePos = 240;
 - (void)onEndSliderDrag:(UIPanGestureRecognizer *)panGestureRecognizer{
     CGPoint point    = [panGestureRecognizer locationInView:self.view];
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        self.playerController.isLooping = NO;
         self.endPosition = CGPointMake(point.x - self.endSlider.frame.origin.x, point.y - self.endSlider.frame.origin.y);
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         float xPos = (point.x - self.endPosition.x);
@@ -236,6 +258,7 @@ static CGFloat   endSliderHomePos = 240;
         
         self.endTimeIntermediate = self.startTime+newTimeDiff;
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        self.playerController.isLooping = YES;
         //update ending time
         CGFloat originalTimeDiff = self.endTime - self.startTime;
         CGFloat newTimeDiff = ((self.endSlider.frame.origin.x - startSliderHomePos)/(endSliderHomePos - startSliderHomePos))*originalTimeDiff;
@@ -247,7 +270,7 @@ static CGFloat   endSliderHomePos = 240;
         CGAffineTransform translate = CGAffineTransformMakeTranslation(self.translation,0);
         CGAffineTransform scale = CGAffineTransformMakeScale(originalTimeDiff/newTimeDiff, 1.0);
         CGAffineTransform transform =  CGAffineTransformConcat(scale, translate);
-        RulerView *rulerView = self.rulerContainer.subviews[0];
+        RulerView *rulerView = self.rulerView;
         
         [UIView animateWithDuration:0.5 animations:^{
             self.endSlider.frame = CGRectMake( endSliderHomePos, self.endSlider.frame.origin.y, self.endSlider.frame.size.width, self.endSlider.frame.size.height);
@@ -255,9 +278,9 @@ static CGFloat   endSliderHomePos = 240;
             rulerView.transform = transform;
         } completion:^(BOOL finished) {
             [rulerView removeFromSuperview];
-            RulerView *newRulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
-            [self.rulerContainer addSubview:newRulerView];
-            [self updateRulerData:newRulerView];
+            self.rulerView = [[RulerView alloc] initWithFrame:CGRectMake(0,0,self.rulerContainer.frame.size.width, self.rulerContainer.frame.size.height)];
+            [self.rulerContainer addSubview:self.rulerView];
+            [self updateRulerData:self.rulerView];
         }];
     }
 }
@@ -278,10 +301,38 @@ static CGFloat   endSliderHomePos = 240;
     self.endTimeLabel.frame = CGRectMake(endLabelPos, self.endTimeLabel.frame.origin.y, self.endTimeLabel.frame.size.width, self.endTimeLabel.frame.size.height);
 }
 
-- (void)didReceiveMemoryWarning
+#pragma mark - Current Playback
+- (void)startMonitorPlaybackTimer
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    __weak typeof(self) weakSelf = self;
+    self.timeObserverHandle = [self.playerController addTimeObserverWithBlock:^(float time) {
+        [weakSelf monitorPlayback:time];
+    }];
 }
+
+- (void)stopMonitorPlaybackTimer
+{
+    [self.playerController removeTimeObserver:self.timeObserverHandle];
+}
+
+- (void)monitorPlayback:(float)currentPlaybackTime
+{
+    CGFloat startPosition = self.startSlider.frame.origin.x + self.startSlider.frame.size.width;
+    CGFloat endPosition = self.endSlider.frame.origin.x;
+
+    // Get percent of loop played
+    CGFloat percentPlayed = (currentPlaybackTime - self.startTime) / (self.endTime - self.startTime);
+    // Convert percent played to position between handles
+    self.currentPlaybackPosition = (endPosition - startPosition) * percentPlayed + startPosition;
+}
+
+- (void)setCurrentPlaybackPosition:(CGFloat)currentPlaybackPosition
+{
+    // Change position of current line view
+    CGRect frame = self.playbackProgressView.frame;
+    self.playbackProgressView.frame = CGRectMake(currentPlaybackPosition, frame.origin.y, frame.size.width, frame.size.height);
+    _currentPlaybackPosition = currentPlaybackPosition;
+}
+
 
 @end

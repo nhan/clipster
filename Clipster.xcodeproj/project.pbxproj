@@ -263,9 +263,9 @@
 			children = (
 				6BAACCF619085148003B5084 /* VideoPlayerViewController.h */,
 				6BAACCF719085148003B5084 /* VideoPlayerViewController.m */,
+				6BAACCF819085148003B5084 /* VideoPlayerViewController.xib */,
 				6BAACCFB1908526E003B5084 /* VideoPlayerView.h */,
 				6BAACCFC1908526E003B5084 /* VideoPlayerView.m */,
-				6BAACCF819085148003B5084 /* VideoPlayerViewController.xib */,
 			);
 			name = components;
 			sourceTree = "<group>";

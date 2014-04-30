@@ -18,12 +18,14 @@
 #import "ClipsterColors.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
+static const CGFloat MIN_VIDEO_CONTROL_SIZE = 5;
+static const CGFloat MAX_VIDEO_CONTROL_SIZE = 44;
 
 @interface VideoViewController ()
 @property (weak, nonatomic) IBOutlet PFImageView *thumbnailImage;
 @property (weak, nonatomic) IBOutlet UIView *videoPlayerContainer;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIView *clippingPanel;
+@property (weak, nonatomic) IBOutlet VideoControlView *videoControlView;
 
 @property (nonatomic, assign) CGPoint panStartPosition;
 @property (nonatomic, strong) NSMutableArray *clips;
@@ -32,21 +34,17 @@
 
 @property (nonatomic, strong) NSString *videoId;
 @property (nonatomic, strong) NSString *videoTitle;
-@property (nonatomic, assign) CGFloat clippingPanelPos;
-@property (nonatomic, assign) CGFloat tableViewScrollPos;
+@property (nonatomic, assign) CGFloat lastTableViewScrollPosition;
 
 @property (nonatomic, strong) VideoPlayerViewController *playerController;
 @property (nonatomic, assign) NSInteger hudCounter;
 
 @property (nonatomic, strong) UIButton *backButton;
-
-@property (nonatomic, strong) UIView *videoControlView;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIButton *clipButton;
 
 
 @property (nonatomic, assign) BOOL isVideoPlaying;
-@property (nonatomic, strong) VideoControlView *scrubView;
 @property (nonatomic, assign) CGFloat currentPlaybackPosition;
 @property (nonatomic, assign) NSTimeInterval currentPlaybackTime;
 @property (nonatomic, strong) NSTimer *playbackMonitorTimer;
@@ -62,6 +60,7 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoControlVerticalOffsetConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoControlHeightConstraint;
 
 @end
 
@@ -139,28 +138,23 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.clipButton setImage:[UIImage imageNamed:@"clip_btn.png"] forState:UIControlStateNormal];
     [self.clipButton addTarget:self action:@selector(clipAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.clipButton];
-    
-    // TODO: this is just the scrub view now so this can go away
-    self.videoControlView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height)];
-    self.videoControlView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
-    [self.clippingPanel addSubview:self.videoControlView];
-    
+
     // scrubbing/vis region
-    self.scrubView = [[VideoControlView alloc] initWithFrame:CGRectMake(0, 0, self.videoControlView.frame.size.width, self.videoControlView.frame.size.height)];
-    self.scrubView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.4];
-    self.scrubView.color = [ClipsterColors green];
+
+    self.videoControlView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    self.videoControlView.color = [ClipsterColors green];
+    
     // Initialize popularity histogram
     self.popularityHistogram = [[NSMutableArray alloc] init];
     for (int i=0; i<NUMBER_HISTOGRAM_BINS; i++) {
         [self.popularityHistogram addObject:@0.0];
     }
-    self.scrubView.popularityHistogram = self.popularityHistogram;
+    self.videoControlView.popularityHistogram = self.popularityHistogram;
     
     UIPanGestureRecognizer *panScrub = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panScrubber:)];
-    [self.scrubView addGestureRecognizer:panScrub];
+    [self.videoControlView addGestureRecognizer:panScrub];
     UITapGestureRecognizer *tapScrub = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapScrubber:)];
-    [self.scrubView addGestureRecognizer:tapScrub];
-    [self.videoControlView addSubview:self.scrubView];
+    [self.videoControlView addGestureRecognizer:tapScrub];
     
     // Setting the current playback position will set playback time and progress
     self.currentPlaybackLineView.hidden = NO;
@@ -190,7 +184,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     for (int i=startBin; i<endBin; i++) {
         self.popularityHistogram[i] = @([self.popularityHistogram[i] floatValue] + 0.2);
     }
-    [self.scrubView setNeedsDisplay];
+    [self.videoControlView setNeedsDisplay];
 }
 
 - (NSArray *)timeBinsForClip:(Clip *)clip
@@ -277,8 +271,8 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 - (void)setCurrentPlaybackPosition:(CGFloat)currentPlaybackPosition
 {
     // Change width of scrub depending on new playback position
-    self.scrubView.currentPlaybackPosition = currentPlaybackPosition;
-    [self.scrubView setNeedsDisplay];
+    self.videoControlView.currentPlaybackPosition = currentPlaybackPosition;
+    [self.videoControlView setNeedsDisplay];
     
     // Change position of current line view
     [self updateCurrentPlaybackLineViewWithPosition:_currentPlaybackPosition];
@@ -290,17 +284,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 {
     // Set the playback position feedback
     CGFloat percentPlayed = currentPlaybackTime / self.playerController.duration;
-    self.currentPlaybackPosition = self.scrubView.frame.size.width * percentPlayed;
-    
-//    // If we have not interacted with the video in a while lets minimize
-//    int maxNumberIntervalsBeforeMinimize = ceil(VIDEO_CONTROL_MINIMIZE_INTERVAL / VIDEO_MONITOR_INTERVAL);
-//    
-//    if (self.isVideoPlaying && !self.isVideoControlMinimized && self.numberTimerEventsSinceVideoInteraction > maxNumberIntervalsBeforeMinimize) {
-//        self.isVideoControlMinimized = YES;
-//    } else {
-//        // Increment number of fires since video interaction
-//        self.numberTimerEventsSinceVideoInteraction++;
-//    }
+    self.currentPlaybackPosition = self.videoControlView.frame.size.width * percentPlayed;
 }
 
 - (void)tapVideo:(UITapGestureRecognizer *)tapGesture
@@ -312,9 +296,9 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 
 - (void)tapScrubber:(UITapGestureRecognizer *)tapGesture
 {
-    CGPoint point = [tapGesture locationInView:self.scrubView];
+    CGPoint point = [tapGesture locationInView:self.videoControlView];
     self.currentPlaybackPosition = point.x;
-    CGFloat percentPlayed = self.currentPlaybackPosition / self.scrubView.bounds.size.width;
+    CGFloat percentPlayed = self.currentPlaybackPosition / self.videoControlView.bounds.size.width;
     [self.playerController seekToTime:(self.playerController.duration * percentPlayed) done:nil];
     self.numberTimerEventsSinceVideoInteraction = 0;
 }
@@ -327,9 +311,9 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
         self.numberTimerEventsSinceVideoInteraction = 0;
     } else if (panGesture.state == UIGestureRecognizerStateChanged && self.isScrubbing) {
         // change current playback time based on position
-        CGPoint point = [panGesture locationInView:self.scrubView];
+        CGPoint point = [panGesture locationInView:self.videoControlView];
         self.currentPlaybackPosition = point.x;
-        CGFloat percentPlayed = self.currentPlaybackPosition / self.scrubView.bounds.size.width;
+        CGFloat percentPlayed = self.currentPlaybackPosition / self.videoControlView.bounds.size.width;
         [self.playerController seekToTime:(self.playerController.duration * percentPlayed) done:nil];
         self.numberTimerEventsSinceVideoInteraction = 0;
     } else if (panGesture.state == UIGestureRecognizerStateEnded) {
@@ -372,8 +356,9 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         self.videoHeightConstraint.constant = self.view.frame.size.height;
+        self.videoControlHeightConstraint.constant = MAX_VIDEO_CONTROL_SIZE;
         [self setLandscapeVideoControlOffset];
-        [self.view bringSubviewToFront:self.clippingPanel];
+        [self.view bringSubviewToFront:self.videoControlView];
     } else {
         [self.view bringSubviewToFront:self.videoPlayerContainer];
         self.videoHeightConstraint.constant = 180;
@@ -383,12 +368,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.view bringSubviewToFront:self.clipButton];
     [self.view bringSubviewToFront:self.playButton];
     [self.view bringSubviewToFront:self.backButton];
-    
-    // might have to move this somewhere else or set up more constraints
-    // if we need to change based on the constraints we just updated above
-    self.videoControlView.frame = CGRectMake(0, 0, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
-    self.scrubView.frame = CGRectMake(0, 0, self.videoControlView.frame.size.width, self.videoControlView.frame.size.height);
-
 }
 
 - (void)viewDidLoad
@@ -402,7 +381,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     // hide line view until we have the video data
     self.currentPlaybackLineView.hidden = YES;
 
-    [self setupClippingPanel];
     [self addPlayerViewToContainer];
     
     if (self.activeClip && self.activeClip.thumbnail) {
@@ -464,7 +442,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     if (self.playerController.duration) {
         // update the line immediately or we get some lag
         CGFloat percentPlayed = time / self.playerController.duration;
-        self.currentPlaybackPosition = percentPlayed * self.scrubView.bounds.size.width;
+        self.currentPlaybackPosition = percentPlayed * self.videoControlView.bounds.size.width;
     }
 }
 
@@ -640,34 +618,30 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self.navigationController pushViewController:clippingVC animated:YES];
 }
 
-- (void)setupClippingPanel
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    self.clippingPanelPos = self.clippingPanel.frame.origin.y;
-    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(scrollClippingPanel:)];
-    panGestureRecognizer.delegate = self;
-    [self.tableView addGestureRecognizer:panGestureRecognizer];
+    self.lastTableViewScrollPosition = self.tableView.contentOffset.y;
 }
 
-- (void)scrollClippingPanel:(UIPanGestureRecognizer *)panGestureRecognizer
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        self.clippingPanelPos = self.clippingPanel.frame.origin.y;
-        self.tableViewScrollPos = self.tableView.contentOffset.y;
-    }
-}
+    if (self.tableView.isDragging) {
+        CGFloat tableViewScrollDelta = self.lastTableViewScrollPosition - self.tableView.contentOffset.y;
+        
+        CGFloat newSize = self.videoControlHeightConstraint.constant + tableViewScrollDelta;
+        
+        if (tableViewScrollDelta < 0) { // dragging content up
+            newSize = MAX(newSize, MIN_VIDEO_CONTROL_SIZE);
+        } else { // dragging content down
+            newSize = MIN(newSize, MAX_VIDEO_CONTROL_SIZE);
+        }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    static const CGFloat minPanelSize = 5;
-    CGFloat newPos = self.clippingPanelPos + (self.tableViewScrollPos - self.tableView.contentOffset.y);
-
-    if (newPos < (self.tableView.frame.origin.y-self.clippingPanel.frame.size.height) + minPanelSize) {
-        newPos = self.tableView.frame.origin.y-self.clippingPanel.frame.size.height + minPanelSize;
-    } else if (newPos > self.tableView.frame.origin.y){
-        // don't bring the size of the video control any bigger than the original
-        newPos = self.tableView.frame.origin.y;
+        // make sure the size is always enough to cover the the part of the dummy header cell that is showing
+        // fixes a bad state that can occur if the user starts scrolling up and then back down
+        newSize = MAX(MAX_VIDEO_CONTROL_SIZE- MAX(self.tableView.contentOffset.y, 0), newSize);
+        
+        self.videoControlHeightConstraint.constant = newSize;
     }
-    self.clippingPanel.frame = CGRectMake(0, newPos, self.clippingPanel.frame.size.width, self.clippingPanel.frame.size.height);
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
