@@ -131,7 +131,6 @@ static CGFloat lineHeight = 24.f;
     
     [self addGestureRecognizers];
     
-
 //    [self.thumbnailContainer setClipsToBounds:YES];
 //    self.thumbnailContainer.layer.cornerRadius = self.thumbnailContainer.frame.size.width/2;
 //    self.thumbnailContainer.layer.masksToBounds = YES;
@@ -188,11 +187,11 @@ static CGFloat lineHeight = 24.f;
     self.usernameLabel.text = self.clip.username;
     self.timeAgoLabel.text = [self.clip timeAgo];
     
+    // need to replace previous image no matter what so that it is not copied from previous cell use
+    self.clipThumnailImageView.image = [UIImage imageNamed:@"stream_thumbnail_placeholder.gif"];
     if (self.clip.thumbnail) {
         self.clipThumnailImageView.file = self.clip.thumbnail;
         [self.clipThumnailImageView loadInBackground];
-    } else {
-        self.clipThumnailImageView.image = [UIImage imageNamed:@"stream_thumbnail_placeholder.gif"];
     }
     [self.clipThumnailImageView setClipsToBounds:YES];
     self.clipThumnailImageView.layer.cornerRadius = 5.0;
