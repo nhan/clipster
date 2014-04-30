@@ -12,6 +12,7 @@
 		6B2C4A6C18FB111E00D9A011 /* SearchResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C4A6A18FB111E00D9A011 /* SearchResultsViewController.xib */; };
 		6B2C4A7518FB4CDC00D9A011 /* HamburgerMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */; };
 		6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */; };
+		6B34FEFA1910909E00CF033C /* close-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B34FEF91910909E00CF033C /* close-active@2x.png */; };
 		6B96C9CB190091A900C2CCF1 /* stream_thumbnail_placeholder.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */; };
 		6B9B8DE2190B2A92007F420A /* YouTubeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9B8DE1190B2A92007F420A /* YouTubeParser.m */; };
 		6BAACCF919085148003B5084 /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BAACCF719085148003B5084 /* VideoPlayerViewController.m */; };
@@ -119,6 +120,7 @@
 		6B2C4A7218FB4CDC00D9A011 /* HamburgerMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HamburgerMenuController.h; sourceTree = "<group>"; };
 		6B2C4A7318FB4CDC00D9A011 /* HamburgerMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HamburgerMenuController.m; sourceTree = "<group>"; };
 		6B2C4A7418FB4CDC00D9A011 /* HamburgerMenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HamburgerMenuController.xib; sourceTree = "<group>"; };
+		6B34FEF91910909E00CF033C /* close-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close-active@2x.png"; sourceTree = "<group>"; };
 		6B96C9CA190091A900C2CCF1 /* stream_thumbnail_placeholder.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = stream_thumbnail_placeholder.gif; path = images/stream_thumbnail_placeholder.gif; sourceTree = "<group>"; };
 		6B9B8DE0190B2A92007F420A /* YouTubeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YouTubeParser.h; sourceTree = "<group>"; };
 		6B9B8DE1190B2A92007F420A /* YouTubeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YouTubeParser.m; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 			children = (
 				7E2A7662191084D6000E3834 /* search-white@2x.png */,
 				7E2A7664191085A6000E3834 /* close@2x.png */,
+				6B34FEF91910909E00CF033C /* close-active@2x.png */,
 				7E2A765A1910748F000E3834 /* grey-button@2x.png */,
 				7E2A765C191074E2000E3834 /* grey-button-down@2x.png */,
 				7E2A7656191073AA000E3834 /* blue-button-2@2x.png */,
@@ -617,6 +620,7 @@
 				7E2A7661191075C2000E3834 /* blue-button-down@2x.png in Resources */,
 				7EE5B31019008633000F3816 /* video_placeholder.png in Resources */,
 				7E2A7655191072F1000E3834 /* red-button-2@2x.png in Resources */,
+				6B34FEFA1910909E00CF033C /* close-active@2x.png in Resources */,
 				7EE5B31B1900E594000F3816 /* ProfileCell.xib in Resources */,
 				6B2C4A6C18FB111E00D9A011 /* SearchResultsViewController.xib in Resources */,
 				7E2A765B1910748F000E3834 /* grey-button@2x.png in Resources */,

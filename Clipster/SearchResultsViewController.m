@@ -18,6 +18,7 @@
 #import "YouTubeCell.h"
 #import "ProfileViewController.h"
 #import "UserCell.h"
+#import "ClipsterColors.h"
 
 #define CLIP_SEARCH 0
 #define USER_SEARCH 1
@@ -92,6 +93,10 @@
     [self.searchBar setTextColor:[UIColor whiteColor]];
     [self.searchBar setImage:[UIImage imageNamed:@"search-white"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     [self.searchBar setImage:[UIImage imageNamed:@"close"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
+    [self.searchBar setImage:[UIImage imageNamed:@"close-active"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateHighlighted];
+
+    
+    self.searchTypeControl.tintColor = [ClipsterColors green];
 
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
