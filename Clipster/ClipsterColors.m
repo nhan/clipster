@@ -19,7 +19,7 @@
 }
 + (UIColor *)timelineGray
 {
-    return [UIColor colorWithWhite:0.2 alpha:0.2];
+    return [UIColor colorWithWhite:0.2 alpha:0.25];
 }
 
 

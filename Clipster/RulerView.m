@@ -27,7 +27,7 @@
 {
     //draw every half second
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGFloat penColor[4] = {0.8f, 0.8f, 0.8f, 1.0f};
+    CGFloat penColor[4] = {0.65f, 0.65f, 0.65f, 1.0f};
     CGFloat gapSize = (self.endPos - self.startPos)/(self.endTime - self.startTime); //one second
     CGFloat offset = self.startPos - gapSize*(self.startTime - floor(self.startTime));
     

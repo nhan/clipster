@@ -33,7 +33,7 @@
 
 - (void)drawVideoProgress:(CGContextRef)context
 {
-    CGFloat alpha = 0.3;
+    CGFloat alpha = 0.5;
     UIColor *color = self.color;
     CGContextSetFillColorWithColor(context, [color colorWithAlphaComponent:alpha].CGColor);
     CGContextFillRect(context, CGRectMake(0, 0, self.currentPlaybackPosition, self.bounds.size.height));
@@ -52,7 +52,7 @@
             // linearly interpolate the alpha based on popularity 0-1 --> 0.2-0.8
             CGFloat alpha = 0.6 * popularity + 0.2;
             
-            UIColor *color = [[ClipsterColors timelineGray] colorWithAlphaComponent:alpha];
+            UIColor *color = [[ClipsterColors red] colorWithAlphaComponent:alpha];
             CGContextSetFillColorWithColor(context, color.CGColor);
             CGContextFillRect(context, CGRectMake( i*histogramDelta, 0, histogramDelta, self.bounds.size.height));
         }

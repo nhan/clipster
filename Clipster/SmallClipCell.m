@@ -61,7 +61,7 @@
 {
     if (!_timelineView) {
         _timelineView = [[UIView alloc] init];
-        _timelineView.backgroundColor = [ClipsterColors timelineGray];
+        _timelineView.backgroundColor = [[ClipsterColors red] colorWithAlphaComponent:0.3];
         [self addSubview:_timelineView];
     }
     return _timelineView;
@@ -120,7 +120,7 @@
     if (selected) {
         self.timelineView.backgroundColor = [[ClipsterColors green] colorWithAlphaComponent:0.4];
     } else {
-        self.timelineView.backgroundColor = [ClipsterColors timelineGray];
+        self.timelineView.backgroundColor = [[ClipsterColors red] colorWithAlphaComponent:0.3];
     }
     [self refreshUI];
 }
