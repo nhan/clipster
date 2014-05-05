@@ -32,6 +32,7 @@
 - (void)pause;
 - (void)frameAtTimeWithSeconds:(float)time done:(void (^)(NSError *error, CGImageRef image))done;
 - (void)seekToTime:(float)time done:(void (^)())done;
+- (void)seekToExactTime:(float)time done:(void (^)())done;
 
 // TODO: (nhan) These really shouldn't be public.  This is a hack so the loading state can be shown while the we are parsing the youtube URL.
 - (void)showLoadingState;

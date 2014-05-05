@@ -127,7 +127,8 @@ static CGFloat   endSliderHomePos = 240;
     self.navigationItem.rightBarButtonItem.enabled = enableDone;
 }
 
-- (IBAction)tapAction:(id)sender {
+- (IBAction)tapAction:(id)sender
+{
     if (self.annotationTextView.isFirstResponder) {
         [self.annotationTextView resignFirstResponder];
     }
@@ -135,7 +136,8 @@ static CGFloat   endSliderHomePos = 240;
 }
 
 #pragma mark - Call delegate
-- (void)doneAction:(id)sender {
+- (void)doneAction:(id)sender
+{
     self.clip.text = self.annotationTextView.text;
     self.clip.timeStart = self.startTime * 1000;
     self.clip.timeEnd = self.endTime * 1000;
@@ -166,14 +168,14 @@ static CGFloat   endSliderHomePos = 240;
 {
     _startTimeIntermediate = startTimeIntermediate;
     [self updateUI];
-    [self.playerController seekToTime:startTimeIntermediate done:nil];
+    [self.playerController seekToExactTime:startTimeIntermediate done:nil];
 }
 
 - (void)setEndTimeIntermediate:(CGFloat)endTimeIntermediate
 {
     _endTimeIntermediate = endTimeIntermediate;
     [self updateUI];
-    [self.playerController seekToTime:endTimeIntermediate done:nil];
+    [self.playerController seekToExactTime:endTimeIntermediate done:nil];
 }
 
 - (void)setStartTime:(CGFloat)startTime
@@ -251,7 +253,8 @@ static CGFloat   endSliderHomePos = 240;
     }
 }
 
-- (void)onEndSliderDrag:(UIPanGestureRecognizer *)panGestureRecognizer{
+- (void)onEndSliderDrag:(UIPanGestureRecognizer *)panGestureRecognizer
+{
     CGPoint point    = [panGestureRecognizer locationInView:self.view];
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
         self.playerController.isLooping = NO;
@@ -261,7 +264,7 @@ static CGFloat   endSliderHomePos = 240;
         if (xPos > 320-(self.endSlider.frame.size.width)) {
             xPos = 320-(self.endSlider.frame.size.width);
         }
-        if (xPos < (self.startSlider.frame.origin.x + self.startSlider.frame.size.width)){
+        if (xPos < (self.startSlider.frame.origin.x + self.startSlider.frame.size.width)) {
             xPos = (self.startSlider.frame.origin.x + self.startSlider.frame.size.width);
         }
         self.endSlider.frame = CGRectMake( xPos, self.endSlider.frame.origin.y, self.endSlider.frame.size.width, self.endSlider.frame.size.height);
