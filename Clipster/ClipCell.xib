@@ -89,9 +89,20 @@
                                         <rect key="frame" x="279" y="11" width="8" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kRc-0c-aw7">
+                                        <rect key="frame" x="0.0" y="0.0" width="298" height="1"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.25" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="h0R-f1-0nw"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.050000000000000003" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.080000000000000002" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="kRc-0c-aw7" firstAttribute="leading" secondItem="80D-as-GtE" secondAttribute="leading" id="0rq-zQ-sSJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="kRc-0c-aw7" secondAttribute="trailing" id="Vnm-aC-8i0"/>
+                                    <constraint firstItem="kRc-0c-aw7" firstAttribute="top" secondItem="80D-as-GtE" secondAttribute="top" id="heH-nm-PQB"/>
                                     <constraint firstAttribute="height" constant="38" id="kiR-3M-pK2"/>
                                 </constraints>
                             </view>
@@ -128,7 +139,7 @@
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="dgp-vo-IeG"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -169,7 +180,7 @@
                     <constraint firstItem="zZe-Vp-Bmr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="yEV-M2-0Ry"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.84682765151515149" green="0.83720461002066116" blue="0.83720461002066116" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.83137261867523193" green="0.83137261867523193" blue="0.83137261867523193" alpha="1" colorSpace="deviceRGB"/>
             <connections>
                 <outlet property="card" destination="zZe-Vp-Bmr" id="Uwr-LD-7C2"/>
                 <outlet property="clipThumnailImageView" destination="Ts5-ml-AYO" id="JZz-9H-SBf"/>

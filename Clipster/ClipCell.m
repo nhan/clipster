@@ -139,7 +139,7 @@ static CGFloat lineHeight = 24.f;
     [self.card setClipsToBounds:YES];
     self.card.layer.cornerRadius = 5.0;
     
-    self.card.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.28].CGColor;
+    self.card.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5].CGColor;
     self.card.layer.borderWidth = 1;
 }
 
