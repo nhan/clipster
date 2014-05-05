@@ -27,6 +27,7 @@ typedef void (^TimeObserverBlock)(float);
 @property (strong, nonatomic) NSMutableDictionary *timeObservers;
 @property (strong, nonatomic) id timeObserverHandle;
 
+@property (nonatomic, assign) BOOL isLoopSeeking;
 @property (nonatomic, assign) BOOL isReady;
 @property (nonatomic, assign) BOOL shouldPlayWhenReady;
 
@@ -167,8 +168,13 @@ typedef void (^TimeObserverBlock)(float);
     }
     
     // do looping behavior
-    if (self.isLooping && CMTimeGetSeconds(time) >= self.endTime) {
-        [self.player seekToTime:CMTimeMakeWithSeconds(self.startTime, BaseTimeScale)];
+    @synchronized(self) {
+        if (!self.isLoopSeeking && self.isLooping && CMTimeGetSeconds(time) >= self.endTime) {
+            self.isLoopSeeking = YES;
+            [self.player seekToTime:CMTimeMakeWithSeconds(self.startTime, BaseTimeScale) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+                self.isLoopSeeking = NO;
+            }];
+        }
     }
 }
 
@@ -255,6 +261,28 @@ typedef void (^TimeObserverBlock)(float);
     if (self.isReady) {
         CMTime cmTime = CMTimeMakeWithSeconds(time, BaseTimeScale);
         [self.playerItem seekToTime:cmTime completionHandler:^(BOOL finished) {
+            [[NSOperationQueue mainQueue] addOperation:doneOperation];
+        }];
+    } else {
+        NSLog(@"Warning: failed to seek because player was not ready");
+        [[NSOperationQueue mainQueue] addOperation:doneOperation];
+    }
+}
+
+- (void)seekToExactTime:(float)time done:(void (^)())done
+{
+    NSBlockOperation *doneOperation = [NSBlockOperation blockOperationWithBlock:^{
+        if (done) {
+            done();
+        }
+    }];
+    if (!self.firstSeekOperation) {
+        self.firstSeekOperation = doneOperation;
+    }
+    
+    if (self.isReady) {
+        CMTime cmTime = CMTimeMakeWithSeconds(time, BaseTimeScale);
+        [self.playerItem seekToTime:cmTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
             [[NSOperationQueue mainQueue] addOperation:doneOperation];
         }];
     } else {
