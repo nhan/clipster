@@ -199,6 +199,7 @@ static CGFloat lineHeight = 24.f;
 
     self.youTubeLabel.text = self.clip.videoTitle;
 
+    self.profileThumbnailView.image = [UIImage imageNamed:@"profile-thumbnail-placeholder.png"];
     self.profileThumbnailView.alpha = 0.0;
     if ([self.clip.user isDataAvailable]) {
         [self refreshUserThumbnail:self.clip.user];
