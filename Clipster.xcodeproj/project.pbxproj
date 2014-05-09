@@ -18,6 +18,10 @@
 		6BAACCF919085148003B5084 /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BAACCF719085148003B5084 /* VideoPlayerViewController.m */; };
 		6BAACCFA19085148003B5084 /* VideoPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BAACCF819085148003B5084 /* VideoPlayerViewController.xib */; };
 		6BAACCFD1908526E003B5084 /* VideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BAACCFC1908526E003B5084 /* VideoPlayerView.m */; };
+		6BB32397191D886A00960CA2 /* GifExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB32395191D886A00960CA2 /* GifExportViewController.m */; };
+		6BB32398191D886A00960CA2 /* GifExportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BB32396191D886A00960CA2 /* GifExportViewController.xib */; };
+		6BB3239C191D8D0500960CA2 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BB3239B191D8D0500960CA2 /* UIImage+animatedGIF.m */; };
+		6BB3239E191D8D6E00960CA2 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB3239D191D8D6E00960CA2 /* ImageIO.framework */; };
 		6BEECC9C1901CDB90055081E /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BEECC9B1901CDB90055081E /* LoginManager.m */; };
 		7E2A75C4190DBBE1000E3834 /* back_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E2A75C3190DBBE1000E3834 /* back_btn@2x.png */; };
 		7E2A75C7190DBC86000E3834 /* pause_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E2A75C5190DBC86000E3834 /* pause_btn@2x.png */; };
@@ -129,6 +133,12 @@
 		6BAACCF819085148003B5084 /* VideoPlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoPlayerViewController.xib; sourceTree = "<group>"; };
 		6BAACCFB1908526E003B5084 /* VideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerView.h; sourceTree = "<group>"; };
 		6BAACCFC1908526E003B5084 /* VideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerView.m; sourceTree = "<group>"; };
+		6BB32394191D886A00960CA2 /* GifExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GifExportViewController.h; sourceTree = "<group>"; };
+		6BB32395191D886A00960CA2 /* GifExportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GifExportViewController.m; sourceTree = "<group>"; };
+		6BB32396191D886A00960CA2 /* GifExportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GifExportViewController.xib; sourceTree = "<group>"; };
+		6BB3239A191D8D0500960CA2 /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
+		6BB3239B191D8D0500960CA2 /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
+		6BB3239D191D8D6E00960CA2 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		6BEECC9A1901CDB90055081E /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
 		6BEECC9B1901CDB90055081E /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
 		7E2A75C3190DBBE1000E3834 /* back_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_btn@2x.png"; sourceTree = "<group>"; };
@@ -247,6 +257,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BB3239E191D8D6E00960CA2 /* ImageIO.framework in Frameworks */,
 				7E970D2218F1E5DF00517A1F /* CoreGraphics.framework in Frameworks */,
 				7E970D2418F1E5DF00517A1F /* UIKit.framework in Frameworks */,
 				7E970D2018F1E5DF00517A1F /* Foundation.framework in Frameworks */,
@@ -279,6 +290,17 @@
 			name = components;
 			sourceTree = "<group>";
 		};
+		6BB32399191D8CE500960CA2 /* categories */ = {
+			isa = PBXGroup;
+			children = (
+				7E6A917C1909C93600865E7E /* UIImage+ImageEffects.h */,
+				7E6A917D1909C93600865E7E /* UIImage+ImageEffects.m */,
+				6BB3239A191D8D0500960CA2 /* UIImage+animatedGIF.h */,
+				6BB3239B191D8D0500960CA2 /* UIImage+animatedGIF.m */,
+			);
+			name = categories;
+			sourceTree = "<group>";
+		};
 		7E970D1318F1E5DF00517A1F = {
 			isa = PBXGroup;
 			children = (
@@ -304,6 +326,7 @@
 		7E970D1E18F1E5DF00517A1F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6BB3239D191D8D6E00960CA2 /* ImageIO.framework */,
 				7E970D1F18F1E5DF00517A1F /* Foundation.framework */,
 				7E970D2118F1E5DF00517A1F /* CoreGraphics.framework */,
 				7E970D2318F1E5DF00517A1F /* UIKit.framework */,
@@ -317,8 +340,6 @@
 			isa = PBXGroup;
 			children = (
 				7EE5B31119008638000F3816 /* Resources */,
-				7E6A917C1909C93600865E7E /* UIImage+ImageEffects.h */,
-				7E6A917D1909C93600865E7E /* UIImage+ImageEffects.m */,
 				7E970D2E18F1E5DF00517A1F /* AppDelegate.h */,
 				7E970D2F18F1E5DF00517A1F /* AppDelegate.m */,
 				6BEECC9A1901CDB90055081E /* LoginManager.h */,
@@ -327,6 +348,7 @@
 				BB2B750E190DD531003099F3 /* ClipsterColors.m */,
 				7E970D3118F1E5DF00517A1F /* Images.xcassets */,
 				7E970D2618F1E5DF00517A1F /* Supporting Files */,
+				6BB32399191D8CE500960CA2 /* categories */,
 				BB571AFB1904DC9C0039BB66 /* views */,
 				BB571AFA1904DC900039BB66 /* controllers */,
 				6B9B8DD61909ED0F007F420A /* components */,
@@ -441,6 +463,9 @@
 				BBEAC47B1905BA3000FB732B /* EditProfileViewController.h */,
 				BBEAC47C1905BA3000FB732B /* EditProfileViewController.m */,
 				BBEAC47D1905BA3000FB732B /* EditProfileViewController.xib */,
+				6BB32394191D886A00960CA2 /* GifExportViewController.h */,
+				6BB32395191D886A00960CA2 /* GifExportViewController.m */,
+				6BB32396191D886A00960CA2 /* GifExportViewController.xib */,
 				7E9B206E1901C596008C3E01 /* ClippingViewController.h */,
 				7E9B206F1901C596008C3E01 /* ClippingViewController.m */,
 				7E9B20701901C596008C3E01 /* ClippingViewController.xib */,
@@ -606,6 +631,7 @@
 				7E3A27E71909FB8F00D96503 /* UserCell.xib in Resources */,
 				7EE5B3161900921C000F3816 /* ProfileViewController.xib in Resources */,
 				7E2A75C8190DBC86000E3834 /* play_btn@2x.png in Resources */,
+				6BB32398191D886A00960CA2 /* GifExportViewController.xib in Resources */,
 				6B2C4A7618FB4CDC00D9A011 /* HamburgerMenuController.xib in Resources */,
 				7E9B20961905D96E008C3E01 /* tapToPublish.png in Resources */,
 				7E2A75D3190DDAD9000E3834 /* ProfileClipCell.xib in Resources */,
@@ -687,6 +713,7 @@
 				BBAAD84C18F364490079995E /* Clip.m in Sources */,
 				BB6D13A219107FD400ADB702 /* ObeyChildOrientationNavController.m in Sources */,
 				7E2A75E4190F13BC000E3834 /* LoginViewController.m in Sources */,
+				6BB32397191D886A00960CA2 /* GifExportViewController.m in Sources */,
 				7EF9A4BF18F884580058FE1C /* VideoViewController.m in Sources */,
 				6B9B8DE2190B2A92007F420A /* YouTubeParser.m in Sources */,
 				6B2C4A6B18FB111E00D9A011 /* SearchResultsViewController.m in Sources */,
@@ -698,6 +725,7 @@
 				7E9B20711901C596008C3E01 /* ClippingViewController.m in Sources */,
 				7EE5B31A1900E594000F3816 /* ProfileCell.m in Sources */,
 				7E970D5D18F1F2DC00517A1F /* ClipCell.m in Sources */,
+				6BB3239C191D8D0500960CA2 /* UIImage+animatedGIF.m in Sources */,
 				BB1F17B41900868C0048D9C8 /* YouTubeVideo.m in Sources */,
 				6BAACCF919085148003B5084 /* VideoPlayerViewController.m in Sources */,
 				7EF9A4C618F8B2A80058FE1C /* SmallClipCell.m in Sources */,

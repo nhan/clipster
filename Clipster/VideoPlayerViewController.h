@@ -37,4 +37,6 @@
 // TODO: (nhan) These really shouldn't be public.  This is a hack so the loading state can be shown while the we are parsing the youtube URL.
 - (void)showLoadingState;
 - (void)hideLoadingState;
+
+- (void)framesForGifWithStartTime:(float)startTime endTime:(float)endTime done:(void (^)(NSError* error, NSArray* frames))done;
 @end

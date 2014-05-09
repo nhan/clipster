@@ -13,7 +13,7 @@
 #import "ProfileViewController.h"
 #import "VideoPlayerViewController.h"
 #import "VideoControlView.h"
-//#import <QuartzCore/QuartzCore.h>
+
 
 @class ProgressBarView;
 
@@ -145,9 +145,19 @@ static CGFloat lineHeight = 24.f;
 
 - (void)addGestureRecognizers
 {
-    UITapGestureRecognizer *clipTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClipThumbnailTap:)];
     self.clipThumnailImageView.userInteractionEnabled = YES;
-    [self.clipThumnailImageView addGestureRecognizer:clipTapGestureRecognizer];
+    
+    // this is necessary to swallow the event so we don't triger UITableView's didSelectRowAtIndexPath while waiting for the double tap
+    UITapGestureRecognizer *clipSingleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClipThumbnailSingleTap:)];
+    clipSingleTapRecognizer.numberOfTapsRequired = 1;
+    [self.clipThumnailImageView addGestureRecognizer:clipSingleTapRecognizer];
+    clipSingleTapRecognizer.cancelsTouchesInView = YES;
+    clipSingleTapRecognizer.delaysTouchesBegan = YES;
+
+    UITapGestureRecognizer *clipDoubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClipThumbnailDoubleTap:)];
+    clipDoubleTapRecognizer.numberOfTapsRequired = 2;
+    [self.clipThumnailImageView addGestureRecognizer:clipDoubleTapRecognizer];
+    [clipSingleTapRecognizer requireGestureRecognizerToFail:clipDoubleTapRecognizer];
     
     UITapGestureRecognizer *userTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onUserThumbnailTap:)];
     [self.thumbnailContainer addGestureRecognizer:userTapGestureRecognizer];
@@ -155,7 +165,6 @@ static CGFloat lineHeight = 24.f;
     UITapGestureRecognizer *usernameTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onUserThumbnailTap:)];
     self.usernameLabel.userInteractionEnabled = YES;
     [self.usernameLabel addGestureRecognizer:usernameTapGestureRecognizer];
-
 }
 
 - (void)setClip:(Clip *)clip
@@ -298,7 +307,13 @@ static CGFloat lineHeight = 24.f;
     }
 }
 
-- (void)onClipThumbnailTap:(id)sender
+- (void)onClipThumbnailDoubleTap:(UITapGestureRecognizer *)sender
+{
+    [self.delegate exportGif:self.clip];
+}
+
+
+- (void)onClipThumbnailSingleTap:(UITapGestureRecognizer *)sender
 {
     if (self.isVideoPlaying) {
         [self pauseClip];

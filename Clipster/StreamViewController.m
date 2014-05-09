@@ -11,6 +11,8 @@
 #import "VideoViewController.h"
 #import "SearchResultsViewController.h"
 #import "ProfileViewController.h"
+#import "GifExportViewController.h"
+#import "ClipsterColors.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @interface StreamViewController ()
@@ -165,5 +167,20 @@
     self.currentPlayingCell = cell;
 }
 
+- (void)exportGif:(Clip *)clip
+{
+    GifExportViewController *giffyVC = [[GifExportViewController alloc] initWithClip:clip];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:giffyVC];
+    navController.navigationBar.barTintColor = [ClipsterColors red];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelExportGif:)];
+    cancelButton.tintColor = [UIColor colorWithWhite:255 alpha:1];
+    giffyVC.navigationItem.leftBarButtonItem = cancelButton;
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)cancelExportGif:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end

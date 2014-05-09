@@ -299,4 +299,37 @@ typedef void (^TimeObserverBlock)(float);
     }
 }
 
+- (void)framesForGifWithStartTime:(float)startTime endTime:(float)endTime done:(void (^)(NSError* error, NSArray* frames))done
+{
+    // TODO: (nhan) ready player if paused
+    AVAssetImageGenerator *imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.playerItem.asset];
+    imageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+    imageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+    
+    NSMutableArray *timesArray = [NSMutableArray array];
+    for (float time = startTime; time < endTime; time+=0.33333) {
+        CMTime cmTime = CMTimeMakeWithSeconds(time, 600);
+        [timesArray addObject:[NSValue valueWithCMTime:cmTime]];
+    }
+    
+    NSMutableArray *resultsArray = [NSMutableArray array];
+    __block NSInteger numImagesRemaining = timesArray.count;
+    
+    [imageGenerator generateCGImagesAsynchronouslyForTimes:timesArray completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
+        if (result == AVAssetImageGeneratorSucceeded) {
+            @synchronized(self) {
+                numImagesRemaining--;
+                [resultsArray addObject:[UIImage imageWithCGImage:image]];
+                if (numImagesRemaining == 0) {
+                    done(nil, resultsArray);
+                }
+            }
+        } else if (result == AVAssetImageGeneratorFailed) {
+            done(error, nil);
+        } else if (result == AVAssetImageGeneratorCancelled) {
+            NSError *canceledError = [NSError errorWithDomain:@"VideoPlayerViewController: frame capture canceled" code:1 userInfo:nil];
+            done(canceledError, nil);
+        }
+    }];
+}
 @end

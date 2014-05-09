@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Clip.h"
 #import "SmallClipCell.h"
+#import "VideoPlayerViewController.h"
 
 @class ClipCell;
 
 @protocol StreamCellDelegate<NSObject>
 - (void)didClickUsername:(NSString *)username;
 - (void)willStartPlaying:(ClipCell *)cell;
+- (void)exportGif:(Clip *)clip;
 @end
 
 @interface ClipCell : UITableViewCell
