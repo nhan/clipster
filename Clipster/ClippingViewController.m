@@ -31,6 +31,9 @@
 @property (nonatomic, strong) Clip *clip;
 @property (weak, nonatomic) IBOutlet RPFloatingPlaceholderTextView *annotationTextView;
 @property (nonatomic, strong) VideoPlayerViewController *playerController;
+@property (weak, nonatomic) IBOutlet UIView *navBar;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 
 // current playback stuff
 @property (nonatomic, strong) id timeObserverHandle;
@@ -69,15 +72,18 @@ static CGFloat   endSliderHomePos = 240;
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction:)];
     
     // done is only enabled once we have a description
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.doneButton.enabled = NO;
+    self.doneButton.titleLabel.textColor = [UIColor lightGrayColor];
     
     self.annotationTextView.delegate = self;
     self.annotationTextView.placeholder = @"Enter Description";
@@ -124,7 +130,10 @@ static CGFloat   endSliderHomePos = 240;
 - (void)textViewDidChange:(UITextView *)textView
 {
     BOOL enableDone = textView.text && textView.text.length > 0;
-    self.navigationItem.rightBarButtonItem.enabled = enableDone;
+    self.doneButton.enabled = enableDone;
+    if (!enableDone) {
+        self.doneButton.titleLabel.textColor = [UIColor lightGrayColor];
+    }
 }
 
 - (IBAction)tapAction:(id)sender
@@ -136,24 +145,23 @@ static CGFloat   endSliderHomePos = 240;
 }
 
 #pragma mark - Call delegate
-- (void)doneAction:(id)sender
+- (IBAction)doneAction:(id)sender
 {
+    [self stopMonitorPlaybackTimer];
     self.clip.text = self.annotationTextView.text;
     self.clip.timeStart = self.startTime * 1000;
     self.clip.timeEnd = self.endTime * 1000;
     
     self.playerController.isLooping = NO;
     [self.delegate creationDone:self.clip];
-    [self.navigationController popViewControllerAnimated:YES];
-    [self stopMonitorPlaybackTimer];
+    
 }
 
-- (void)cancelAction
+- (IBAction)cancelAction:(id)sender
 {
+    [self stopMonitorPlaybackTimer];
     self.playerController.isLooping = NO;
     [self.delegate creationCanceled];
-    [self.navigationController popViewControllerAnimated:YES];
-    [self stopMonitorPlaybackTimer];
 }
 
 - (void)updateUI

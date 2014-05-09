@@ -389,7 +389,6 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
         [self.thumbnailImage loadInBackground];
     }
     
-    
     [self pendingNetworkRequest];
     
     [YouTubeParser videoURLWithYoutubeID:self.videoId done:^(NSURL *videoURL, NSError *error) {
@@ -419,11 +418,13 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     [self fetchClips];
 }
 
-- (BOOL)prefersStatusBarHidden {
+- (BOOL)prefersStatusBarHidden
+{
     return YES;
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated
+{
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:YES
                                             withAnimation:UIStatusBarAnimationFade];
@@ -495,6 +496,8 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 
 - (void)creationDone:(Clip *)clip
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
     // Do we need this save if we are already saving after thumbnail?
     [clip saveInBackground];
     
@@ -525,6 +528,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
 
 - (void)creationCanceled
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
     [self addPlayerViewToContainer];
     [self updatePlayerToActiveClip];
     self.isVideoPlaying = YES;
@@ -616,7 +620,7 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     
     ClippingViewController *clippingVC = [[ClippingViewController alloc] initWithClip:clip playerController:self.playerController];
     clippingVC.delegate = self;
-    [self.navigationController pushViewController:clippingVC animated:YES];
+    [self presentViewController:clippingVC animated:YES completion:nil];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

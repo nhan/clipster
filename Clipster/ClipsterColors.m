@@ -11,7 +11,7 @@
 @implementation ClipsterColors
 + (UIColor *)red
 {
-    return [UIColor colorWithRed:0.871 green:0.180 blue:0.153 alpha:1.000];
+    return [UIColor colorWithRed:222/255. green:46/255. blue:39/255. alpha:1.000];
 }
 + (UIColor *)green
 {
