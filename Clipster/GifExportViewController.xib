@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kvv-If-qdT">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kvv-If-qdT">
                     <rect key="frame" x="0.0" y="64" width="320" height="192"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <constraints>
@@ -33,14 +33,14 @@
                         <action selector="didShareOnFacebook:" destination="-1" eventType="touchUpInside" id="Wnt-hn-c6W"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf6-h2-wPG">
-                    <rect key="frame" x="0.0" y="264" width="320" height="80"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf6-h2-wPG">
+                    <rect key="frame" x="8" y="264" width="304" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="80" id="4sx-cr-xLD"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -50,8 +50,8 @@
                 <constraint firstAttribute="trailing" secondItem="kvv-If-qdT" secondAttribute="trailing" id="2wO-aw-CRK"/>
                 <constraint firstItem="Zf6-h2-wPG" firstAttribute="top" secondItem="kvv-If-qdT" secondAttribute="bottom" constant="8" id="41y-0J-8P8"/>
                 <constraint firstItem="kvv-If-qdT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Kv0-7d-yeD"/>
-                <constraint firstAttribute="trailing" secondItem="Zf6-h2-wPG" secondAttribute="trailing" id="gbN-4w-dOZ"/>
-                <constraint firstItem="Zf6-h2-wPG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="rrb-Mx-6FR"/>
+                <constraint firstAttribute="trailing" secondItem="Zf6-h2-wPG" secondAttribute="trailing" constant="8" id="gbN-4w-dOZ"/>
+                <constraint firstItem="Zf6-h2-wPG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="rrb-Mx-6FR"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

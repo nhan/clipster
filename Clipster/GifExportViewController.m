@@ -28,6 +28,7 @@
 {
     self = [super init];
     if (self) {
+        self.title = @"Export GIF";
         _clip = clip;
         _videoPlayer = [[VideoPlayerViewController alloc] init];
         _myQueue = [[NSOperationQueue alloc] init];
