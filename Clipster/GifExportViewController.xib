@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -23,38 +23,58 @@
                         <constraint firstAttribute="height" constant="192" id="sWn-8c-TFR"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5kP-a7-Rla">
-                    <rect key="frame" x="93" y="381" width="134" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5kP-a7-Rla">
+                    <rect key="frame" x="35" y="405" width="250" height="59"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Share on Facebook">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="59" id="YM1-gk-g1p"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="shareonfacebook.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="didShareOnFacebook:" destination="-1" eventType="touchUpInside" id="Wnt-hn-c6W"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf6-h2-wPG">
-                    <rect key="frame" x="8" y="264" width="304" height="80"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="Zf6-h2-wPG">
+                    <rect key="frame" x="15" y="271" width="290" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="80" id="4sx-cr-xLD"/>
-                    </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0BQ-hX-Hiq">
+                    <rect key="frame" x="35" y="474" width="250" height="59"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="59" id="Hqr-3I-uKg"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="savetocameraroll.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="kvv-If-qdT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="2Ch-Iz-JSI"/>
                 <constraint firstAttribute="trailing" secondItem="kvv-If-qdT" secondAttribute="trailing" id="2wO-aw-CRK"/>
-                <constraint firstItem="Zf6-h2-wPG" firstAttribute="top" secondItem="kvv-If-qdT" secondAttribute="bottom" constant="8" id="41y-0J-8P8"/>
+                <constraint firstItem="Zf6-h2-wPG" firstAttribute="top" secondItem="kvv-If-qdT" secondAttribute="bottom" constant="15" id="41y-0J-8P8"/>
+                <constraint firstAttribute="trailing" secondItem="5kP-a7-Rla" secondAttribute="trailing" constant="35" id="7AS-tw-RjC"/>
+                <constraint firstItem="5kP-a7-Rla" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="35" id="7sG-6t-fl8"/>
+                <constraint firstAttribute="bottom" secondItem="0BQ-hX-Hiq" secondAttribute="bottom" constant="35" id="AOH-HL-bWX"/>
+                <constraint firstAttribute="trailing" secondItem="0BQ-hX-Hiq" secondAttribute="trailing" constant="35" id="DqS-fE-Uua"/>
                 <constraint firstItem="kvv-If-qdT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Kv0-7d-yeD"/>
-                <constraint firstAttribute="trailing" secondItem="Zf6-h2-wPG" secondAttribute="trailing" constant="8" id="gbN-4w-dOZ"/>
-                <constraint firstItem="Zf6-h2-wPG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="rrb-Mx-6FR"/>
+                <constraint firstItem="0BQ-hX-Hiq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="35" id="R14-hr-3yB"/>
+                <constraint firstItem="0BQ-hX-Hiq" firstAttribute="top" secondItem="5kP-a7-Rla" secondAttribute="bottom" constant="10" id="SEu-80-bfM"/>
+                <constraint firstAttribute="trailing" secondItem="Zf6-h2-wPG" secondAttribute="trailing" constant="15" id="gbN-4w-dOZ"/>
+                <constraint firstItem="Zf6-h2-wPG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="rrb-Mx-6FR"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="savetocameraroll.png" width="500" height="118"/>
+        <image name="shareonfacebook.png" width="500" height="118"/>
+    </resources>
 </document>

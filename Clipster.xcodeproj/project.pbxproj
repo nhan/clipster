@@ -77,6 +77,8 @@
 		7E970D5D18F1F2DC00517A1F /* ClipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E970D5B18F1F2DC00517A1F /* ClipCell.m */; };
 		7E970D5E18F1F2DC00517A1F /* ClipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D5C18F1F2DC00517A1F /* ClipCell.xib */; };
 		7E970D6018F1F9C300517A1F /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E970D5F18F1F9C300517A1F /* menu@2x.png */; };
+		7E97F658191DA3AE009ED5D3 /* savetocameraroll.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E97F656191DA3AE009ED5D3 /* savetocameraroll.png */; };
+		7E97F659191DA3AE009ED5D3 /* shareonfacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E97F657191DA3AE009ED5D3 /* shareonfacebook.png */; };
 		7E9B20711901C596008C3E01 /* ClippingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B206F1901C596008C3E01 /* ClippingViewController.m */; };
 		7E9B20721901C596008C3E01 /* ClippingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20701901C596008C3E01 /* ClippingViewController.xib */; };
 		7E9B20741901C92F008C3E01 /* drag_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B20731901C92F008C3E01 /* drag_green.png */; };
@@ -207,6 +209,8 @@
 		7E970D5B18F1F2DC00517A1F /* ClipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipCell.m; sourceTree = "<group>"; };
 		7E970D5C18F1F2DC00517A1F /* ClipCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClipCell.xib; sourceTree = "<group>"; };
 		7E970D5F18F1F9C300517A1F /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu@2x.png"; sourceTree = "<group>"; };
+		7E97F656191DA3AE009ED5D3 /* savetocameraroll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = savetocameraroll.png; sourceTree = "<group>"; };
+		7E97F657191DA3AE009ED5D3 /* shareonfacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shareonfacebook.png; sourceTree = "<group>"; };
 		7E9B206E1901C596008C3E01 /* ClippingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClippingViewController.h; sourceTree = "<group>"; };
 		7E9B206F1901C596008C3E01 /* ClippingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClippingViewController.m; sourceTree = "<group>"; };
 		7E9B20701901C596008C3E01 /* ClippingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClippingViewController.xib; sourceTree = "<group>"; };
@@ -401,6 +405,8 @@
 		7EE5B31119008638000F3816 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7E97F656191DA3AE009ED5D3 /* savetocameraroll.png */,
+				7E97F657191DA3AE009ED5D3 /* shareonfacebook.png */,
 				7E2A7662191084D6000E3834 /* search-white@2x.png */,
 				7E2A7664191085A6000E3834 /* close@2x.png */,
 				6B34FEF91910909E00CF033C /* close-active@2x.png */,
@@ -647,10 +653,12 @@
 				6B34FEFA1910909E00CF033C /* close-active@2x.png in Resources */,
 				7EE5B31B1900E594000F3816 /* ProfileCell.xib in Resources */,
 				6B2C4A6C18FB111E00D9A011 /* SearchResultsViewController.xib in Resources */,
+				7E97F658191DA3AE009ED5D3 /* savetocameraroll.png in Resources */,
 				7E2A765B1910748F000E3834 /* grey-button@2x.png in Resources */,
 				7E9B20741901C92F008C3E01 /* drag_green.png in Resources */,
 				7E2A75CC190DBCAC000E3834 /* play.png in Resources */,
 				7E970D5918F1F06400517A1F /* StreamViewController.xib in Resources */,
+				7E97F659191DA3AE009ED5D3 /* shareonfacebook.png in Resources */,
 				7E2A767419184D23000E3834 /* like@2x.png in Resources */,
 				7E2A767719184E7A000E3834 /* liked.png in Resources */,
 				7E2A75C7190DBC86000E3834 /* pause_btn@2x.png in Resources */,
