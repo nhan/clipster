@@ -105,6 +105,7 @@
 		BB7DE1B319073D9C00CBA9C0 /* VideoControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7DE1B219073D9C00CBA9C0 /* VideoControlView.m */; };
 		BBAAD84918F3642B0079995E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84818F3642B0079995E /* User.m */; };
 		BBAAD84C18F364490079995E /* Clip.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAAD84B18F364490079995E /* Clip.m */; };
+		BBBB27F0191DB13D009BD251 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBBB27EF191DB13D009BD251 /* AssetsLibrary.framework */; };
 		BBEAC47E1905BA3000FB732B /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAC47C1905BA3000FB732B /* EditProfileViewController.m */; };
 		BBEAC47F1905BA3100FB732B /* EditProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBEAC47D1905BA3000FB732B /* EditProfileViewController.xib */; };
 /* End PBXBuildFile section */
@@ -250,6 +251,7 @@
 		BBAAD84818F3642B0079995E /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		BBAAD84A18F364490079995E /* Clip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clip.h; sourceTree = "<group>"; };
 		BBAAD84B18F364490079995E /* Clip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Clip.m; sourceTree = "<group>"; };
+		BBBB27EF191DB13D009BD251 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		BBEAC47B1905BA3000FB732B /* EditProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditProfileViewController.h; sourceTree = "<group>"; };
 		BBEAC47C1905BA3000FB732B /* EditProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProfileViewController.m; sourceTree = "<group>"; };
 		BBEAC47D1905BA3000FB732B /* EditProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProfileViewController.xib; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBBB27F0191DB13D009BD251 /* AssetsLibrary.framework in Frameworks */,
 				6BB3239E191D8D6E00960CA2 /* ImageIO.framework in Frameworks */,
 				7E970D2218F1E5DF00517A1F /* CoreGraphics.framework in Frameworks */,
 				7E970D2418F1E5DF00517A1F /* UIKit.framework in Frameworks */,
@@ -330,6 +333,7 @@
 		7E970D1E18F1E5DF00517A1F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BBBB27EF191DB13D009BD251 /* AssetsLibrary.framework */,
 				6BB3239D191D8D6E00960CA2 /* ImageIO.framework */,
 				7E970D1F18F1E5DF00517A1F /* Foundation.framework */,
 				7E970D2118F1E5DF00517A1F /* CoreGraphics.framework */,

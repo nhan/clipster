@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="descriptionLabel" destination="Zf6-h2-wPG" id="h5j-Rm-0s4"/>
                 <outlet property="gifImage" destination="kvv-If-qdT" id="n1d-kx-lvQ"/>
+                <outlet property="saveToCameraRollButton" destination="0BQ-hX-Hiq" id="lyp-j0-hgW"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -23,19 +24,6 @@
                         <constraint firstAttribute="height" constant="192" id="sWn-8c-TFR"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5kP-a7-Rla">
-                    <rect key="frame" x="35" y="405" width="250" height="59"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="59" id="YM1-gk-g1p"/>
-                    </constraints>
-                    <state key="normal" backgroundImage="shareonfacebook.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="didShareOnFacebook:" destination="-1" eventType="touchUpInside" id="Wnt-hn-c6W"/>
-                    </connections>
-                </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="Zf6-h2-wPG">
                     <rect key="frame" x="15" y="271" width="290" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -52,6 +40,9 @@
                     <state key="normal" backgroundImage="savetocameraroll.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="clickSaveToCameraRoll:" destination="-1" eventType="touchUpInside" id="dhy-yz-c6e"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -59,13 +50,10 @@
                 <constraint firstItem="kvv-If-qdT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="2Ch-Iz-JSI"/>
                 <constraint firstAttribute="trailing" secondItem="kvv-If-qdT" secondAttribute="trailing" id="2wO-aw-CRK"/>
                 <constraint firstItem="Zf6-h2-wPG" firstAttribute="top" secondItem="kvv-If-qdT" secondAttribute="bottom" constant="15" id="41y-0J-8P8"/>
-                <constraint firstAttribute="trailing" secondItem="5kP-a7-Rla" secondAttribute="trailing" constant="35" id="7AS-tw-RjC"/>
-                <constraint firstItem="5kP-a7-Rla" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="35" id="7sG-6t-fl8"/>
                 <constraint firstAttribute="bottom" secondItem="0BQ-hX-Hiq" secondAttribute="bottom" constant="35" id="AOH-HL-bWX"/>
                 <constraint firstAttribute="trailing" secondItem="0BQ-hX-Hiq" secondAttribute="trailing" constant="35" id="DqS-fE-Uua"/>
                 <constraint firstItem="kvv-If-qdT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Kv0-7d-yeD"/>
                 <constraint firstItem="0BQ-hX-Hiq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="35" id="R14-hr-3yB"/>
-                <constraint firstItem="0BQ-hX-Hiq" firstAttribute="top" secondItem="5kP-a7-Rla" secondAttribute="bottom" constant="10" id="SEu-80-bfM"/>
                 <constraint firstAttribute="trailing" secondItem="Zf6-h2-wPG" secondAttribute="trailing" constant="15" id="gbN-4w-dOZ"/>
                 <constraint firstItem="Zf6-h2-wPG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="rrb-Mx-6FR"/>
             </constraints>
@@ -75,6 +63,5 @@
     </objects>
     <resources>
         <image name="savetocameraroll.png" width="500" height="118"/>
-        <image name="shareonfacebook.png" width="500" height="118"/>
     </resources>
 </document>

@@ -172,7 +172,7 @@
     GifExportViewController *giffyVC = [[GifExportViewController alloc] initWithClip:clip];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:giffyVC];
     navController.navigationBar.barTintColor = [ClipsterColors red];
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelExportGif:)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(cancelExportGif:)];
     cancelButton.tintColor = [UIColor colorWithWhite:255 alpha:1];
     giffyVC.navigationItem.leftBarButtonItem = cancelButton;
     [self presentViewController:navController animated:YES completion:nil];

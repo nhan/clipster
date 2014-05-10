@@ -13,6 +13,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "UIImage+animatedGIF.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface GifExportViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *gifImage;
@@ -20,6 +21,7 @@
 @property (strong, nonatomic) VideoPlayerViewController *videoPlayer;
 @property (strong, nonatomic) Clip *clip;
 @property (strong, nonatomic) NSOperationQueue *myQueue;
+@property (weak, nonatomic) IBOutlet UIButton *saveToCameraRollButton;
 @end
 
 @implementation GifExportViewController
@@ -90,13 +92,23 @@
 
 }
 
-- (void)didReceiveMemoryWarning
+- (IBAction)clickSaveToCameraRoll:(UIButton *)sender
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+    
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"clipster_animated.gif"];
+    NSURL *url = [NSURL fileURLWithPath:path];
 
-- (IBAction)didShareOnFacebook:(id)sender {
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    __weak typeof(self) weakSelf = self;
+    [library writeImageDataToSavedPhotosAlbum:data metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+        self.saveToCameraRollButton.enabled = NO;
+        [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+    }];
+    
 }
 
 @end
