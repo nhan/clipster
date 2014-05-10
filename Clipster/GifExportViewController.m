@@ -82,6 +82,7 @@
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 UIImage *myGif = [UIImage animatedImageWithAnimatedGIFURL:(NSURL *)url];
                 weakSelf.gifImage.image = myGif;
+                [weakSelf.gifImage setClipsToBounds:YES];
                 [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
             }];
         }
