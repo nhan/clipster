@@ -18,6 +18,7 @@
 @dynamic text;
 @dynamic canonicalText;
 @dynamic isFavorite;
+@dynamic eulaFlag;
 @dynamic videoId;
 @dynamic videoTitle;
 @dynamic timeStart;

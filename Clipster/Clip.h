@@ -22,6 +22,7 @@
 @property (retain) NSString *text;
 @property (retain) NSString *canonicalText;
 @property BOOL isFavorite;
+@property BOOL eulaFlag;
 @property (retain) NSString *videoId;
 @property (retain) NSString *videoTitle;
 @property (retain) NSMutableArray *likers;

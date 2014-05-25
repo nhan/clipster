@@ -555,14 +555,18 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     }
     cell.clipCellDelegate = self;
     
-    // be able to delete my clips
+    // add a delete button for author's and flag button otherwise
+    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    NSString *utilityButtonTitle = @"Flag";
+    UIColor *utilityButtonColor = [UIColor darkGrayColor];
     if ([clip.user.objectId isEqualToString:[User currentUser].objectId]) {
-        NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-        [rightUtilityButtons sw_addUtilityButtonWithColor: [ClipsterColors red]
-                                                    title:@"Delete"];
-        cell.rightUtilityButtons = rightUtilityButtons;
-        cell.delegate = self;
+        utilityButtonTitle = @"Delete";
+        utilityButtonColor = [ClipsterColors red];
     }
+    [rightUtilityButtons sw_addUtilityButtonWithColor: utilityButtonColor
+                                                title: utilityButtonTitle];
+    cell.rightUtilityButtons = rightUtilityButtons;
+    cell.delegate = self;
 
     return cell;
 }
@@ -591,13 +595,23 @@ static const int NUMBER_HISTOGRAM_BINS = 100;
     switch (index) {
         case 0:
         {
-            // Delete button was pressed
+            // First utility button was pressed
             NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
             Clip *clip = self.clips[cellIndexPath.row];
-            [clip deleteInBackground];
-            [self.clips removeObjectAtIndex:cellIndexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
+            
+            if ([clip.user.objectId isEqualToString:[User currentUser].objectId]) {
+                // Author is deleting the clip
+                [clip deleteInBackground];
+                [self.clips removeObjectAtIndex:cellIndexPath.row];
+                [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"SetStreamDirty" object:nil];
+            } else {
+                // Flag the clip as inappropriate, this will notify Clipster team and user/clip will be removed
+                clip.eulaFlag = true;
+                [clip saveInBackground];
+                [cell hideUtilityButtonsAnimated:YES];
+            }
+            
             break;
         }
         default:
